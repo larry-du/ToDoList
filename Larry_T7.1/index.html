@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;1,400&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet"
         href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
     <link rel="stylesheet"
@@ -36,7 +38,76 @@
             </div>
         </nav>
     </header>
-    <main>
+    <main class="main">
+        <div class="add-area container">
+            <input type="text"
+                placeholder="Add Task">
+            <i class="fal fa-plus"></i>
+        </div>
+        <div class="to-do-list task container">
+            <div class="card">
+                <div class="title">
+                    <input type="checkbox"
+                        id="task">
+                    <label for="task"></label>
+                    <span>Type Something Here...</span>
+                </div>
+                <div class="edit-area">
+                    <i class="fas fa-star important"></i>
+                    <i class="fal fa-pen"></i>
+                </div>
+            </div>
+
+            <div class="status">
+                <div class="date">
+                    <i class="far fa-calendar-alt"></i>
+                    <span>5/12</span>
+                </div>
+                <i class="fal fa-file"></i>
+                <i class="fal fa-comment-dots"></i>
+            </div>
+
+        </div>
+        <div class="to-do-list progress container">
+            <div class="card">
+                <div class="title">
+                    <input type="checkbox"
+                        id="progress">
+                    <label for="progress"></label>
+                    <span>Type Something Here...</span>
+                </div>
+                <div class="edit-area">
+                    <i class="far fa-star"></i>
+                    <i class="fal fa-pen"></i>
+                </div>
+            </div>
+
+            <div class="status">
+                <div class="date">
+                    <i class="far fa-calendar-alt"></i>
+                    <span>5/12</span>
+                </div>
+                <i class="fal fa-file"></i>
+                <i class="fal fa-comment-dots"></i>
+            </div>
+
+        </div>
+        <div class="to-do-list complete container">
+            <div class="card">
+                <div class="title">
+                    <input type="checkbox"
+                        id="complete">
+                    <label for="complete"></label>
+                    <span>Type Something Here...</span>
+                </div>
+                <div class="edit-area">
+                    <i class="far fa-star"></i>
+                    <i class="fal fa-pen"></i>
+                </div>
+            </div>
+
+        </div>
+        <p class="container">4 tasks left</p>
 
     </main>
 

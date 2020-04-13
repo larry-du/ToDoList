@@ -7,7 +7,8 @@ p,
 ul,
 li,
 form,
-label {
+label,
+input {
   margin: 0;
   padding: 0;
   border: 0;
@@ -32,11 +33,32 @@ ul {
   max-width: 60.546875%;
 }
 
-.nav a {
+.card span, .nav a, .nav a:focus {
   font-size: 24px;
-  font-family: Roboto Medium;
+  font-family: Roboto;
+}
+.nav a:focus {
+  font-weight: 500;
+}
+.nav a {
+  font-weight: 400;
+}
+.main p {
+  font-size: 24px;
+  font-family: font-family;
+}
+.main p {
+  font-weight: 400;
+  font-style: italic;
 }
 
+.add-area input {
+  font-size: 24px;
+  font-family: Roboto;
+}
+.add-area input {
+  font-weight: 400;
+}
 .nav {
   width: 64.453125%;
   margin-right: auto;
@@ -52,7 +74,10 @@ ul {
   padding-bottom: 25px;
   position: relative;
 }
-.nav a:hover::before {
+.nav a:focus {
+  color: #ffffff;
+}
+.nav a:focus::before {
   content: "";
   display: block;
   width: 72.7272727273%;
@@ -86,6 +111,210 @@ ul {
 
 .header {
   background-color: #4a90e2;
+}
+
+.add-area {
+  position: relative;
+  margin-bottom: 24px;
+}
+.add-area i {
+  position: absolute;
+  top: 23px;
+  left: 33px;
+}
+.add-area i {
+  font-size: 24px;
+  color: #c8c8c8;
+}
+.add-area input {
+  width: 100%;
+  border: 2px solid #c8c8c8;
+  border-radius: 5px;
+  outline: none;
+  padding-left: 67px;
+  padding-top: 19px;
+  padding-bottom: 18px;
+}
+.add-area input::placeholder {
+  color: #c8c8c8;
+}
+
+.task {
+  background-color: #fff2dc;
+}
+.task #task:checked + label::before {
+  content: "";
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-color: blue;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 50;
+}
+.task #task:checked + label::after {
+  content: "";
+  display: inline-block;
+  width: 15px;
+  height: 6px;
+  border: 2px solid white;
+  border-top: none;
+  border-right: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
+  transform: rotate(-45deg);
+  z-index: 51;
+}
+
+.progress {
+  background-color: #f2f2f2;
+}
+.progress #progress:checked + label::before {
+  content: "";
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-color: blue;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 50;
+}
+.progress #progress:checked + label::after {
+  content: "";
+  display: inline-block;
+  width: 15px;
+  height: 6px;
+  border: 2px solid white;
+  border-top: none;
+  border-right: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
+  transform: rotate(-45deg);
+  z-index: 51;
+}
+
+.complete {
+  padding: 24px 32px;
+  background-color: #f2f2f2;
+}
+.complete .card {
+  margin-bottom: 0;
+}
+.complete .title span {
+  text-decoration: line-through;
+  color: #c8c8c8;
+}
+.complete #complete:checked + label::before {
+  content: "";
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-color: blue;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 50;
+}
+.complete #complete:checked + label::after {
+  content: "";
+  display: inline-block;
+  width: 15px;
+  height: 6px;
+  border: 2px solid white;
+  border-top: none;
+  border-right: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
+  transform: rotate(-45deg);
+  z-index: 51;
+}
+
+.to-do-list {
+  padding: 32px 32px 17px 32px;
+  margin-top: 8px;
+  border-radius: 5px;
+}
+
+.card {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 19px;
+}
+.card.title {
+  font-size: 0;
+}
+.card input {
+  display: none;
+}
+.card label {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  margin-right: 16px;
+  background-color: white;
+  position: relative;
+}
+.card span {
+  vertical-align: middle;
+  color: #000000;
+}
+.card .edit-area {
+  font-size: 0;
+}
+.card .edit-area i {
+  vertical-align: middle;
+  font-size: 24px;
+}
+.card .edit-area i + i {
+  margin-left: 32px;
+}
+.card .edit-area .important {
+  color: #f5a623;
+}
+
+.status {
+  font-size: 0;
+  margin-left: 50px;
+}
+.status i {
+  font-size: 16px;
+  margin-left: 16px;
+}
+.status .date {
+  display: inline-block;
+  font-size: 0;
+}
+.status .date i {
+  margin-left: 0;
+}
+.status .date span {
+  font-size: 16px;
+  margin-left: 8px;
+}
+
+.main {
+  background-color: #e1e1e1;
+  padding-top: 24px;
+}
+.main p {
+  padding: 0 32px 17px 32px;
+  margin-top: 8px;
+  color: #c8c8c8;
 }
 
 /*# sourceMappingURL=index.css.map */

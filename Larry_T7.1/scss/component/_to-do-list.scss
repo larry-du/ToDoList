@@ -1,0 +1,81 @@
+@use '../utility/breaking-point';
+@use '../theme/color';
+@use '../theme/font';
+@use './task';
+@use './progress';
+@use './complete';
+
+//to-do-list layout
+.to-do-list {
+    padding: 32px 32px 17px 32px;
+    margin-top: 8px;
+    border-radius: 5px;
+}
+
+//list內容樣式
+.card {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 19px;
+    &.title {
+        font-size: 0;
+    }
+    & input {
+        display: none;
+    }
+    & label {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        vertical-align: middle;
+        margin-right: 16px;
+        background-color: white;
+        position: relative;
+    }
+
+    & span {
+        @extend %title;
+        vertical-align: middle;
+        color: color.$black;
+    }
+
+    & .edit-area {
+        font-size: 0;
+    }
+
+    & .edit-area i {
+        vertical-align: middle;
+        font-size: 24px;
+    }
+
+    & .edit-area i + i {
+        margin-left: 32px;
+    }
+
+    & .edit-area .important {
+        color: color.$orange;
+    }
+}
+
+.status {
+    font-size: 0;
+    margin-left: 50px;
+
+    & i {
+        font-size: 16px;
+        margin-left: 16px;
+    }
+    & .date {
+        display: inline-block;
+        font-size: 0;
+    }
+
+    & .date i {
+        margin-left: 0;
+    }
+
+    & .date span {
+        font-size: 16px;
+        margin-left: 8px;
+    }
+}

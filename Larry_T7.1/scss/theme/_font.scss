@@ -1,47 +1,128 @@
 $title-font: 24px;
-$title-font-family: Roboto Medium;
+$subtitle-font: 20px;
+$text-font: 16px;
+$font-family: Roboto;
 
 %title {
     font-size: $title-font;
-    font-family: $title-font-family;
+    font-family: $font-family;
+    &_medium {
+        @extend %title;
+        font-weight: 500;
+    }
+    &_regular {
+        @extend %title;
+        font-weight: 400;
+    }
+
+    &_regular-italic {
+        @extend %title;
+        font-weight: 400;
+        font-style: italic;
+    }
 }
 
-$subtitle-font: 20px;
-$subtitle-font-family: Roboto Medium;
+$subtitle-font-family: Roboto;
 
 %subtitle {
     font-size: $subtitle-font;
-    font-family: $subtitle-font-family;
+    font-family: font-family;
+    &_medium {
+        @extend %subtitle;
+        font-weight: 500;
+    }
+    &_regular {
+        font-weight: 400;
+    }
+
+    &_regular-italic {
+        font-weight: 400;
+        font-style: italic;
+    }
 }
 
-$paragraph-font: 16px;
-$paragraph-font-family: Roboto Regular;
+// $paragraph-font-family: Roboto;
 
 %paragraph {
-    font-size: $paragraph-font;
-    font-family: $paragraph-font-family;
+    font-size: $text-font;
+    font-family: font-family;
+    &_medium {
+        @extend %paragraph;
+        font-weight: 500;
+    }
+    &_regular {
+        @extend %paragraph;
+        font-weight: 400;
+    }
+
+    &_regular-italic {
+        @extend %paragraph;
+        font-weight: 400;
+        font-style: italic;
+    }
 }
 
-$remark-font: 16px;
-$remark-font-family: Roboto Regular;
+// $remark-font-family: Roboto;
 
 %remark {
-    font-size: $remark-font;
-    font-family: $remark-font-family;
+    font-size: $title-font;
+    font-family: font-family;
+    &_medium {
+        @extend %remark;
+        font-weight: 500;
+    }
+    &_regular {
+        @extend %remark;
+        font-weight: 400;
+    }
+
+    &_regular-italic {
+        @extend %remark;
+        font-weight: 400;
+        font-style: italic;
+    }
 }
 
-$placeholder-font: 16px;
-$placeholder-font-family: Roboto Regular;
+// $placeholder-font: 16px;
+// $placeholder-font-family: Roboto;
 
 %placeholder {
-    font-size: $placeholder-font;
-    font-family: $placeholder-font-family;
+    font-size: $title-font;
+    font-family: $font-family;
+    &_medium {
+        @extend %placeholder;
+        font-weight: 500;
+    }
+    &_regular {
+        @extend %placeholder;
+        font-weight: 400;
+    }
+
+    &_regular-italic {
+        @extend %placeholder;
+        font-weight: 400;
+        font-style: italic;
+    }
 }
 
-$status-font: 24px;
-$status-font-family: Roboto Italic;
+// $status-font: 24px;
+// $status-font-family: Roboto;
 
 %status {
-    font-size: $status-font;
-    font-family: $status-font-family;
+    font-size: $title-font;
+    font-family: $font-family;
+    &_medium {
+        @extend %status;
+        font-weight: 500;
+    }
+    &_regular {
+        @extend %status;
+        font-weight: 400;
+    }
+
+    &_regular-italic {
+        @extend %status;
+        font-weight: 400;
+        font-style: italic;
+    }
 }

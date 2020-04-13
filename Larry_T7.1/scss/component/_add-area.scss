@@ -1,0 +1,33 @@
+@use '../theme/font';
+@use '../theme/color';
+
+.add-area {
+    //十字符號定位
+    position: relative;
+    margin-bottom: 24px;
+    & i {
+        position: absolute;
+        top: 23px;
+        left: 33px;
+    }
+    //十字符號樣式
+    & i {
+        font-size: 24px;
+        color: color.$gray-200;
+    }
+    //輸入框樣式
+    & input {
+        width: 100%;
+        border: 2px solid color.$gray-200;
+        border-radius: 5px;
+        outline: none;
+        @extend %placeholder_regular;
+        // font-family: Roboto regular;
+        padding-left: 67px;
+        padding-top: 19px;
+        padding-bottom: 18px;
+    }
+    & input::placeholder {
+        color: color.$gray-200;
+    }
+}
