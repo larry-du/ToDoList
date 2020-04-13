@@ -1,0 +1,47 @@
+$title-font: 24px;
+$title-font-family: Roboto Medium;
+
+%title {
+    font-size: $title-font;
+    font-family: $title-font-family;
+}
+
+$subtitle-font: 20px;
+$subtitle-font-family: Roboto Medium;
+
+%subtitle {
+    font-size: $subtitle-font;
+    font-family: $subtitle-font-family;
+}
+
+$paragraph-font: 16px;
+$paragraph-font-family: Roboto Regular;
+
+%paragraph {
+    font-size: $paragraph-font;
+    font-family: $paragraph-font-family;
+}
+
+$remark-font: 16px;
+$remark-font-family: Roboto Regular;
+
+%remark {
+    font-size: $remark-font;
+    font-family: $remark-font-family;
+}
+
+$placeholder-font: 16px;
+$placeholder-font-family: Roboto Regular;
+
+%placeholder {
+    font-size: $placeholder-font;
+    font-family: $placeholder-font-family;
+}
+
+$status-font: 24px;
+$status-font-family: Roboto Italic;
+
+%status {
+    font-size: $status-font;
+    font-family: $status-font-family;
+}

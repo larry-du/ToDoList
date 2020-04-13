@@ -1,0 +1,53 @@
+@use "../utility/breaking-point";
+@use '../theme/color';
+@use '../theme/font';
+
+//容器大小與置中
+.nav {
+    width: 660/1024 * 100%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+//內容樣式
+.nav {
+    a {
+        display: block;
+        text-align: center;
+        flex: 0 1 (1/3 * 100%);
+        color: color.$dark-blue;
+        @extend %title;
+        padding-top: 23px;
+        padding-bottom: 25px;
+        position: relative;
+
+        //hover下底線
+        &:hover::before {
+            content: "";
+            display: block;
+            width: 160/220 * 100%;
+            height: 5px;
+            background-color: color.$dark-blue;
+            margin-right: auto;
+            margin-left: auto;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            left: 0;
+        }
+    }
+}
+
+//樣式斷點
+.nav-text {
+    display: none;
+    @include breaking-point.breaking-point(md) {
+        display: flex;
+    }
+}
+.nav-icon {
+    display: flex;
+    @include breaking-point.breaking-point(md) {
+        display: none;
+    }
+}

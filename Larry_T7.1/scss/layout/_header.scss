@@ -1,0 +1,6 @@
+@use './nav';
+@use '../theme/color';
+
+.header {
+    background-color: color.$blue;
+}
