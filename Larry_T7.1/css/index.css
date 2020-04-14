@@ -309,6 +309,7 @@ ul {
 .card .edit-area i {
   vertical-align: middle;
   font-size: 24px;
+  cursor: pointer;
 }
 .card .edit-area i + i {
   margin-left: 32px;
