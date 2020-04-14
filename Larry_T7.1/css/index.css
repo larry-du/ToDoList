@@ -1,3 +1,4 @@
+@charset "UTF-8";
 html,
 body,
 h1,
@@ -27,13 +28,20 @@ ul {
 }
 
 .container {
-  width: 100%;
-  margin-right: auto;
-  margin-left: auto;
-  max-width: 60.546875%;
+  margin-right: 0;
+  margin-left: 0;
+  max-width: 100%;
+}
+@media (min-width: 768px) {
+  .container {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 60.546875%;
+  }
 }
 
-.card span, .nav a, .nav a:focus {
+.check-button button, .card span, .nav a, .nav a:focus {
   font-size: 24px;
   font-family: Roboto;
 }
@@ -42,6 +50,13 @@ ul {
 }
 .nav a {
   font-weight: 400;
+}
+.deadline span, .file span, .comment span {
+  font-size: 20px;
+  font-family: font-family;
+}
+.deadline span, .file span, .comment span {
+  font-weight: 500;
 }
 .main p {
   font-size: 24px;
@@ -210,7 +225,7 @@ ul {
 .complete .card {
   margin-bottom: 0;
 }
-.complete .title span {
+.complete .card-title span {
   text-decoration: line-through;
   color: #c8c8c8;
 }
@@ -244,9 +259,21 @@ ul {
 }
 
 .to-do-list {
-  padding: 32px 32px 17px 32px;
   margin-top: 8px;
   border-radius: 5px;
+  padding: 20px 10px 20px 10px;
+}
+.to-do-list .edit-area {
+  display: none;
+}
+
+@media (min-width: 576px) {
+  .to-do-list {
+    padding: 32px 32px 17px 32px;
+  }
+  .to-do-list .edit-area {
+    display: block;
+  }
 }
 
 .card {
@@ -254,7 +281,10 @@ ul {
   justify-content: space-between;
   margin-bottom: 19px;
 }
-.card.title {
+.card .card-title {
+  display: flex;
+}
+.card .check-area {
   font-size: 0;
 }
 .card input {
@@ -305,6 +335,141 @@ ul {
 .status .date span {
   font-size: 16px;
   margin-left: 8px;
+}
+
+.event-edit {
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  box-shadow: 0 1px 1px 1px #c8c8c8;
+  overflow: hidden;
+}
+.event-edit .card {
+  border-bottom: 3px solid #c8c8c8;
+  padding: 24px 32px;
+  margin-bottom: 24px;
+}
+
+.deadline {
+  padding: 0 32px 0 72px;
+  font-size: 0;
+  margin-bottom: 24px;
+}
+.deadline .deadline-icon {
+  margin-bottom: 8px;
+  font-size: 0;
+}
+.deadline span {
+  vertical-align: middle;
+}
+.deadline i {
+  margin-right: 9px;
+  font-size: 20px;
+  vertical-align: middle;
+}
+.deadline .date-area {
+  display: flex;
+  margin-left: 25px;
+}
+.deadline input {
+  padding: 8px 0 8px 16px;
+  width: 162px;
+}
+.deadline input + input {
+  margin-left: 8px;
+}
+
+.file {
+  padding: 0 32px 0 72px;
+  font-size: 0;
+  margin-bottom: 27px;
+}
+.file .file-icon {
+  margin-bottom: 8px;
+  font-size: 0;
+}
+.file span {
+  vertical-align: middle;
+}
+.file i {
+  margin-right: 9px;
+  font-size: 20px;
+  vertical-align: middle;
+}
+.file .add-file {
+  width: 32px;
+  height: 32px;
+  margin-left: 25px;
+  background-color: #c8c8c8;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+}
+.file .add-file::before {
+  content: "";
+  display: block;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  font-family: "Font Awesome 5 pro";
+  font-size: 20px;
+  color: #ffffff;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
+}
+
+.comment {
+  padding: 0 32px 0 72px;
+  font-size: 0;
+  margin-bottom: 24px;
+}
+.comment .comment-icon {
+  margin-bottom: 8px;
+  font-size: 0;
+}
+.comment span {
+  vertical-align: middle;
+}
+.comment i {
+  margin-right: 9px;
+  font-size: 20px;
+  vertical-align: middle;
+}
+.comment .comment-area {
+  width: 445px;
+  height: 120px;
+  outline: none;
+  resize: none;
+  padding: 8px 16px;
+  margin-left: 24px;
+  border: none;
+  border-radius: 2px;
+}
+
+.check-button {
+  display: flex;
+}
+.check-button button {
+  display: block;
+  flex: 1 1 auto;
+  outline: none;
+  width: 310px;
+  height: 60px;
+  cursor: pointer;
+  border: none;
+}
+.check-button button:hover {
+  background-color: #4a90e2;
+  color: #ffffff;
+}
+.check-button button:nth-of-type(1) {
+  color: #d0021b;
+}
+.check-button button i {
+  margin-right: 14px;
 }
 
 .main {

@@ -1,0 +1,127 @@
+@use '../utility/breaking-point';
+@use '../theme/color';
+@use '../theme/font';
+
+.event-edit {
+    background-color: color.$gray-100;
+    border-radius: 5px;
+    box-shadow: 0 1px 1px 1px color.$gray-200;
+    overflow: hidden;
+    & .card {
+        border-bottom: 3px solid color.$gray-200;
+        padding: 24px 32px;
+        margin-bottom: 24px;
+    }
+}
+
+.deadline {
+    padding: 0 32px 0 72px;
+    font-size: 0;
+    margin-bottom: 24px;
+    & .deadline-icon {
+        margin-bottom: 8px;
+        font-size: 0;
+    }
+    & span {
+        @extend %subtitle_medium;
+        vertical-align: middle;
+    }
+
+    & i {
+        margin-right: 9px;
+        font-size: 20px;
+        vertical-align: middle;
+    }
+
+    & .date-area {
+        display: flex;
+        margin-left: 25px;
+    }
+
+    & input {
+        padding: 8px 0 8px 16px;
+        width: 162px;
+    }
+
+    & input + input {
+        margin-left: 8px;
+    }
+}
+
+.file {
+    padding: 0 32px 0 72px;
+    font-size: 0;
+    margin-bottom: 27px;
+    & .file-icon {
+        margin-bottom: 8px;
+        font-size: 0;
+    }
+    & span {
+        @extend %subtitle_medium;
+        vertical-align: middle;
+    }
+
+    & i {
+        margin-right: 9px;
+        font-size: 20px;
+        vertical-align: middle;
+    }
+
+    & .add-file {
+        width: 32px;
+        height: 32px;
+        margin-left: 25px;
+        background-color: color.$gray-200;
+        outline: none;
+        cursor: pointer;
+        position: relative;
+
+        &::before {
+            content: "\f067";
+            display: block;
+            text-align: center;
+            width: 20px;
+            height: 20px;
+            font-family: "Font Awesome 5 pro";
+            font-size: 20px;
+            color: color.$white;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            margin: auto;
+        }
+    }
+}
+
+.comment {
+    padding: 0 32px 0 72px;
+    font-size: 0;
+    margin-bottom: 24px;
+    & .comment-icon {
+        margin-bottom: 8px;
+        font-size: 0;
+    }
+    & span {
+        @extend %subtitle_medium;
+        vertical-align: middle;
+    }
+
+    & i {
+        margin-right: 9px;
+        font-size: 20px;
+        vertical-align: middle;
+    }
+
+    & .comment-area {
+        width: 445px;
+        height: 120px;
+        outline: none;
+        resize: none;
+        padding: 8px 16px;
+        margin-left: 24px;
+        border: none;
+        border-radius: 2px;
+    }
+}

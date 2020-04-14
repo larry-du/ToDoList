@@ -44,12 +44,82 @@
                 placeholder="Add Task">
             <i class="fal fa-plus"></i>
         </div>
-        <div class="to-do-list task container">
+        <div class="event-edit container">
             <div class="card">
-                <div class="title">
-                    <input type="checkbox"
-                        id="task">
-                    <label for="task"></label>
+                <div class="card-title">
+                    <div class="check-area">
+                        <input type="checkbox"
+                            id="">
+                        <label for=""></label>
+                    </div>
+                    <span>Type Something Here...</span>
+                </div>
+                <div class="edit-area">
+                    <i class="fas fa-star important"></i>
+                    <i class="fal fa-pen"></i>
+                </div>
+            </div>
+
+            <div class="deadline">
+                <div class="deadline-icon ">
+                    <i class="far fa-calendar-alt fa-fw"></i>
+                    <span>Deadline</span>
+                </div>
+                <div class="date-area">
+                    <input type="date">
+                    <input type="time">
+                </div>
+            </div>
+
+            <div class="file">
+                <div class="file-icon">
+                    <i class="fal fa-file fa-fw"></i>
+                    <span>file</span>
+                </div>
+                <div class="file-area">
+                    <button class="add-file">
+                    </button>
+                </div>
+            </div>
+
+            <div class="comment">
+                <div class="comment-icon">
+                    <i class="fal fa-comment-dots fa-fw"></i>
+                    <span>comment</span>
+                </div>
+                <!-- <div class="comment-area">
+
+                </div> -->
+                <textarea class="comment-area"
+                    placeholder="Type your memo here..."></textarea>
+            </div>
+
+            <div class="check-button">
+                <button>
+                    <i class="fal fa-times"></i>
+                    Cancel
+                </button>
+                <button>
+                    <i class="fal fa-plus"></i>
+                    Add Task
+                </button>
+            </div>
+
+        </div>
+
+
+
+        <div class="
+                    to-do-list
+                    task
+                    container">
+            <div class="card">
+                <div class="card-title">
+                    <div class="check-area">
+                        <input type="checkbox"
+                            id="task">
+                        <label for="task"></label>
+                    </div>
                     <span>Type Something Here...</span>
                 </div>
                 <div class="edit-area">
@@ -70,10 +140,12 @@
         </div>
         <div class="to-do-list progress container">
             <div class="card">
-                <div class="title">
-                    <input type="checkbox"
-                        id="progress">
-                    <label for="progress"></label>
+                <div class="card-title">
+                    <div class="check-area">
+                        <input type="checkbox"
+                            id="progress">
+                        <label for="progress"></label>
+                    </div>
                     <span>Type Something Here...</span>
                 </div>
                 <div class="edit-area">
@@ -94,10 +166,12 @@
         </div>
         <div class="to-do-list complete container">
             <div class="card">
-                <div class="title">
-                    <input type="checkbox"
-                        id="complete">
-                    <label for="complete"></label>
+                <div class="card-title">
+                    <div class="check-area">
+                        <input type="checkbox"
+                            id="complete">
+                        <label for="complete"></label>
+                    </div>
                     <span>Type Something Here...</span>
                 </div>
                 <div class="edit-area">

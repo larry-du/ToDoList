@@ -19,8 +19,13 @@
 }
 
 .container {
-    width: 100%;
-    margin-right: auto;
-    margin-left: auto;
-    max-width: 620/1024 * 100%;
+    margin-right: 0;
+    margin-left: 0;
+    max-width: 100%;
+    @include breaking-point(md) {
+        width: 100%;
+        margin-right: auto;
+        margin-left: auto;
+        max-width: 620/1024 * 100%;
+    }
 }

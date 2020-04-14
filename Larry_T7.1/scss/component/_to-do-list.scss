@@ -7,9 +7,21 @@
 
 //to-do-list layout
 .to-do-list {
-    padding: 32px 32px 17px 32px;
     margin-top: 8px;
     border-radius: 5px;
+    padding: 20px 10px 20px 10px;
+    .edit-area {
+        display: none;
+    }
+}
+
+.to-do-list {
+    @include breaking-point.breaking-point(sm) {
+        padding: 32px 32px 17px 32px;
+        .edit-area {
+            display: block;
+        }
+    }
 }
 
 //list內容樣式
@@ -17,7 +29,11 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 19px;
-    &.title {
+
+    & .card-title {
+        display: flex;
+    }
+    & .check-area {
         font-size: 0;
     }
     & input {

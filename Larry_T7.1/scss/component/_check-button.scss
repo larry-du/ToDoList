@@ -1,0 +1,29 @@
+@use '../theme/font';
+@use '../theme/color';
+
+.check-button {
+    display: flex;
+    & button {
+        display: block;
+        flex: 1 1 auto;
+        outline: none;
+        width: 310px;
+        height: 60px;
+        cursor: pointer;
+        @extend %title;
+        border: none;
+
+        &:hover {
+            background-color: color.$blue;
+            color: color.$white;
+        }
+
+        &:nth-of-type(1) {
+            color: color.$red;
+        }
+
+        & i {
+            margin-right: 14px;
+        }
+    }
+}
