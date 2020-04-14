@@ -41,11 +41,11 @@ ul {
   }
 }
 
-.check-button button, .card span, .nav a, .nav a:focus {
+.check-button button, .card span, .nav a, .nav a:focus, .nav a:hover {
   font-size: 24px;
   font-family: Roboto;
 }
-.nav a:focus {
+.nav a:focus, .nav a:hover {
   font-weight: 500;
 }
 .nav a {
@@ -89,10 +89,10 @@ ul {
   padding-bottom: 25px;
   position: relative;
 }
-.nav a:focus {
+.nav a:focus, .nav a:hover {
   color: #ffffff;
 }
-.nav a:focus::before {
+.nav a:focus::before, .nav a:hover::before {
   content: "";
   display: block;
   width: 72.7272727273%;

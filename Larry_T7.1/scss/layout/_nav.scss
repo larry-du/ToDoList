@@ -21,13 +21,15 @@
         padding-bottom: 25px;
         position: relative;
 
-        &:focus {
+        &:focus,
+        &:hover {
             @extend %title_medium;
             color: color.$white;
         }
 
         //nav-items hover下底線
-        &:focus::before {
+        &:focus::before,
+        &:hover::before {
             content: "";
             display: block;
             width: 160/220 * 100%;
