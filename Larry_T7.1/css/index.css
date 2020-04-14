@@ -379,7 +379,7 @@ ul {
 }
 @media (min-width: 992px) {
   .deadline {
-    padding: 0 32px 0 72px;
+    padding: 0 32px 0 47px;
   }
 }
 .deadline .deadline-icon {
@@ -391,7 +391,7 @@ ul {
 }
 .deadline i {
   margin-right: 9px;
-  font-size: 20px;
+  font-size: 16px;
   vertical-align: middle;
 }
 .deadline .date-area {
@@ -423,7 +423,7 @@ ul {
 }
 @media (min-width: 992px) {
   .file {
-    padding: 0 32px 0 72px;
+    padding: 0 32px 0 47px;
   }
 }
 .file .file-icon {
@@ -435,7 +435,7 @@ ul {
 }
 .file i {
   margin-right: 9px;
-  font-size: 20px;
+  font-size: 16px;
   vertical-align: middle;
 }
 .file .add-file {
@@ -471,7 +471,7 @@ ul {
 }
 @media (min-width: 992px) {
   .comment {
-    padding: 0 78px 0 72px;
+    padding: 0 78px 0 47px;
   }
 }
 .comment .comment-icon {
@@ -483,7 +483,7 @@ ul {
 }
 .comment i {
   margin-right: 9px;
-  font-size: 20px;
+  font-size: 16px;
   vertical-align: middle;
 }
 .comment .comment-area {

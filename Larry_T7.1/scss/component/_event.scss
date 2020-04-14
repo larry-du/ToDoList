@@ -36,7 +36,7 @@
     font-size: 0;
     margin-bottom: 24px;
     @include breaking-point.breaking-point(lg) {
-        padding: 0 32px 0 72px;
+        padding: 0 32px 0 47px;
     }
     & .deadline-icon {
         margin-bottom: 8px;
@@ -49,7 +49,7 @@
 
     & i {
         margin-right: 9px;
-        font-size: 20px;
+        font-size: 16px;
         vertical-align: middle;
     }
 
@@ -78,7 +78,7 @@
 .file {
     padding: 20px 10px 20px 10px;
     @include breaking-point.breaking-point(lg) {
-        padding: 0 32px 0 72px;
+        padding: 0 32px 0 47px;
     }
 
     font-size: 0;
@@ -94,7 +94,7 @@
 
     & i {
         margin-right: 9px;
-        font-size: 20px;
+        font-size: 16px;
         vertical-align: middle;
     }
 
@@ -129,7 +129,7 @@
 .comment {
     padding: 20px 10px 20px 10px;
     @include breaking-point.breaking-point(lg) {
-        padding: 0 78px 0 72px;
+        padding: 0 78px 0 47px;
     }
     font-size: 0;
     margin-bottom: 24px;
@@ -144,7 +144,7 @@
 
     & i {
         margin-right: 9px;
-        font-size: 20px;
+        font-size: 16px;
         vertical-align: middle;
     }
 
