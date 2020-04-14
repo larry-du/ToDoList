@@ -8,7 +8,7 @@
     background-color: color.$gray-scale;
     padding-top: 24px;
 
-    & p {
+    & .task-left {
         padding: 0 32px 17px 32px;
         margin-top: 8px;
         @extend %remark_regular-italic;

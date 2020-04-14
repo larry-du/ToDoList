@@ -58,11 +58,18 @@ ul {
 .deadline span, .file span, .comment span {
   font-weight: 500;
 }
-.main p {
+.save .file-information p {
+  font-size: 16px;
+  font-family: font-family;
+}
+.save .file-information p {
+  font-weight: 400;
+}
+.main .task-left {
   font-size: 24px;
   font-family: font-family;
 }
-.main p {
+.main .task-left {
   font-weight: 400;
   font-style: italic;
 }
@@ -369,7 +376,7 @@ ul {
 }
 .deadline .date-area {
   display: flex;
-  margin-left: 25px;
+  margin-left: 33px;
 }
 .deadline input {
   padding: 8px 0 8px 16px;
@@ -399,7 +406,7 @@ ul {
 .file .add-file {
   width: 32px;
   height: 32px;
-  margin-left: 25px;
+  margin-left: 33px;
   background-color: #c8c8c8;
   outline: none;
   cursor: pointer;
@@ -445,7 +452,7 @@ ul {
   outline: none;
   resize: none;
   padding: 8px 16px;
-  margin-left: 24px;
+  margin-left: 33px;
   border: none;
   border-radius: 2px;
 }
@@ -461,6 +468,7 @@ ul {
   height: 60px;
   cursor: pointer;
   border: none;
+  background-color: #ffffff;
 }
 .check-button button:hover {
   background-color: #4a90e2;
@@ -476,12 +484,24 @@ ul {
 .save {
   display: none;
 }
+.save .file-area {
+  display: flex;
+}
+.save .file-information {
+  margin-left: 33px;
+}
+.save .file-information p:nth-last-of-type(1) {
+  color: #757575;
+}
+.save .add-file {
+  align-self: center;
+}
 
 .main {
   background-color: #e1e1e1;
   padding-top: 24px;
 }
-.main p {
+.main .task-left {
   padding: 0 32px 17px 32px;
   margin-top: 8px;
   color: #c8c8c8;

@@ -1,3 +1,24 @@
+@use '../theme/font';
+@use '../theme/color';
+
 .save {
     display: none;
+    & .file-area {
+        display: flex;
+    }
+    & .file-information {
+        margin-left: 33px;
+        & p {
+            @extend %paragraph_regular;
+            &:nth-last-of-type(1) {
+                color: color.$gray-300;
+            }
+            &:nth-last-of-type(2) {
+            }
+        }
+    }
+
+    & .add-file {
+        align-self: center;
+    }
 }
