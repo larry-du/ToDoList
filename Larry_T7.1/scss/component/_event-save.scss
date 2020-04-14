@@ -1,8 +1,10 @@
 @use '../theme/font';
 @use '../theme/color';
 
-.save {
+.none {
     display: none;
+}
+.save {
     & .file-area {
         display: flex;
     }
@@ -12,8 +14,6 @@
             @extend %paragraph_regular;
             &:nth-last-of-type(1) {
                 color: color.$gray-300;
-            }
-            &:nth-last-of-type(2) {
             }
         }
     }

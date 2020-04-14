@@ -274,7 +274,7 @@ ul {
   display: none;
 }
 
-@media (min-width: 576px) {
+@media (min-width: 540px) {
   .to-do-list {
     padding: 32px 32px 17px 32px;
   }
@@ -353,14 +353,31 @@ ul {
 }
 .event .card {
   border-bottom: 3px solid #c8c8c8;
-  padding: 24px 32px;
+  padding: 20px 10px 20px 10px;
   margin-bottom: 24px;
+}
+.event .edit-area {
+  display: none;
+}
+
+@media (min-width: 992px) {
+  .event .edit {
+    padding: 32px 32px 17px 32px;
+  }
+  .event .edit .edit-area {
+    display: block;
+  }
 }
 
 .deadline {
-  padding: 0 32px 0 72px;
+  padding: 20px 10px 20px 10px;
   font-size: 0;
   margin-bottom: 24px;
+}
+@media (min-width: 992px) {
+  .deadline {
+    padding: 0 32px 0 72px;
+  }
 }
 .deadline .deadline-icon {
   margin-bottom: 8px;
@@ -379,17 +396,32 @@ ul {
   margin-left: 33px;
 }
 .deadline input {
-  padding: 8px 0 8px 16px;
-  width: 162px;
+  padding: 8px 0 8px 0;
+  flex: 1 1 26.1290322581%;
+}
+@media (min-width: 992px) {
+  .deadline input {
+    padding: 8px 0 8px 14px;
+  }
+}
+@media (min-width: 540px) {
+  .deadline input {
+    flex: 0 1 26.1290322581%;
+  }
 }
 .deadline input + input {
   margin-left: 8px;
 }
 
 .file {
-  padding: 0 32px 0 72px;
+  padding: 20px 10px 20px 10px;
   font-size: 0;
   margin-bottom: 27px;
+}
+@media (min-width: 992px) {
+  .file {
+    padding: 0 32px 0 72px;
+  }
 }
 .file .file-icon {
   margin-bottom: 8px;
@@ -430,9 +462,14 @@ ul {
 }
 
 .comment {
-  padding: 0 32px 0 72px;
+  padding: 20px 10px 20px 10px;
   font-size: 0;
   margin-bottom: 24px;
+}
+@media (min-width: 992px) {
+  .comment {
+    padding: 0 78px 0 72px;
+  }
 }
 .comment .comment-icon {
   margin-bottom: 8px;
@@ -447,7 +484,7 @@ ul {
   vertical-align: middle;
 }
 .comment .comment-area {
-  width: 445px;
+  width: 71.7741935484%;
   height: 120px;
   outline: none;
   resize: none;
@@ -455,6 +492,11 @@ ul {
   margin-left: 33px;
   border: none;
   border-radius: 2px;
+}
+@media (min-width: 992px) {
+  .comment .comment-area {
+    width: 100%;
+  }
 }
 
 .check-button {
@@ -481,9 +523,10 @@ ul {
   margin-right: 14px;
 }
 
-.save {
+.none {
   display: none;
 }
+
 .save .file-area {
   display: flex;
 }

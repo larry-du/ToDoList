@@ -7,17 +7,36 @@
     border-radius: 5px;
     box-shadow: 0 1px 1px 1px color.$gray-200;
     overflow: hidden;
+    // display: flex;
+    // flex-direction: column;
     & .card {
         border-bottom: 3px solid color.$gray-200;
-        padding: 24px 32px;
+        padding: 20px 10px 20px 10px;
         margin-bottom: 24px;
+    }
+    .edit-area {
+        display: none;
+    }
+}
+
+.event {
+    & .edit {
+        @include breaking-point.breaking-point(lg) {
+            padding: 32px 32px 17px 32px;
+            .edit-area {
+                display: block;
+            }
+        }
     }
 }
 
 .deadline {
-    padding: 0 32px 0 72px;
+    padding: 20px 10px 20px 10px;
     font-size: 0;
     margin-bottom: 24px;
+    @include breaking-point.breaking-point(lg) {
+        padding: 0 32px 0 72px;
+    }
     & .deadline-icon {
         margin-bottom: 8px;
         font-size: 0;
@@ -39,8 +58,15 @@
     }
 
     & input {
-        padding: 8px 0 8px 16px;
-        width: 162px;
+        padding: 8px 0 8px 0;
+        @include breaking-point.breaking-point(lg) {
+            padding: 8px 0 8px 14px;
+        }
+
+        flex: 1 1 162/620 * 100%;
+        @include breaking-point.breaking-point(sm) {
+            flex: 0 1 162/620 * 100%;
+        }
     }
 
     & input + input {
@@ -49,7 +75,11 @@
 }
 
 .file {
-    padding: 0 32px 0 72px;
+    padding: 20px 10px 20px 10px;
+    @include breaking-point.breaking-point(lg) {
+        padding: 0 32px 0 72px;
+    }
+
     font-size: 0;
     margin-bottom: 27px;
     & .file-icon {
@@ -96,7 +126,10 @@
 }
 
 .comment {
-    padding: 0 32px 0 72px;
+    padding: 20px 10px 20px 10px;
+    @include breaking-point.breaking-point(lg) {
+        padding: 0 78px 0 72px;
+    }
     font-size: 0;
     margin-bottom: 24px;
     & .comment-icon {
@@ -115,7 +148,10 @@
     }
 
     & .comment-area {
-        width: 445px;
+        width: 445/620 * 100%;
+        @include breaking-point.breaking-point(lg) {
+            width: 100%;
+        }
         height: 120px;
         outline: none;
         resize: none;
