@@ -338,13 +338,13 @@ ul {
   margin-left: 8px;
 }
 
-.event-edit {
+.event {
   background-color: #f2f2f2;
   border-radius: 5px;
   box-shadow: 0 1px 1px 1px #c8c8c8;
   overflow: hidden;
 }
-.event-edit .card {
+.event .card {
   border-bottom: 3px solid #c8c8c8;
   padding: 24px 32px;
   margin-bottom: 24px;
@@ -471,6 +471,10 @@ ul {
 }
 .check-button button i {
   margin-right: 14px;
+}
+
+.save {
+  display: none;
 }
 
 .main {

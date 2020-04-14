@@ -1,8 +1,9 @@
 @use '../theme/color';
 @use '../component/add-area';
 @use '../component/to-do-list';
-@use '../component/event-add';
+@use '../component/event';
 @use '../component/check-button';
+@use '../component/event-save';
 .main {
     background-color: color.$gray-scale;
     padding-top: 24px;
