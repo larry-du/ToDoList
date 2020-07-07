@@ -1,24 +1,29 @@
 //取得編輯頁面元素
-const event = document.querySelector('.event');
+const addTaskArea = document.querySelector('.event');
+const editSaveArea = document.querySelector('.save-area');
+// console.log(editSaveArea)
 //取得增加任務元素
 const addTask = document.querySelector('.add-task');
 const addButton = document.querySelector('#add');
 const addSchedule = document.querySelector('.add-schedule');
+const saveButton = document.querySelector('#save-button');
 //取得localStorage資料,如無資料會是空陣列
 let items = JSON.parse(localStorage.getItem('items')) || [];
 
 render(items);
 
 //開啟與關閉增加任務
-function toggleMenu(e) {
-    if (event.style.display === 'block') {
-        event.style.display = 'none';
+function toggleAddTaskArea(e) {
+    // console.log(e.target)
+    if (addTaskArea.matches('.event-area-block')) {
+        addTaskArea.classList.remove('event-area-block');
         return
     };
-    event.style.display = 'block';
+    editSaveArea.classList.remove('save-area-block')
+    addTaskArea.classList.add('event-area-block');
 }
 
-function saveData(e) {
+function addTaskList(e) {
     //取得編輯頁面標題元素
     const title = document.querySelector('.type-tittle');
     // console.log(title.value)
@@ -78,20 +83,18 @@ function render(items) {
                     </div>
             </div>`
     }).join('');
-
     deleteData();
-    editData();
+    editSaveList();
 }
 
 function deleteData() {
     const taskList = document.querySelectorAll('.task');
     const deleteButton = document.querySelectorAll('.edit-area .fa-trash-alt');
-    const dataArr = [...deleteButton];
+    const deleteButtonArray = [...deleteButton];
     if (deleteButton.length !== 0) {
-        dataArr.map((data, dataIndex) => {
+        deleteButtonArray.map((data, dataIndex) => {
             data.addEventListener('click', () => {
                 taskList[dataIndex].remove();
-                // const data = items.filter(() => !(items.includes(items[index])))
                 const updateData = items.filter((item, itemIndex) => itemIndex !== dataIndex);
                 localStorage.setItem('items', JSON.stringify(updateData));
             });
@@ -99,24 +102,42 @@ function deleteData() {
     }
 }
 
-function editData() {
-    const taskList = document.querySelectorAll('.task');
-    const editButton = document.querySelectorAll('.edit-area .fa-pen');
-    // console.log(editButton)
-    const dataArr = [...editButton];
+function editSaveList() {
+    // const taskList = document.querySelectorAll('.task');
+    const editButton = document.querySelectorAll('.task .fa-pen');
+    const editButtonArray = [...editButton];
+    const saveTittle = document.querySelector('.save input[type="text"]');
+    const saveDate = document.querySelector('.save input[type="date"]');
+    const saveTime = document.querySelector('.save input[type="time"]');
+    const saveComment = document.querySelector('.save .comment-area');
     // toggleMenu()
-    dataArr.map((data, dataIndex) => {
-        data.addEventListener('click', () => {
-            toggleMenu()
-            // console.log("edit")
+    editButtonArray.map((data, dataIndex) => {
+        data.addEventListener('click', (e) => {
+            saveDate.value = items[dataIndex].date;
+            saveTime.value = items[dataIndex].time;
+            saveComment.value = items[dataIndex].comment;
+            saveTittle.value = items[dataIndex].title;
+            toggleSaveArea();
         })
     })
-    // console.log(editButton)
 }
 
-addButton.addEventListener('click', saveData);
-addTask.addEventListener('click', toggleMenu);
-// date.addEventListener('change', getDate);
-// time.addEventListener('change', getTime);
-// comment.addEventListener('change', getComment);
-// title.addEventListener('change', getTitle)
+function saveSaveList() {
+    console.log('save')
+    // localStorage.setItem('items', JSON.stringify(items));
+}
+
+function toggleSaveArea(e) {
+    // console.log(e.target)
+    if (editSaveArea.matches('.save-area-block')) {
+        editSaveArea.classList.remove('save-area-block')
+        return
+    };
+    addTaskArea.classList.remove('event-area-block');
+    editSaveArea.classList.add('save-area-block')
+}
+
+addButton.addEventListener('click', addTaskList);
+addTask.addEventListener('click', toggleAddTaskArea);
+saveButton.addEventListener('click', saveSaveList)
+
