@@ -105,25 +105,27 @@
 
             </div> -->
         </div>
-        <div class="event container">
+        <div class="event event-area-none container">
             <div class="edit">
                 <div class="card">
-                    <div class="card-title">
-                        <div class="check-area">
-                            <input type="checkbox"
-                                id=""
-                                class="check">
-                            <label for=""></label>
+                    <div class="card-body">
+                        <div class="card-title">
+                            <div class="check-area">
+                                <input type="checkbox"
+                                    id=""
+                                    class="check">
+                                <label for=""></label>
+                            </div>
+                            <!-- <span>Type Something Here...</span> -->
+                            <input type="text"
+                                placeholder="Type Something Here..."
+                                class="type-tittle">
                         </div>
-                        <!-- <span>Type Something Here...</span> -->
-                        <input type="text"
-                            placeholder="Type Something Here..."
-                            class="type-tittle">
-                    </div>
-                    <div class="edit-area">
-                        <i class="fas fa-star important"></i>
-                        <i class="fal fa-pen"></i>
-                        <i class="fal fa-trash-alt"></i>
+                        <div class="edit-area">
+                            <i class="fas fa-star important"></i>
+                            <i class="fal fa-pen"></i>
+                            <i class="fal fa-trash-alt"></i>
+                        </div>
                     </div>
                 </div>
                 <div class="edit-info">
@@ -173,7 +175,7 @@
 
         </div>
 
-        <div class="save-area container"
+        <!-- <div class="save-area container"
             id="save-area">
             <div class="save">
                 <div class="card">
@@ -183,9 +185,9 @@
                                 id="">
                             <label for=""></label>
                         </div>
-                        <!-- <span>Type Something Here...</span> -->
+                        <span>Type Something Here...</span>
                         <input type="text"
-                            class="type-tittle">
+                            class="type-">
                     </div>
                     <div class="edit-area">
                         <i class="fas fa-star important"></i>
@@ -218,6 +220,7 @@
                             <button class="add-file">
                             </button>
                         </div>
+
                     </div>
 
                     <div class="comment">
@@ -230,8 +233,18 @@
                             placeholder="Type your memo here..."></textarea>
                     </div>
                 </div>
-            </div>
-            <div class="check-button">
+                <div class="check-button">
+                    <button>
+                        <i class="fal fa-times"></i>
+                        Cancel
+                    </button>
+                    <button id="save-button">
+                        <i class="fal fa-plus"></i>
+                        Save
+                    </button>
+                </div>
+            </div> -->
+        <!-- <div class="check-button">
                 <button>
                     <i class="fal fa-times"></i>
                     Cancel
@@ -240,40 +253,103 @@
                     <i class="fal fa-plus"></i>
                     Save
                 </button>
-            </div>
+            </div> -->
 
         </div>
         <section class="add-schedule">
-            <div class="to-do-list
-                    task
+            <div class="event task
                     container">
                 <div class="card">
-                    <div class="card-title">
-                        <div class="check-area">
-                            <input type="checkbox"
-                                id="task">
-                            <label for="task"></label>
+                    <div class="card-body">
+                        <div class="card-title">
+                            <div class="check-area">
+                                <input type="checkbox"
+                                    id="task">
+                                <label for="task"></label>
+                            </div>
+                            <input type="text"
+                                class="type-tittle"
+                                placeholder="Type Something Here...">
+                            <!-- <span>Type Something Here...</span> -->
                         </div>
-                        <span>Type Something Here...</span>
+                        <div class="edit-area">
+                            <i class="fas fa-star important"></i>
+                            <i class="fal fa-pen"></i>
+                            <i class="fal fa-trash-alt"></i>
+                        </div>
                     </div>
-                    <div class="edit-area">
-                        <i class="fas fa-star important"></i>
-                        <i class="fal fa-pen"></i>
-
+                    <div class="status">
+                        <div class="date">
+                            <i class="far fa-calendar-alt"></i>
+                            <span>5/12</span>
+                        </div>
+                        <i class="fal fa-file"></i>
+                        <i class="fal fa-comment-dots"></i>
                     </div>
                 </div>
 
-                <div class="status">
+                <!-- <div class="status">
                     <div class="date">
                         <i class="far fa-calendar-alt"></i>
                         <span>5/12</span>
                     </div>
                     <i class="fal fa-file"></i>
                     <i class="fal fa-comment-dots"></i>
+                </div> -->
+                <div class="save-info">
+                    <div class="save-detail">
+                        <div class="deadline">
+                            <div class="deadline-icon">
+                                <i class="far fa-calendar-alt fa-fw"></i>
+                                <span>Deadline</span>
+                            </div>
+                            <div class="date-area">
+                                <input type="date">
+                                <input type="time">
+                            </div>
+                        </div>
+
+                        <div class="file">
+                            <div class="file-icon">
+                                <i class="fal fa-file fa-fw"></i>
+                                <span>file</span>
+                            </div>
+                            <div class="file-area">
+                                <div class="file-information">
+                                    <p>20180514.zip</p>
+                                    <p>uploaded yesterday</p>
+                                </div>
+                                <button class="add-file">
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <div class="comment">
+                            <div class="comment-icon">
+                                <i class="fal fa-comment-dots fa-fw"></i>
+                                <span>comment</span>
+                            </div>
+
+                            <textarea class="comment-area"
+                                placeholder="Type your memo here..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="check-button">
+                    <button>
+                        <i class="fal fa-times"></i>
+                        Cancel
+                    </button>
+                    <button id="save-button">
+                        <i class="fal fa-plus"></i>
+                        Save
+                    </button>
                 </div>
 
             </div>
-            <div class="to-do-list progress container">
+            <!-- <div class="to-do-list progress container">
                 <div class="card">
                     <div class="card-title">
                         <div class="check-area">
@@ -314,12 +390,12 @@
                     </div>
                 </div>
 
-            </div>
+            </div> -->
             <p class="container task-left">4 tasks left</p>
         </section>
     </main>
-    <script type="text/javascript"
-        src="module.js"></script>
+    <!-- <script type="text/javascript"
+        src="module.js"></script> -->
 </body>
 
 </html>
