@@ -57,7 +57,7 @@ function render(items) {
     // const cardTitle = document.querySelector('.card-title span');
     // const date = document.querySelector('.status .date span');
     addSchedule.innerHTML = items.map(item => {
-        return `<div class="to-do-list task container ">
+        return `<div class="to-do-list task container id="task-${item.id}">
                     <div class="card">
                         <div class="card-title">
                             <div class="check-area">
@@ -89,13 +89,15 @@ function render(items) {
 
 function deleteData() {
     const taskList = document.querySelectorAll('.task');
-    const deleteButton = document.querySelectorAll('.edit-area .fa-trash-alt');
-    const deleteButtonArray = [...deleteButton];
-    if (deleteButton.length !== 0) {
-        deleteButtonArray.map((data, dataIndex) => {
-            data.addEventListener('click', () => {
-                taskList[dataIndex].remove();
-                const updateData = items.filter((item, itemIndex) => itemIndex !== dataIndex);
+    const deleteButtons = document.querySelectorAll('.edit-area .fa-trash-alt');
+    const deleteButtonArray = [...deleteButtons];
+    if (deleteButtons.length !== 0) {
+        console.log(deleteButtonArray)
+        deleteButtonArray.map((deleteButton, deleteButtonIndex) => {
+            deleteButton.addEventListener('click', () => {
+                console.log(taskList, deleteButtonIndex)
+                taskList[deleteButtonIndex].remove();
+                const updateData = items.filter((item, itemIndex) => itemIndex !== deleteButtonIndex);
                 localStorage.setItem('items', JSON.stringify(updateData));
             });
         });
@@ -103,28 +105,44 @@ function deleteData() {
 }
 
 function editSaveList() {
-    // const taskList = document.querySelectorAll('.task');
-    const editButton = document.querySelectorAll('.task .fa-pen');
-    const editButtonArray = [...editButton];
+    const editButtons = document.querySelectorAll('.task .fa-pen');
+    const editButtonArray = [...editButtons];
     const saveTittle = document.querySelector('.save input[type="text"]');
     const saveDate = document.querySelector('.save input[type="date"]');
     const saveTime = document.querySelector('.save input[type="time"]');
     const saveComment = document.querySelector('.save .comment-area');
     // toggleMenu()
-    editButtonArray.map((data, dataIndex) => {
-        data.addEventListener('click', (e) => {
-            saveDate.value = items[dataIndex].date;
-            saveTime.value = items[dataIndex].time;
-            saveComment.value = items[dataIndex].comment;
-            saveTittle.value = items[dataIndex].title;
+    editButtonArray.map((editButton, editButtonIndex) => {
+        editButton.addEventListener('click', (e) => {
+
+            saveDate.value = items[editButtonIndex].date;
+            saveTime.value = items[editButtonIndex].time;
+            saveComment.value = items[editButtonIndex].comment;
+            saveTittle.value = items[editButtonIndex].title;
             toggleSaveArea();
+            // console.log(e.target.dataset.id);
         })
     })
 }
 
 function saveSaveList() {
-    console.log('save')
+    // console.log('save')
     // localStorage.setItem('items', JSON.stringify(items));
+    const taskList = document.querySelectorAll('.task');
+    const taskListArray = [...taskList]
+    const saveTittle = document.querySelector('.save input[type="text"]');
+    const saveDate = document.querySelector('.save input[type="date"]');
+    const saveTime = document.querySelector('.save input[type="time"]');
+    const saveComment = document.querySelector('.save .comment-area');
+    console.log(items)
+    // console.log(taskListArray)
+    // taskListArray.map((taskItem, taskItemIndex) => {
+    items[taskItemIndex].date = saveDate.value
+    items[taskItemIndex].time = saveTime.value
+    items[taskItemIndex].comment = saveComment.value
+    items[taskItemIndex].title = saveTittle.value
+    // })
+    render(items);
 }
 
 function toggleSaveArea(e) {
