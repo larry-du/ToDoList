@@ -203,17 +203,40 @@ function editSaveList() {
         //將Html結構插入
         tasks[editButtonIndex].insertAdjacentHTML('beforeend', editPage);
         editButton.addEventListener('click', (e) => {
-            //全域找save-block
-            const prevSaveInfo = document.querySelector('.save-block');
-            //被點擊的對象有save-info
-            const currentSaveInfo = tasks[editButtonIndex].querySelector('.save-info')
-            //被點擊的元素要加save-block , 如果原本有就移除
-            currentSaveInfo.classList.toggle('save-block');
-            //如果全域有save-block且不是點擊對象自己
-            if (prevSaveInfo && prevSaveInfo !== currentSaveInfo) {
-                //全域找到的要移除
-                prevSaveInfo.classList.remove('save-block')
-            }
+            // //全域找save-block
+            // const prevSaveInfo = document.querySelector('.save-block');
+            // //被點擊的對象有save-info
+            // const currentSaveInfo = tasks[editButtonIndex].querySelector('.save-info')
+            // //被點擊的元素要加save-block , 如果原本有就移除
+            // currentSaveInfo.classList.toggle('save-block');
+            // //如果全域有save-block且不是點擊對象自己
+            // if (prevSaveInfo && prevSaveInfo !== currentSaveInfo) {
+            //     //全域找到的要移除
+            //     prevSaveInfo.classList.remove('save-block')
+            // }
+
+            const isEdit = document.querySelector('.isEdit');
+            const task = tasks[editButtonIndex];
+
+            task.classList.toggle('isEdit');
+            isEdit?.classList.remove('isEdit');
+            // if (isEdit) {
+            //     isEdit.classList.remove('isEdit');
+            // }
+
+
+            // if (isEdit) {
+            //     isEdit.classList.remove('isEdit')
+            // }
+            // // if (isEdit === task) {
+            // //     task.classList.add('isEdit')
+            // // }
+            // if (taskt.matches('.isEdit')) {
+            //     task.classList.remove('isEdit')
+            //     return
+            // }
+            // task.classList.add('isEdit')
+
 
             // if (prevSaveInfo) {
             //     currentSaveInfo.classList.toggle('save-block');
