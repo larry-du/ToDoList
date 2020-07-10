@@ -179,38 +179,76 @@ function deleteData() {
 }
 
 function editSaveList() {
-    const editButtons = document.querySelectorAll('.task .edit-pen');
-    const editButtonArray = [...editButtons];
+    const [...editButtons] = document.querySelectorAll('.task .edit-pen');
     const saveTittle = document.querySelector('.save input[type="text"]');
     const saveDate = document.querySelector('.save input[type="date"]');
     const saveTime = document.querySelector('.save input[type="time"]');
     const saveComment = document.querySelector('.save .comment-area');
     // console.log(editButtons)
-    let isEdit = null;
-
+    // function switchStatus() {
+    //     let isEdit = null;
+    //     return {
+    //         getStatus() {
+    //             return isEdit
+    //         },
+    //         switch() {
+    //             isEdit = !isEdit;
+    //         }
+    //     }
+    // }
+    // let editStatus = switchStatus();
     const editPage = creatEditList();
-    const tasks = document.querySelectorAll('.task');
-    const taskArray = [...tasks];
-    let creatEditPage = document.createRange().createContextualFragment(editPage);
-    editButtonArray.map((editButton, editButtonIndex) => {
+    const [...tasks] = document.querySelectorAll('.task');
+    editButtons.map((editButton, editButtonIndex) => {
+        //將Html結構插入
+        tasks[editButtonIndex].insertAdjacentHTML('beforeend', editPage);
         editButton.addEventListener('click', (e) => {
-
-            if (isEdit === null) {
-                taskArray[editButtonIndex].appendChild(creatEditPage);
-                taskArray[editButtonIndex].classList.add('margin-bottom-80');
-                isEdit = true;
-            } else if (isEdit) {
-                const saveInfo = document.querySelectorAll('.save-info');
-                const saveInfoArray = [...saveInfo];
-                saveInfoArray[editButtonIndex].classList.add('save-none');
-                taskArray[editButtonIndex].classList.remove('margin-bottom-80');
-                isEdit = false;
-            } else {
-                const saveInfo = document.querySelectorAll('.save-info');
-                const saveInfoArray = [...saveInfo];
-                saveInfoArray[editButtonIndex].classList.remove('save-none');
-                isEdit = true;
+            //全域找save-block
+            const prevSaveInfo = document.querySelector('.save-block');
+            //被點擊的對象有save-info
+            const currentSaveInfo = tasks[editButtonIndex].querySelector('.save-info')
+            //被點擊的元素要加save-block , 如果原本有就移除
+            currentSaveInfo.classList.toggle('save-block');
+            //如果全域有save-block且不是點擊對象自己
+            if (prevSaveInfo && prevSaveInfo !== currentSaveInfo) {
+                //全域找到的要移除
+                prevSaveInfo.classList.remove('save-block')
             }
+
+            // if (prevSaveInfo) {
+            //     currentSaveInfo.classList.toggle('save-block');
+            //     if (prevSaveInfo !== currentSaveInfo) {
+            //         prevSaveInfo.classList.remove('save-block')
+            //     }
+            // } else {
+            //     currentSaveInfo.classList.add('save-block');
+            // }
+
+
+            // let prevStatus = editStatus.getStatus();
+            // if (editStatus.getStatus() === null) {
+            //     // let creatEditPage = document.createRange().createContextualFragment(editPage);
+            //     // creatEditPage.querySelector('.save-info').classList.add('save-block');
+            //     tasks[editButtonIndex].insertAdjacentHTML('beforeend', editPage);
+            //     // console.log(editButtonIndex, document.querySelectorAll('.save-info'))
+
+            //     // const [...saveInfoNode] = document.querySelectorAll('.save-info');
+            //     // saveInfoNode[editButtonIndex].classList.add('save-block');
+            //     editStatus.switch();
+            //     console.log(editButtonIndex + 1, `${prevStatus} -> ${editStatus.getStatus()}`, document.querySelector('.save-info'))
+            //     return
+            // }
+            // if (editStatus.getStatus()) {
+            //     const saveInfo = document.querySelector('.save-info');
+            //     saveInfo.classList.remove('save-block');
+            //     editStatus.switch();
+
+            // } else {
+            //     const saveInfo = document.querySelector('.save-info');
+            //     saveInfo.classList.add('save-block');
+            //     editStatus.switch();
+            // }
+            // console.log(editButtonIndex + 1, `${prevStatus} -> ${editStatus.getStatus()}`, document.querySelector('.save-info'))
         })
     })
 }
