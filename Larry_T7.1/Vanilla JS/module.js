@@ -6,7 +6,8 @@ const addArea = document.querySelector('.add-area');
 const editSaveArea = document.querySelector('.save-area');
 //取得增加任務元素
 const addTask = document.querySelector('.add-task');
-const addButton = document.querySelector('#add-button');
+const addTaskButton = document.querySelector('#add-button');
+const cancelTaskButton = document.querySelector('#cancel-button');
 const toDoListArea = document.querySelector('.to-do-list-area');
 //取得localStorage資料,如無資料會是空陣列
 let toDoListData = JSON.parse(localStorage.getItem('toDoListData')) || [];
@@ -28,7 +29,7 @@ function openAddTaskArea(e) {
 
 function addTaskData(e) {
     //取得編輯頁面標題元素
-    const title = document.querySelector('.type-tittle');
+    const title = document.querySelector('.type-title');
     // console.log(title.value)
     //取得日期元素
     const date = document.querySelector('.edit-info input[type="date"]');
@@ -59,6 +60,20 @@ function addTaskData(e) {
     //增加任務頁面關閉
     eventAdd.classList.remove('event-area-block');
     //增加任務按鈕開啟
+    addArea.classList.remove('add-area-none');
+}
+
+function cancelTask() {
+    const title = document.querySelector('.edit .type-title')
+    const date = document.querySelector('.edit-info input[type="date"]');
+    const time = document.querySelector('.edit-info input[type="time"]');
+    const comment = document.querySelector('.edit-info .comment-area');
+    // render();
+    title.value = '';
+    date.value = '';
+    time.value = '';
+    comment.value = '';
+    eventAdd.classList.remove('event-area-block');
     addArea.classList.remove('add-area-none');
 }
 
@@ -239,7 +254,8 @@ function cancelEdit() {
     isEdit?.classList.remove('isEdit');
 }
 
-addButton.addEventListener('click', addTaskData);
 addTask.addEventListener('click', openAddTaskArea);
+addTaskButton.addEventListener('click', addTaskData);
+cancelTaskButton.addEventListener('click', cancelTask);
 // saveButton.addEventListener('click', saveSaveList)
 
