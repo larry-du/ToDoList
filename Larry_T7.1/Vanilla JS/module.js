@@ -12,17 +12,11 @@ const toDoListArea = document.querySelector('.to-do-list-area');
 //取得localStorage資料,如無資料會是空陣列
 let toDoListData = JSON.parse(localStorage.getItem('toDoListData')) || [];
 // console.log(toDoListData)
-
 //畫面渲染
 render();
 
 //開啟與關閉增加任務
 function openAddTaskArea(e) {
-    // console.log(e.target)
-    if (eventAdd.matches('.event-area-block')) {
-        eventAdd.classList.remove('event-area-block');
-        return
-    };
     addArea.classList.add('add-area-none');
     eventAdd.classList.add('event-area-block');
 }
@@ -169,7 +163,7 @@ function render() {
         return creatList(data)
     }).join('');
     deleteData();
-    editTaskList();
+    editTask();
 }
 
 function deleteData() {
@@ -189,7 +183,7 @@ function deleteData() {
     }
 }
 
-function editTaskList() {
+function editTask() {
     const [...editButtons] = document.querySelectorAll('.task .edit-pen');
     const [...tasks] = document.querySelectorAll('.task');
 
@@ -246,7 +240,6 @@ function saveEdit(task, index) {
 
     const isEdit = document.querySelector('.isEdit');
     isEdit?.classList.remove('isEdit');
-
 }
 
 function cancelEdit() {
@@ -257,5 +250,4 @@ function cancelEdit() {
 addTask.addEventListener('click', openAddTaskArea);
 addTaskButton.addEventListener('click', addTaskData);
 cancelTaskButton.addEventListener('click', cancelTask);
-// saveButton.addEventListener('click', saveSaveList)
 
