@@ -19,6 +19,8 @@ render();
 function openAddTaskArea(e) {
     addArea.classList.add('add-area-none');
     eventAdd.classList.add('event-area-block');
+    const openEvent = document.querySelector('.event');
+    // openEvent.classList.add('isEdit')
 }
 
 function addTaskData(e) {
@@ -86,7 +88,7 @@ function creatList(data) {
                 <input class="list-title" value="${data.title}" disabled>
             </div>
             <div class="edit-area">
-                <i class="fas fa-star important"></i>
+                <i class="fas fa-star top-star"></i>
                 <i class="fal fa-pen edit-pen"></i>
                 <i class="fal fa-trash-alt trash"></i>
             </div>
@@ -164,11 +166,24 @@ function render() {
     }).join('');
     deleteData();
     editTask();
+    highLight();
+}
+
+function highLight() {
+    const [...tasks] = document.querySelectorAll('.task');
+    const [...topStars] = document.querySelectorAll('.task .top-star');
+    topStars.map((topStar, topStarIndex) => {
+        const task = tasks[topStarIndex];
+        topStar.addEventListener('click', () => {
+            task.classList.toggle('high-light');
+        })
+    })
+
 }
 
 function deleteData() {
     const [...tasks] = document.querySelectorAll('.task');
-    const [...deleteButtons] = document.querySelectorAll('.edit-area .trash');
+    const [...deleteButtons] = document.querySelectorAll('.task .trash');
     if (deleteButtons.length !== 0) {
         // console.log(deleteButtons)
         deleteButtons.map((deleteButton, deleteButtonIndex) => {
@@ -226,6 +241,7 @@ function saveEdit(task, index) {
     const taskDate = task.querySelector('.save-info input[type="date"]');
     const taskTime = task.querySelector('.save-info input[type="time"]');
     const taskComment = task.querySelector('.save-info .comment-area');
+    const isEdit = document.querySelector('.isEdit');
 
     const allMessage = {
         title: taskTitle.value,
@@ -238,7 +254,6 @@ function saveEdit(task, index) {
     toDoListData[index] = allMessage;
     localStorage.setItem('toDoListData', JSON.stringify(toDoListData));
 
-    const isEdit = document.querySelector('.isEdit');
     isEdit?.classList.remove('isEdit');
 }
 
