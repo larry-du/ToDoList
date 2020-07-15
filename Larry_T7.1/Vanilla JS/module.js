@@ -85,7 +85,7 @@ function creatList(data) {
             <div class="card-title">
                 <div class="check-area">
                     <input type="checkbox"
-                        id="task-${data.id}-check">
+                        id="task-${data.id}-check" ${data.complete ? 'checked' : ''}>
                     <label for="task-${data.id}-check"></label>
                 </div>
                 <input class="list-title" value="${data.title}" disabled>
@@ -193,28 +193,18 @@ function arrangementData() {
 }
 
 function complete() {
-    const [...tasks] = document.querySelectorAll('.task');
     const [...checkBoxs] = document.querySelectorAll('.task input[type="checkbox"]');
     checkBoxs.map((checkBox, checkBoxIndex) => {
         checkBox.addEventListener('click', () => {
-            if (checkBox.checked) {
-                console.log('check')
-                const completeStatus = toDoListData[checkBoxIndex]
-                completeStatus.complete = !completeStatus.complete;
-                localStorage.setItem('toDoListData', JSON.stringify(toDoListData));
-                render();
-            }
+            // if (checkBox.checked) {
+            const completeStatus = toDoListData[checkBoxIndex]
+            console.log(completeStatus)
+            completeStatus.complete = !completeStatus.complete;
+            localStorage.setItem('toDoListData', JSON.stringify(toDoListData));
+            render();
+            // }
         })
     })
-    // topStars.map((topStar, topStarIndex) => {
-    //     const task = tasks[topStarIndex];
-    //     topStar.addEventListener('click', () => {
-    //         // task.classList.toggle('high-light');
-    //         toDoListData[topStarIndex].isStar = !toDoListData[topStarIndex].isStar
-    //         localStorage.setItem('toDoListData', JSON.stringify(toDoListData));
-    //         render();
-    //     })
-    // })
 }
 
 function deleteData() {
