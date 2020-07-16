@@ -13,7 +13,7 @@ const toDoListArea = document.querySelector('.to-do-list-area');
 let toDoListData = JSON.parse(localStorage.getItem('toDoListData')) || [];
 // console.log(toDoListData)
 //畫面渲染
-render();
+render(queueData());
 
 //開啟與關閉增加任務
 function openAddTaskArea(e) {
@@ -48,7 +48,7 @@ function addTaskData(e) {
     //將資料上傳
     toDoListData.push(allMessage);
     //畫面渲染
-    render();
+    render(queueData());
     //資料存進localStorage
     localStorage.setItem('toDoListData', JSON.stringify(toDoListData));
     //輸入內容清空
@@ -79,21 +79,21 @@ function cancelTask() {
 //動態新增的清單
 function creatList(data) {
     return `
-<div class="task container ${data.isStar ? 'high-light' : ''} ${data.complete ? 'complete' : ''}">
+<div id="task-${data.id}" class="task container ${data.isStar ? 'high-light' : ''} ${data.complete ? 'complete' : ''}">
     <div class="card">
         <div class="card-body">
             <div class="card-title">
                 <div class="check-area">
                     <input type="checkbox"
-                        id="task-${data.id}-check" ${data.complete ? 'checked' : ''}>
-                    <label for="task-${data.id}-check"></label>
+                        data-id="${data.id}" ${data.complete ? 'checked' : ''}>
+                    <label for="${data.id}"></label>
                 </div>
                 <input class="list-title" value="${data.title}" disabled>
             </div>
             <div class="edit-area">
-                <i class="fas fa-star top-star"></i>
-                <i class="fal fa-pen edit-pen"></i>
-                <i class="fal fa-trash-alt trash"></i>
+                <i class="fas fa-star top-star" id="${data.id}"></i>
+                <i class="fal fa-pen edit-pen" id="${data.id}"></i>
+                <i class="fal fa-trash-alt trash" id="${data.id}"></i>
             </div>
         </div>
         <div class="status">
@@ -109,7 +109,7 @@ function creatList(data) {
 }
 
 //動態新增編輯清單
-function creatEditList() {
+function creatEditList(data) {
     return `<div class="save-info">
     <div class="save-detail">
         <div class="deadline">
@@ -150,11 +150,11 @@ function creatEditList() {
         </div>
     </div>
     <div class="check-button">
-    <button id="cancel">
+    <button id="${data.id}"  class="cancel">
         <i class="fal fa-times"></i>
         Cancel
     </button>
-    <button id="save">
+    <button id="${data.id}" class="save">
         <i class="fal fa-plus"></i>
         Save
     </button>
@@ -163,8 +163,8 @@ function creatEditList() {
 `
 }
 
-function render() {
-    toDoListArea.innerHTML = toDoListData.map(data => {
+function render(sortData) {
+    toDoListArea.innerHTML = sortData.map(data => {
         return creatList(data)
     }).join('');
     deleteData();
@@ -174,51 +174,53 @@ function render() {
 }
 
 function highLight() {
-    // const [...tasks] = document.querySelectorAll('.task');
     const [...topStars] = document.querySelectorAll('.task .top-star');
     topStars.map((topStar, topStarIndex) => {
-        // const task = tasks[topStarIndex];
-        topStar.addEventListener('click', () => {
-            // task.classList.toggle('high-light');
-            toDoListData[topStarIndex].isStar = !toDoListData[topStarIndex].isStar
+        topStar.addEventListener('click', (e) => {
+            const dataIndex = toDoListData.findIndex(data => data.id === Number(e.target.id))
+            // console.log(i)
+            toDoListData[dataIndex].isStar = !toDoListData[dataIndex].isStar
             localStorage.setItem('toDoListData', JSON.stringify(toDoListData));
-            render();
+            // const sortData = arrangementData();
+            render(queueData());
         })
     })
 }
 
-function arrangementData() {
-    console.log(toDoListData)
-
+function queueData() {
+    const hightLight = toDoListData.filter(data => data.isStar);
+    const normal = toDoListData.filter(data => !data.isStar);
+    return [...hightLight, ...normal]
 }
 
 function complete() {
     const [...checkBoxs] = document.querySelectorAll('.task input[type="checkbox"]');
-    checkBoxs.map((checkBox, checkBoxIndex) => {
-        checkBox.addEventListener('click', () => {
-            // if (checkBox.checked) {
-            const completeStatus = toDoListData[checkBoxIndex]
-            console.log(completeStatus)
-            completeStatus.complete = !completeStatus.complete;
+    console.log(checkBoxs)
+    checkBoxs.map(checkBox => {
+        checkBox.addEventListener('click', (e) => {
+            console.log(e.target)
+            const dataIndex = toDoListData.findIndex(data => data.id === Number(e.target.id))
+            console.log(dataIndex)
+            toDoListData[dataIndex].complete = !toDoListData[dataIndex].complete;
             localStorage.setItem('toDoListData', JSON.stringify(toDoListData));
-            render();
-            // }
+            render(queueData());
         })
     })
 }
 
 function deleteData() {
-    const [...tasks] = document.querySelectorAll('.task');
     const [...deleteButtons] = document.querySelectorAll('.task .trash');
     if (deleteButtons.length !== 0) {
-        // console.log(deleteButtons)
         deleteButtons.map((deleteButton, deleteButtonIndex) => {
-            deleteButton.addEventListener('click', () => {
+            deleteButton.addEventListener('click', (e) => {
                 // console.log(taskList, deleteButtonIndex)
-                console.log(deleteButton)
-                tasks[deleteButtonIndex].remove();
-                const updateData = toDoListData.filter((item, itemIndex) => itemIndex !== deleteButtonIndex);
-                localStorage.setItem('toDoListData', JSON.stringify(updateData));
+                // console.log(deleteButton)
+                const dataIndex = toDoListData.findIndex(data => data.id === Number(e.target.id))
+                // tasks[dataIndex].remove();
+                // const updateData = toDoListData.filter((item, itemIndex) => itemIndex !== dataIndex);
+                toDoListData.splice(dataIndex, 1)
+                localStorage.setItem('toDoListData', JSON.stringify(toDoListData));
+                render(queueData());
             });
         });
     }
@@ -228,7 +230,10 @@ function editTask() {
     const [...editButtons] = document.querySelectorAll('.task .edit-pen');
     const [...tasks] = document.querySelectorAll('.task');
 
-    const editPage = creatEditList();
+    const editPage = toDoListData.map(data => {
+        return creatEditList(data)
+    }).join('')
+    // const editPage = creatEditList();
     editButtons.map((editButton, editButtonIndex) => {
         const task = tasks[editButtonIndex];
         task.insertAdjacentHTML('beforeend', editPage);
@@ -237,8 +242,8 @@ function editTask() {
         const taskTime = task.querySelector('.save-info input[type="time"]');
         const taskComment = task.querySelector('.save-info .comment-area');
         const taskTitle = task.querySelector('.list-title');
-        const saveButton = task.querySelector('#save');
-        const cancelButton = task.querySelector('#cancel');
+        const saveButton = task.querySelector('.save');
+        const cancelButton = task.querySelector('.cancel');
 
         editButton.addEventListener('click', (e) => {
             taskTitle.disabled = !taskTitle.disabled;
