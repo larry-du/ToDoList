@@ -10,9 +10,9 @@ function createTaskToLocalStorage(taskInfo) {
         time: taskInfo.time,
         comment: taskInfo.comment,
         id: Date.now(),
-        isEdit: false,
-        isStar: false,
-        isComplete: false
+        // isEdit: false,
+        // isStar: false,
+        // isComplete: false
     }
     allData.push(allMessage);
     localStorage.setItem('allMessage', JSON.stringify(allData));
