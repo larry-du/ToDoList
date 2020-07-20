@@ -1,6 +1,6 @@
 function creatList(data) {
     return `
-<div class="task task-${data.id} container ${data.isEdit ? 'isEdit' : ''} ${data.isStar ? 'high-light' : ''} ${data.complete ? 'complete' : ''}">
+<div class="task task-${data.id} container ${data.isEdit ? 'isEdit' : ''} ${data.isStar ? 'high-light' : ''} ${data.complete ? 'complete' : ''}" data-number="${data.id}">
     <div class="card">
         <div class="card-body">
             <div class="card-title">
