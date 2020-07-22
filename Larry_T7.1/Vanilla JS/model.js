@@ -1,7 +1,7 @@
 // function getTaskFromLocalStorage() {
 //     return allData;
 // }
-const allData = JSON.parse(localStorage.getItem('allMessage')) || [];
+const allTaskData = JSON.parse(localStorage.getItem('allMessage')) || [];
 
 function createTaskToLocalStorage(taskInfo) {
     const allMessage = {
@@ -14,11 +14,11 @@ function createTaskToLocalStorage(taskInfo) {
         isStar: false,
         isComplete: false
     }
-    allData.push(allMessage);
-    localStorage.setItem('allMessage', JSON.stringify(allData));
+    allTaskData.push(allMessage);
+    localStorage.setItem('allMessage', JSON.stringify(allTaskData));
     // return allMessage
 }
 
 
 
-export { createTaskToLocalStorage, allData };
+export { createTaskToLocalStorage, allTaskData };

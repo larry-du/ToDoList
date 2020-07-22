@@ -18,21 +18,27 @@
     <header class="header">
         <nav class="nav">
             <div class="nav-text">
-                <a href="##">My Tasks</a>
-                <a href="##">In Progress</a>
-                <a href="##">Completed</a>
+                <a href="##"
+                    class="my-tasks">My Tasks</a>
+                <a href="##"
+                    class="in-progress">In Progress</a>
+                <a href="##"
+                    class="task-completed">Completed</a>
             </div>
             <div class="nav-icon">
                 <a href="##"
-                    title="My Tasks">
+                    title="My Tasks"
+                    class="my-tasks">
                     <i class="fas fa-tasks-alt"></i>
                 </a>
                 <a href="##"
-                    title="In Progress">
+                    title="In Progress"
+                    class="in-progress">
                     <i class="fas fa-hourglass-half"></i>
                 </a>
                 <a href="##"
-                    title="Completed">
+                    title="Completed"
+                    class="task-completed">
                     <i class="fas fa-check-circle"></i>
                 </a>
             </div>
@@ -147,8 +153,10 @@
                             <span>file</span>
                         </div>
                         <div class="file-area">
-                            <button class="add-file">
-                            </button>
+                            <!-- <button class="add-file">
+                            </button> -->
+                            <input type="file"
+                                class="add-file">
                         </div>
                     </div>
 
@@ -383,8 +391,8 @@
                 </div>
 
             </div> -->
-            <!-- <p class="container task-left">4 tasks left</p> -->
         </section>
+        <p class="container task-left">0 tasks left</p>
     </main>
     <script type="module"
         src="module.js"></script>

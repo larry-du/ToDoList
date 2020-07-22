@@ -1,14 +1,33 @@
-import { createTaskToLocalStorage, allData } from './model.js';
+import { createTaskToLocalStorage, allTaskData } from './model.js';
 import { creatList, creatEditList } from './template.js';
 const addTask = document.querySelector('.add-task');
-// const addTaskButton = document.querySelector('#add-button');
-const event = document.querySelector('.event')
-// console.log(event)
+const event = document.querySelector('.event');
+// const nav = document.querySelector('nav')
 const listArea = document.querySelector('.to-do-list-area');
+const taskLeft = document.querySelector('.task-left');
 let currentTask = null;
 
 
 render(sortData());
+
+// function taskClassification() {
+//     const myTasks = document.querySelector('.my-tasks')
+//     const inProgress = document.querySelector('.in-progress')
+//     const taskCompleted = document.querySelector('.task-completed')
+//     // console.log(myTasks)
+//     myTasks.addEventListener('click', e => {
+
+//     })
+//     inProgress.addEventListener('click', e => {
+//         console.log("progress")
+//     })
+//     console.log(allTaskData)
+//     taskCompleted.addEventListener('click', e => {
+//         console.log(allTaskData)
+//         allTaskData.filter(data => data.isComplete)
+//     })
+
+// }
 
 function addNewTask() {
     const addArea = document.querySelector('.add-area');
@@ -63,15 +82,17 @@ function addTaskData(event) {
 function render(sortData) {
     listArea.innerHTML = sortData.map(data => creatList(data)).join('');
     const [...tasks] = document.querySelectorAll('.task');
+    taskLeft.innerText = `${[...tasks].length} tasks left`
 
     const editPage = creatEditList();
     tasks.map(task => task.insertAdjacentHTML('beforeend', editPage));
+    taskClassification();
     editEventBinding(sortData);
 }
 
 function editEventBinding(sortData) {
     sortData.map(data => {
-        const taskElement = document.querySelector(`.task-${data.id}`)
+        const taskElement = document.querySelector(`.task-${data.id}`);
         taskElement.addEventListener('click', event => {
             taskEditEventBinding.call(taskElement, event);
         })
@@ -85,31 +106,26 @@ function taskEditEventBinding(event) {
     const isSave = event.target.classList.contains('save');
     const isCancel = event.target.classList.contains('cancel');
 
-    // const label = this.querySelector('label');
     const check = this.querySelector('input[type="checkbox"]');
     const title = this.querySelector('.list-title');
     const date = this.querySelector('input[type="date"]');
     const time = this.querySelector('input[type="time"]');
     const comment = this.querySelector('.comment-area');
-
     // const taskClass = this.classList;
     // const classNumber = taskClass[1].slice(5);
     const taskNumber = this.dataset.number;
-    const dataIndex = allData.findIndex(data => data.id === Number(taskNumber));
-    const targetTask = allData[dataIndex];
+    const targetDataIndex = allTaskData.findIndex(data => data.id === Number(taskNumber));
+    const targetTask = allTaskData[targetDataIndex];
 
     if (event.target === check) {
         targetTask.isComplete = !targetTask.isComplete;
-        localStorage.setItem('allMessage', JSON.stringify(allData))
+        localStorage.setItem('allMessage', JSON.stringify(allTaskData));
         render(sortData());
-    }
-    if (date.value) {
-        // console.log('abc')
     }
 
     if (isStar) {
         targetTask.isStar = !targetTask.isStar;
-        localStorage.setItem('allMessage', JSON.stringify(allData))
+        localStorage.setItem('allMessage', JSON.stringify(allTaskData));
         render(sortData());
         // this.classList.toggle('high-light');
     }
@@ -121,19 +137,23 @@ function taskEditEventBinding(event) {
         time.value = targetTask.time;
         comment.value = targetTask.comment;
 
-        let preTask = currentTask
+        let preTask = currentTask;
         currentTask = targetTask.id;
         this.classList.toggle('isEdit');
+        // if (date.value) {
+        //     const a = this.querySelector('.date')
+        //     console.log(a)
+        //     a.classList.add('get-date')
+        // }
         if (preTask && preTask !== currentTask) {
-            const preTaskElement = document.querySelector(`[data-number="${preTask}"]`)
+            const preTaskElement = document.querySelector(`[data-number="${preTask}"]`);
             preTaskElement.classList.remove('isEdit');
         }
-
     }
 
     if (isDelete) {
-        allData.splice(dataIndex, 1);
-        localStorage.setItem('allMessage', JSON.stringify(allData));
+        allTaskData.splice(targetDataIndex, 1);
+        localStorage.setItem('allMessage', JSON.stringify(allTaskData));
         render(sortData());
     }
 
@@ -145,8 +165,8 @@ function taskEditEventBinding(event) {
             comment: comment.value,
             id: targetTask.id
         }
-        targetTask = allMessage;
-        localStorage.setItem('allMessage', JSON.stringify(allData));
+        allTaskData[targetDataIndex] = allMessage;
+        localStorage.setItem('allMessage', JSON.stringify(allTaskData));
         render(sortData());
         // this?.classList.remove('isEdit');
     }
@@ -162,18 +182,48 @@ function taskEditEventBinding(event) {
 }
 
 function sortData() {
+    // // console.log(allData)
+    // const hightLight = allData.filter(data => data.isStar);
+    // // console.log(hightLight)
+    // const normal = allData.filter(data => !data.isStar);
+    // // const complete = allData.filter(data => data.isComplete)
+
+    // return [...hightLight, ...normal]
     // console.log(allData)
-    const hightLight = allData.filter(data => data.isStar);
-    // console.log(hightLight)
-    const normal = allData.filter(data => !data.isStar);
+    // let sortData = []
+    // allTaskData.map((data, dataIndex) => {
+    //     if (data.isStar) {
+    //         const isStarTask = allTaskData.slice(dataIndex, dataIndex + 1);
+    //         sortData.unshift(...isStarTask);
+    //     }
+    //     if (!data.isStar && !data.isComplete) {
+    //         const isNormal = allTaskData.slice(dataIndex, dataIndex + 1);
+    //         sortData.push(...isNormal);
+    //     }
+    //     if (data.isComplete) {
+    //         const isCompleteTask = allTaskData.slice(dataIndex, dataIndex + 1);
+    //         sortData.push(...isCompleteTask);
+    //     }
+    //     // if (data.isStar && data.isComplete) {
+    //     //     const isNormal = allTaskData.slice(dataIndex, dataIndex + 1);
+    //     //     sortData.push(...isNormal);
+    //     // }
 
-    return [...hightLight, ...normal]
+    // })
+    // console.log(sortData)
+    // return sortData
+
+    return allTaskData.sort((a, b) => {
+        const scoreA = (a.isStar ? 200 : 0) + (a.isComplete ? -300 : 0)
+        const scoreB = (b.isStar ? 200 : 0) + (b.isComplete ? -300 : 0)
+        return scoreB - scoreA;
+    })
 }
 
-function mounted() {
-    render()
-    editEventBinding()
-}
+// function mounted() {
+//     render()
+//     editEventBinding()
+// }
 
 addTask.addEventListener('click', addNewTask);
 // addTaskButton.addEventListener('click', addTaskData);

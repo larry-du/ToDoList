@@ -53,8 +53,7 @@ function creatEditList() {
                     <p>20180514.zip</p>
                     <p>uploaded yesterday</p>
                 </div>
-                <button class="add-file">
-                </button>
+                <input class="add-file" type="file">
             </div>
 
         </div>
