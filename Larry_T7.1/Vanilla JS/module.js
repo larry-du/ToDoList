@@ -2,32 +2,46 @@ import { createTaskToLocalStorage, allTaskData } from './model.js';
 import { creatList, creatEditList } from './template.js';
 const addTask = document.querySelector('.add-task');
 const event = document.querySelector('.event');
-// const nav = document.querySelector('nav')
+const nav = document.querySelector('nav');
 const listArea = document.querySelector('.to-do-list-area');
 const taskLeft = document.querySelector('.task-left');
 let currentTask = null;
-
-
+let state = 'all';
 render(sortData());
+taskClassification();
 
-// function taskClassification() {
-//     const myTasks = document.querySelector('.my-tasks')
-//     const inProgress = document.querySelector('.in-progress')
-//     const taskCompleted = document.querySelector('.task-completed')
-//     // console.log(myTasks)
-//     myTasks.addEventListener('click', e => {
+function taskClassification() {
+    nav.addEventListener('click', (event) => {
+        changeState(event);
+        render(sortData())
+    });
+    // nav.addEventListener('click', event => render(sortData()));
+}
 
-//     })
-//     inProgress.addEventListener('click', e => {
-//         console.log("progress")
-//     })
-//     console.log(allTaskData)
-//     taskCompleted.addEventListener('click', e => {
-//         console.log(allTaskData)
-//         allTaskData.filter(data => data.isComplete)
-//     })
+function changeState(event) {
+    if (event.target.dataset.state === 'all') {
+        state = 'all';
+    }
+    if (event.target.dataset.state === 'in-progress') {
+        state = 'progress';
+    }
+    if (event.target.dataset.state === 'task-completed') {
+        state = 'complete';
+    }
+    console.log(state);
+}
 
-// }
+function sortInProgress() {
+    if (state === 'all') {
+        return allTaskData
+    }
+    if (state === 'progress') {
+        return allTaskData.filter(data => !data.isComplete)
+    }
+    if (state === 'complete') {
+        return allTaskData.filter(data => data.isComplete)
+    }
+}
 
 function addNewTask() {
     const addArea = document.querySelector('.add-area');
@@ -44,7 +58,7 @@ function addTaskData(event) {
     const time = document.querySelector('.event input[type="time"]');
     const comment = document.querySelector('.event .comment-area');
     const addTaskButton = document.querySelector('#add-button');
-    const cancelButton = document.querySelector('#cancel-button')
+    const cancelButton = document.querySelector('#cancel-button');
 
     const taskInfo = {
         title: title.value,
@@ -80,13 +94,14 @@ function addTaskData(event) {
 }
 
 function render(sortData) {
+    // console.log(sortData)
     listArea.innerHTML = sortData.map(data => creatList(data)).join('');
     const [...tasks] = document.querySelectorAll('.task');
     taskLeft.innerText = `${[...tasks].length} tasks left`
 
     const editPage = creatEditList();
     tasks.map(task => task.insertAdjacentHTML('beforeend', editPage));
-    taskClassification();
+    // taskClassification();
     editEventBinding(sortData);
 }
 
@@ -96,8 +111,32 @@ function editEventBinding(sortData) {
         taskElement.addEventListener('click', event => {
             taskEditEventBinding.call(taskElement, event);
         })
+        taskElement.addEventListener('dragstart', event => {
+            dragTask.call(taskElement, event);
+        })
+        taskElement.addEventListener('drop', event => {
+            putTask.call(taskElement, event)
+        });
+        taskElement.addEventListener('dragenter', cancelDefault);
+        taskElement.addEventListener('dragover', cancelDefault);
     })
 }
+
+function dragTask(event) {
+    event.dataTransfer.setData('text/plain', this.dataset.number);
+}
+
+function putTask(event) {
+    let dataNumber = event.dataTransfer.getData('text/plain');
+    const dragDom = document.querySelector(`div[data-number="${dataNumber}"]`);
+    listArea.insertBefore(dragDom, this);
+}
+
+function cancelDefault(e) {
+    e.preventDefault();
+    // e.stopPropagation();
+    // return false
+};
 
 function taskEditEventBinding(event) {
     const isStar = event.target.classList.contains('top-star');
@@ -140,11 +179,7 @@ function taskEditEventBinding(event) {
         let preTask = currentTask;
         currentTask = targetTask.id;
         this.classList.toggle('isEdit');
-        // if (date.value) {
-        //     const a = this.querySelector('.date')
-        //     console.log(a)
-        //     a.classList.add('get-date')
-        // }
+
         if (preTask && preTask !== currentTask) {
             const preTaskElement = document.querySelector(`[data-number="${preTask}"]`);
             preTaskElement.classList.remove('isEdit');
@@ -213,7 +248,7 @@ function sortData() {
     // console.log(sortData)
     // return sortData
 
-    return allTaskData.sort((a, b) => {
+    return sortInProgress().sort((a, b) => {
         const scoreA = (a.isStar ? 200 : 0) + (a.isComplete ? -300 : 0)
         const scoreB = (b.isStar ? 200 : 0) + (b.isComplete ? -300 : 0)
         return scoreB - scoreA;
@@ -225,9 +260,8 @@ function sortData() {
 //     editEventBinding()
 // }
 
+
+
 addTask.addEventListener('click', addNewTask);
-// addTaskButton.addEventListener('click', addTaskData);
-event.addEventListener('click', (event) => addTaskData(event))
-// tasks.map(task => {
-//     task.addEventListener('click', controller)
-// });
+
+event.addEventListener('click', addTaskData);
