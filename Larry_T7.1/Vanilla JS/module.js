@@ -43,6 +43,7 @@ function sortInProgress() {
     }
 }
 
+//畫面
 function addNewTask() {
     const addArea = document.querySelector('.add-area');
     const newTask = document.querySelector('.event-add');
@@ -50,6 +51,7 @@ function addNewTask() {
     newTask.classList.add('event-area-block');
 }
 
+//畫面
 function addTaskData(event) {
     const addArea = document.querySelector('.add-area');
     const newTask = document.querySelector('.event-add');
@@ -93,6 +95,7 @@ function addTaskData(event) {
 
 }
 
+//畫面
 function render(sortData) {
     // console.log(sortData)
     listArea.innerHTML = sortData.map(data => creatList(data)).join('');
@@ -105,6 +108,8 @@ function render(sortData) {
     editEventBinding(sortData);
 }
 
+
+//畫面
 function editEventBinding(sortData) {
     sortData.map(data => {
         const taskElement = document.querySelector(`.task-${data.id}`);
@@ -115,7 +120,7 @@ function editEventBinding(sortData) {
             dragTask.call(taskElement, event);
         })
         taskElement.addEventListener('drop', event => {
-            putTask.call(taskElement, event)
+            putTask.call(taskElement, event);
         });
         taskElement.addEventListener('dragenter', cancelDefault);
         taskElement.addEventListener('dragover', cancelDefault);
@@ -138,6 +143,8 @@ function cancelDefault(e) {
     // return false
 };
 
+
+//畫面
 function taskEditEventBinding(event) {
     const isStar = event.target.classList.contains('top-star');
     const isEdit = event.target.classList.contains('edit-pen');
@@ -216,51 +223,14 @@ function taskEditEventBinding(event) {
     }
 }
 
+//資料
 function sortData() {
-    // // console.log(allData)
-    // const hightLight = allData.filter(data => data.isStar);
-    // // console.log(hightLight)
-    // const normal = allData.filter(data => !data.isStar);
-    // // const complete = allData.filter(data => data.isComplete)
-
-    // return [...hightLight, ...normal]
-    // console.log(allData)
-    // let sortData = []
-    // allTaskData.map((data, dataIndex) => {
-    //     if (data.isStar) {
-    //         const isStarTask = allTaskData.slice(dataIndex, dataIndex + 1);
-    //         sortData.unshift(...isStarTask);
-    //     }
-    //     if (!data.isStar && !data.isComplete) {
-    //         const isNormal = allTaskData.slice(dataIndex, dataIndex + 1);
-    //         sortData.push(...isNormal);
-    //     }
-    //     if (data.isComplete) {
-    //         const isCompleteTask = allTaskData.slice(dataIndex, dataIndex + 1);
-    //         sortData.push(...isCompleteTask);
-    //     }
-    //     // if (data.isStar && data.isComplete) {
-    //     //     const isNormal = allTaskData.slice(dataIndex, dataIndex + 1);
-    //     //     sortData.push(...isNormal);
-    //     // }
-
-    // })
-    // console.log(sortData)
-    // return sortData
-
     return sortInProgress().sort((a, b) => {
         const scoreA = (a.isStar ? 200 : 0) + (a.isComplete ? -300 : 0)
         const scoreB = (b.isStar ? 200 : 0) + (b.isComplete ? -300 : 0)
         return scoreB - scoreA;
     })
 }
-
-// function mounted() {
-//     render()
-//     editEventBinding()
-// }
-
-
 
 addTask.addEventListener('click', addNewTask);
 
