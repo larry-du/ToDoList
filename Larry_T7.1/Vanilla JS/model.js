@@ -12,7 +12,8 @@ function createTaskToLocalStorage(taskInfo) {
         id: Date.now(),
         isEdit: false,
         isStar: false,
-        isComplete: false
+        isComplete: false,
+        order: null
     }
     allTaskData.push(allMessage);
     localStorage.setItem('allMessage', JSON.stringify(allTaskData));

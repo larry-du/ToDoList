@@ -13,7 +13,8 @@ taskClassification();
 function taskClassification() {
     nav.addEventListener('click', (event) => {
         changeState(event);
-        render(sortData())
+        // sortInProgress()
+        render(sortInProgress())
     });
     // nav.addEventListener('click', event => render(sortData()));
 }
@@ -29,6 +30,7 @@ function changeState(event) {
         state = 'complete';
     }
     // console.log(state);
+    // sortInProgress()
 }
 
 function sortInProgress() {
@@ -36,45 +38,89 @@ function sortInProgress() {
         return sortData();
     }
     if (state === 'progress') {
-        return sortData().filter(data => !data.isComplete)
+        return sortData().filter(data => !data.isComplete);
     }
     if (state === 'complete') {
-        return sortData().filter(data => data.isComplete)
+        return sortData().filter(data => data.isComplete);
     }
 }
+
 function sortData() {
     const top = allTaskData.filter(data => data.isStar && !data.isComplete);
     const middle = allTaskData.filter(data => !data.isStar && !data.isComplete);
     const bottom = allTaskData.filter(data => data.isComplete);
+    const getOrder = allTaskData.map(x => x.order).some(x => x !== null)
+    // console.log(a)
+    if (getOrder) {
+        // top.sort((a, b) => b.order - a.order)
+        const starSort = top.sort((a, b) => {
+            return a.order - b.order;
+        })
 
-    const starSort = top.sort((a, b) => {
-        return b.id - a.id;
-    })
+        const middleSort = middle.sort((a, b) => {
+            return a.order - b.order;
+        })
 
-    const middleSort = middle.sort((a, b) => {
-        return b.id - a.id;
-    })
+        const bottomSort = bottom.sort((a, b) => {
+            if (a.isStar === b.isStar) {
+                return a.order - b.order;
+            }
+            if (a.isStar && !b.isStar) {
+                return -1;
+            }
+            if (!a.isStar && b.isStar) {
+                return 1;
+            }
+        })
+        return [...starSort, ...middleSort, ...bottomSort];
+    }
 
-    const bottomSort = bottom.sort((a, b) => {
-        if (a.isStar === b.isStar) {
+    if (!getOrder) {
+        const starSort = top.sort((a, b) => {
             return b.id - a.id;
-        }
-        if (a.isStar && !b.isStar) {
-            return -1;
-        }
-        if (!a.isStar && b.isStar) {
-            return 1;
-        }
-    })
-    return [...starSort, ...middleSort, ...bottomSort];
+        })
+
+        const middleSort = middle.sort((a, b) => {
+            return b.id - a.id;
+        })
+
+        const bottomSort = bottom.sort((a, b) => {
+            if (a.isStar === b.isStar) {
+                return b.id - a.id;
+            }
+            if (a.isStar && !b.isStar) {
+                return -1;
+            }
+            if (!a.isStar && b.isStar) {
+                return 1;
+            }
+        })
+        return [...starSort, ...middleSort, ...bottomSort];
+    }
 }
 
 //畫面
-function addNewTask() {
+function openNewTask() {
     const addArea = document.querySelector('.add-area');
     const newTask = document.querySelector('.event-add');
     addArea.classList.add('add-area-none');
     newTask.classList.add('event-area-block');
+    newEventBinding();
+}
+
+function newEventBinding() {
+    const eventTask = document.querySelector('.event');
+    eventTask.addEventListener('click', event => {
+        taskNewEventBinding.call(eventTask, event)
+    })
+}
+
+function taskNewEventBinding(event) {
+    const isStar = event.target.classList.contains('top-star');
+    if (isStar) {
+        this.classList.add('high-light')
+    }
+
 }
 
 //畫面
@@ -163,13 +209,38 @@ function putTask(event) {
     // const targetTask = allTaskData[targetDataIndex];
     // console.log(targetDataIndex, targetTask)
     listArea.insertBefore(dragDom, this);
-    localStorage.setItem('allMessage', JSON.stringify(allTaskData))
+    // localStorage.setItem('allMessage', JSON.stringify(allTaskData))
     // render()
-    b()
+    saveRandomTask();
 }
-function b() {
-    document.querySelectorAll('task')
 
+function saveRandomTask() {
+    const [...taskDom] = document.querySelectorAll('.task');
+    taskDom.filter(done => done.classList.contains('is-complete'))
+        .map(star => star.dataset.number)
+        .forEach((starNumber, index) => {
+            const starIndex = allTaskData.findIndex(data => {
+                return data.id === Number(starNumber)
+            })
+            allTaskData[starIndex].order = index + 1;
+        })
+    taskDom.filter(notDone => !notDone.classList.contains('is-complete'))
+        .map(star => star.dataset.number)
+        .forEach((starNumber, index) => {
+            const starIndex = allTaskData.findIndex(data => {
+                return data.id === Number(starNumber)
+            })
+            allTaskData[starIndex].order = index + 1;
+        })
+    localStorage.setItem('allMessage', JSON.stringify(allTaskData))
+    // const [...taskDom]=document.querySelectorAll('')
+
+    // const [...]
+    // .map(x => x.dataset.number)
+    // .forEach((taskId, index) => {
+    //     const taskIndex = allTaskData.findIndex(x => x.id === taskId);
+    //     allTaskData[taskIndex].order = index + 1;
+    // });
 }
 
 function cancelDefault(e) {
@@ -266,7 +337,7 @@ function taskEditEventBinding(event) {
 //     })
 // }
 
-addTask.addEventListener('click', addNewTask);
+addTask.addEventListener('click', openNewTask);
 
 event.addEventListener('click', addTaskData);
 
