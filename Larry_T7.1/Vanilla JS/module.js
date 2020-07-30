@@ -28,19 +28,45 @@ function changeState(event) {
     if (event.target.dataset.state === 'task-completed') {
         state = 'complete';
     }
-    console.log(state);
+    // console.log(state);
 }
 
 function sortInProgress() {
     if (state === 'all') {
-        return allTaskData
+        return sortData();
     }
     if (state === 'progress') {
-        return allTaskData.filter(data => !data.isComplete)
+        return sortData().filter(data => !data.isComplete)
     }
     if (state === 'complete') {
-        return allTaskData.filter(data => data.isComplete)
+        return sortData().filter(data => data.isComplete)
     }
+}
+function sortData() {
+    const top = allTaskData.filter(data => data.isStar && !data.isComplete);
+    const middle = allTaskData.filter(data => !data.isStar && !data.isComplete);
+    const bottom = allTaskData.filter(data => data.isComplete);
+
+    const starSort = top.sort((a, b) => {
+        return b.id - a.id;
+    })
+
+    const middleSort = middle.sort((a, b) => {
+        return b.id - a.id;
+    })
+
+    const bottomSort = bottom.sort((a, b) => {
+        if (a.isStar === b.isStar) {
+            return b.id - a.id;
+        }
+        if (a.isStar && !b.isStar) {
+            return -1;
+        }
+        if (!a.isStar && b.isStar) {
+            return 1;
+        }
+    })
+    return [...starSort, ...middleSort, ...bottomSort];
 }
 
 //畫面
@@ -92,7 +118,6 @@ function addTaskData(event) {
         addArea.classList.remove('add-area-none');
         newTask.classList.remove('event-area-block');
     }
-
 }
 
 //畫面
@@ -107,7 +132,6 @@ function render(sortData) {
     // taskClassification();
     editEventBinding(sortData);
 }
-
 
 //畫面
 function editEventBinding(sortData) {
@@ -134,7 +158,18 @@ function dragTask(event) {
 function putTask(event) {
     let dataNumber = event.dataTransfer.getData('text/plain');
     const dragDom = document.querySelector(`div[data-number="${dataNumber}"]`);
+    // const taskNumber = this.dataset.number;
+    // const targetDataIndex = allTaskData.findIndex(data => data.id === Number(taskNumber));
+    // const targetTask = allTaskData[targetDataIndex];
+    // console.log(targetDataIndex, targetTask)
     listArea.insertBefore(dragDom, this);
+    localStorage.setItem('allMessage', JSON.stringify(allTaskData))
+    // render()
+    b()
+}
+function b() {
+    document.querySelectorAll('task')
+
 }
 
 function cancelDefault(e) {
@@ -142,7 +177,6 @@ function cancelDefault(e) {
     // e.stopPropagation();
     // return false
 };
-
 
 //畫面
 function taskEditEventBinding(event) {
@@ -224,14 +258,16 @@ function taskEditEventBinding(event) {
 }
 
 //資料
-function sortData() {
-    return sortInProgress().sort((a, b) => {
-        const scoreA = (a.isStar ? 200 : 0) + (a.isComplete ? -300 : 0)
-        const scoreB = (b.isStar ? 200 : 0) + (b.isComplete ? -300 : 0)
-        return scoreB - scoreA;
-    })
-}
+// function sortData() {
+//     return sortInProgress().sort((a, b) => {
+//         const scoreA = (a.isStar ? 200 : 0) + (a.isComplete ? -300 : 0)
+//         const scoreB = (b.isStar ? 200 : 0) + (b.isComplete ? -300 : 0)
+//         return scoreB - scoreA;
+//     })
+// }
 
 addTask.addEventListener('click', addNewTask);
 
 event.addEventListener('click', addTaskData);
+
+// export { taskClassification, addNewTask, addTaskData, render }

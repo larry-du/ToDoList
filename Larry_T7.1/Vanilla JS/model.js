@@ -19,12 +19,12 @@ function createTaskToLocalStorage(taskInfo) {
     // return allMessage
 }
 
-function sortData(filterProgress) {
-    return sortInProgress().sort((a, b) => {
-        const scoreA = (a.isStar ? 200 : 0) + (a.isComplete ? -300 : 0)
-        const scoreB = (b.isStar ? 200 : 0) + (b.isComplete ? -300 : 0)
-        return scoreB - scoreA;
-    })
-}
+// function sortData(filterProgress) {
+//     return filterProgress.sort((a, b) => {
+//         const scoreA = (a.isStar ? 200 : 0) + (a.isComplete ? -300 : 0)
+//         const scoreB = (b.isStar ? 200 : 0) + (b.isComplete ? -300 : 0)
+//         return scoreB - scoreA;
+//     })
+// }
 
-export { createTaskToLocalStorage, allTaskData, sortData };
+export { createTaskToLocalStorage, allTaskData };
