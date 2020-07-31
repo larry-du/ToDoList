@@ -1,7 +1,6 @@
 import { createTaskToLocalStorage, allTaskData } from './model.js';
 import { creatList, creatEditList } from './template.js';
 const addTask = document.querySelector('.add-task');
-const event = document.querySelector('.event');
 const nav = document.querySelector('nav');
 const listArea = document.querySelector('.to-do-list-area');
 const taskLeft = document.querySelector('.task-left');
@@ -9,12 +8,14 @@ let currentTask = null;
 let state = 'all';
 render(sortData());
 taskClassification();
+newEventBinding();
 
+//分類進行或已完成任務
 function taskClassification() {
     nav.addEventListener('click', (event) => {
         changeState(event);
         // sortInProgress()
-        render(sortInProgress())
+        render(taskStateClassification())
     });
     // nav.addEventListener('click', event => render(sortData()));
 }
@@ -33,7 +34,7 @@ function changeState(event) {
     // sortInProgress()
 }
 
-function sortInProgress() {
+function taskStateClassification() {
     if (state === 'all') {
         return sortData();
     }
@@ -45,6 +46,7 @@ function sortInProgress() {
     }
 }
 
+//資料排序
 function sortData() {
     const top = allTaskData.filter(data => data.isStar && !data.isComplete);
     const middle = allTaskData.filter(data => !data.isStar && !data.isComplete);
@@ -105,9 +107,9 @@ function openNewTask() {
     const newTask = document.querySelector('.event-add');
     addArea.classList.add('add-area-none');
     newTask.classList.add('event-area-block');
-    newEventBinding();
 }
 
+//新任務事件綁定
 function newEventBinding() {
     const eventTask = document.querySelector('.event');
     eventTask.addEventListener('click', event => {
@@ -126,35 +128,53 @@ function taskNewEventBinding(event) {
     const date = document.querySelector('.event input[type="date"]');
     const time = document.querySelector('.event input[type="time"]');
     const comment = document.querySelector('.event .comment-area');
+    const check = this.querySelector('input[type="checkbox"]');
+    const getStar = this.classList.contains('high-light');
+    const done = this.classList.contains('is-complete')
+    // console.log(event.target.checked)
+    this.classList.remove('high-light');
+    // this.classList.remove('is-complete');
 
+    const taskInfo = {
+        title: title.value,
+        date: date.value,
+        time: time.value,
+        comment: comment.value,
+        isStar: false,
+        isComplete: false
+    }
+    // console.log(event.target === check)
     if (isStar) {
         this.classList.toggle('high-light');
     }
+
+    if (event.target === check) {
+        this.classList.toggle('is-complete');
+    }
+
     if (isEdit) {
         addArea.classList.remove('add-area-none');
         newTask.classList.remove('event-area-block');
     }
+
     if (isAddNewTask) {
-        const taskInfo = {
-            title: title.value,
-            date: date.value,
-            time: time.value,
-            comment: comment.value,
-            isStar: false
-        }
-        const getStar = this.classList.contains('high-light');
+
         if (getStar) {
             taskInfo.isStar = true;
         }
 
-        createTaskToLocalStorage(taskInfo);
+        if (done) {
+            taskInfo.isComplete = true;
+        }
 
+        createTaskToLocalStorage(taskInfo);
         render(sortData());
 
         title.value = '';
         date.value = '';
         time.value = '';
         comment.value = '';
+        check.checked = false;
 
         addArea.classList.remove('add-area-none');
         newTask.classList.remove('event-area-block');
@@ -164,6 +184,7 @@ function taskNewEventBinding(event) {
         date.value = '';
         time.value = '';
         comment.value = '';
+        check.checked = false;
 
         addArea.classList.remove('add-area-none');
         newTask.classList.remove('event-area-block');
@@ -171,10 +192,19 @@ function taskNewEventBinding(event) {
 
 }
 
+// function a() {
 
-//畫面
+//     if (star) {
+//         return ''
+//     }
+
+// }
+// const x = a();
+
+//畫面渲染
 function render(sortData) {
     // console.log(sortData)
+    // document.querySelector(selector).innerHTML = sortData.map(data => creatList(data)).join('');
     listArea.innerHTML = sortData.map(data => creatList(data)).join('');
     const [...tasks] = document.querySelectorAll('.task');
     taskLeft.innerText = `${[...tasks].length} tasks left`
@@ -182,10 +212,11 @@ function render(sortData) {
     const editPage = creatEditList();
     tasks.map(task => task.insertAdjacentHTML('beforeend', editPage));
     // taskClassification();
+
     editEventBinding(sortData);
 }
 
-//畫面
+//編輯任務事件綁定
 function editEventBinding(sortData) {
     sortData.map(data => {
         const taskElement = document.querySelector(`.task-${data.id}`);
@@ -203,59 +234,6 @@ function editEventBinding(sortData) {
     })
 }
 
-function dragTask(event) {
-    event.dataTransfer.setData('text/plain', this.dataset.number);
-}
-
-function putTask(event) {
-    let dataNumber = event.dataTransfer.getData('text/plain');
-    const dragDom = document.querySelector(`div[data-number="${dataNumber}"]`);
-    // const taskNumber = this.dataset.number;
-    // const targetDataIndex = allTaskData.findIndex(data => data.id === Number(taskNumber));
-    // const targetTask = allTaskData[targetDataIndex];
-    // console.log(targetDataIndex, targetTask)
-    listArea.insertBefore(dragDom, this);
-    // localStorage.setItem('allMessage', JSON.stringify(allTaskData))
-    // render()
-    saveRandomTask();
-}
-
-function saveRandomTask() {
-    const [...taskDom] = document.querySelectorAll('.task');
-    taskDom.filter(done => done.classList.contains('is-complete'))
-        .map(star => star.dataset.number)
-        .forEach((starNumber, index) => {
-            const starIndex = allTaskData.findIndex(data => {
-                return data.id === Number(starNumber)
-            })
-            allTaskData[starIndex].order = index + 1;
-        })
-    taskDom.filter(notDone => !notDone.classList.contains('is-complete'))
-        .map(star => star.dataset.number)
-        .forEach((starNumber, index) => {
-            const starIndex = allTaskData.findIndex(data => {
-                return data.id === Number(starNumber)
-            })
-            allTaskData[starIndex].order = index + 1;
-        })
-    localStorage.setItem('allMessage', JSON.stringify(allTaskData))
-    // const [...taskDom]=document.querySelectorAll('')
-
-    // const [...]
-    // .map(x => x.dataset.number)
-    // .forEach((taskId, index) => {
-    //     const taskIndex = allTaskData.findIndex(x => x.id === taskId);
-    //     allTaskData[taskIndex].order = index + 1;
-    // });
-}
-
-function cancelDefault(e) {
-    e.preventDefault();
-    // e.stopPropagation();
-    // return false
-};
-
-//畫面
 function taskEditEventBinding(event) {
     const isStar = event.target.classList.contains('top-star');
     const isEdit = event.target.classList.contains('edit-pen');
@@ -334,6 +312,59 @@ function taskEditEventBinding(event) {
     }
 }
 
+//拖曳事件
+function dragTask(event) {
+    event.dataTransfer.setData('text/plain', this.dataset.number);
+}
+function putTask(event) {
+    let dataNumber = event.dataTransfer.getData('text/plain');
+    const dragDom = document.querySelector(`div[data-number="${dataNumber}"]`);
+    // const taskNumber = this.dataset.number;
+    // const targetDataIndex = allTaskData.findIndex(data => data.id === Number(taskNumber));
+    // const targetTask = allTaskData[targetDataIndex];
+    // console.log(targetDataIndex, targetTask)
+    listArea.insertBefore(dragDom, this);
+    // localStorage.setItem('allMessage', JSON.stringify(allTaskData))
+    // render()
+    saveRandomTask();
+}
+
+function saveRandomTask() {
+    const [...taskDom] = document.querySelectorAll('.task');
+    taskDom.filter(done => done.classList.contains('is-complete'))
+        .map(star => star.dataset.number)
+        .forEach((starNumber, index) => {
+            const starIndex = allTaskData.findIndex(data => {
+                return data.id === Number(starNumber)
+            })
+            allTaskData[starIndex].order = index + 1;
+        })
+    taskDom.filter(notDone => !notDone.classList.contains('is-complete'))
+        .map(star => star.dataset.number)
+        .forEach((starNumber, index) => {
+            const starIndex = allTaskData.findIndex(data => {
+                return data.id === Number(starNumber)
+            })
+            allTaskData[starIndex].order = index + 1;
+        })
+    localStorage.setItem('allMessage', JSON.stringify(allTaskData))
+    // const [...taskDom]=document.querySelectorAll('')
+
+    // const [...]
+    // .map(x => x.dataset.number)
+    // .forEach((taskId, index) => {
+    //     const taskIndex = allTaskData.findIndex(x => x.id === taskId);
+    //     allTaskData[taskIndex].order = index + 1;
+    // });
+}
+
+function cancelDefault(e) {
+    e.preventDefault();
+    // e.stopPropagation();
+    // return false
+};
+
+
 //資料
 // function sortData() {
 //     return sortInProgress().sort((a, b) => {
@@ -344,7 +375,3 @@ function taskEditEventBinding(event) {
 // }
 
 addTask.addEventListener('click', openNewTask);
-
-// event.addEventListener('click', addTaskData);
-
-// export { taskClassification, addNewTask, addTaskData, render }

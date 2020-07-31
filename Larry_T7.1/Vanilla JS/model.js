@@ -12,12 +12,11 @@ function createTaskToLocalStorage(taskInfo) {
         id: Date.now(),
         isEdit: false,
         isStar: taskInfo.isStar,
-        isComplete: false,
+        isComplete: taskInfo.isComplete,
         order: null
     }
     allTaskData.push(allMessage);
     localStorage.setItem('allMessage', JSON.stringify(allTaskData));
-    // return allMessage
 }
 
 // function sortData(filterProgress) {
