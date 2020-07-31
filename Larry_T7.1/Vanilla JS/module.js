@@ -117,31 +117,36 @@ function newEventBinding() {
 
 function taskNewEventBinding(event) {
     const isStar = event.target.classList.contains('top-star');
-    if (isStar) {
-        this.classList.add('high-light')
-    }
-
-}
-
-//畫面
-function addTaskData(event) {
+    const isEdit = event.target.classList.contains('edit-pen');
+    const isAddNewTask = event.target.classList.contains('add-button');
+    const isCancelTask = event.target.classList.contains('cancel-button');
     const addArea = document.querySelector('.add-area');
     const newTask = document.querySelector('.event-add');
     const title = document.querySelector('.event .type-title');
     const date = document.querySelector('.event input[type="date"]');
     const time = document.querySelector('.event input[type="time"]');
     const comment = document.querySelector('.event .comment-area');
-    const addTaskButton = document.querySelector('#add-button');
-    const cancelButton = document.querySelector('#cancel-button');
 
-    const taskInfo = {
-        title: title.value,
-        date: date.value,
-        time: time.value,
-        comment: comment.value
+    if (isStar) {
+        this.classList.toggle('high-light');
     }
+    if (isEdit) {
+        addArea.classList.remove('add-area-none');
+        newTask.classList.remove('event-area-block');
+    }
+    if (isAddNewTask) {
+        const taskInfo = {
+            title: title.value,
+            date: date.value,
+            time: time.value,
+            comment: comment.value,
+            isStar: false
+        }
+        const getStar = this.classList.contains('high-light');
+        if (getStar) {
+            taskInfo.isStar = true;
+        }
 
-    if (event.target === addTaskButton) {
         createTaskToLocalStorage(taskInfo);
 
         render(sortData());
@@ -154,8 +159,7 @@ function addTaskData(event) {
         addArea.classList.remove('add-area-none');
         newTask.classList.remove('event-area-block');
     }
-
-    if (event.target === cancelButton) {
+    if (isCancelTask) {
         title.value = '';
         date.value = '';
         time.value = '';
@@ -164,7 +168,9 @@ function addTaskData(event) {
         addArea.classList.remove('add-area-none');
         newTask.classList.remove('event-area-block');
     }
+
 }
+
 
 //畫面
 function render(sortData) {
@@ -339,6 +345,6 @@ function taskEditEventBinding(event) {
 
 addTask.addEventListener('click', openNewTask);
 
-event.addEventListener('click', addTaskData);
+// event.addEventListener('click', addTaskData);
 
 // export { taskClassification, addNewTask, addTaskData, render }

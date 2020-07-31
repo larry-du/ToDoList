@@ -11,7 +11,7 @@ function createTaskToLocalStorage(taskInfo) {
         comment: taskInfo.comment,
         id: Date.now(),
         isEdit: false,
-        isStar: false,
+        isStar: taskInfo.isStar,
         isComplete: false,
         order: null
     }
