@@ -1,8 +1,7 @@
 import { createTaskToLocalStorage, allTaskData } from './model.js';
-import { creatList, creatEditList } from './template.js';
+import { createList, createEditList } from './template.js';
 const addTask = document.querySelector('.add-task');
 const nav = document.querySelector('nav');
-const listArea = document.querySelector('.to-do-list-area');
 const starArea = document.querySelector('.star-area');
 const unfinishedArea = document.querySelector('.unfinished-area');
 const completeArea = document.querySelector('.complete-area');
@@ -76,7 +75,11 @@ function sortData() {
                 return 1;
             }
         })
-        return [...starSort, ...middleSort, ...bottomSort];
+        return {
+            top: [...starSort],
+            middle: [...middleSort],
+            bottom: [...bottomSort]
+        }
     }
 
     if (!getOrder) {
@@ -99,7 +102,11 @@ function sortData() {
                 return 1;
             }
         })
-        return [...starSort, ...middleSort, ...bottomSort];
+        return {
+            top: [...starSort],
+            middle: [...middleSort],
+            bottom: [...bottomSort]
+        };
     }
 }
 
@@ -133,7 +140,7 @@ function taskNewEventBinding(event) {
     const check = this.querySelector('input[type="checkbox"]');
     const getStar = this.classList.contains('high-light');
     const done = this.classList.contains('is-complete')
-    // console.log(event.target.checked)
+
     this.classList.remove('high-light');
     this.classList.remove('is-complete');
 
@@ -199,25 +206,17 @@ function clearInputValue() {
 }
 
 //畫面渲染
-function render(sortData) {
-    // document.querySelector(selector).innerHTML = sortData.map(data => creatList(data)).join('');
-    starArea.innerHTML = sortData.filter(top => top.isStar && !top.isComplete)
-        .map(data => creatList(data))
-        .join('');
-    unfinishedArea.innerHTML = sortData.filter(middle => !middle.isStar && !middle.isComplete)
-        .map(data => creatList(data))
-        .join('');
-    completeArea.innerHTML = sortData.filter(bottom => bottom.isComplete)
-        .map(data => creatList(data))
-        .join('');
-    // listArea.innerHTML = sortData.map(data => creatList(data)).join('');
+function render({ top, middle, bottom }) {
+    starArea.innerHTML = top.map(data => createList(data)).join('');
+    unfinishedArea.innerHTML = middle.map(data => createList(data)).join('');
+    completeArea.innerHTML = bottom.map(data => createList(data)).join('');
     const [...tasks] = document.querySelectorAll('.task');
     taskLeft.innerText = `${[...tasks].length} tasks left`
 
-    const editPage = creatEditList();
+    const editPage = createEditList();
     tasks.map(task => task.insertAdjacentHTML('beforeend', editPage));
 
-    editEventBinding(sortData);
+    editEventBinding([...top, ...middle, ...bottom]);
 }
 
 //編輯任務事件綁定
@@ -319,22 +318,16 @@ function dragTask(event) {
     // event.dataTransfer.effectAllowed
 }
 function dropTask(event) {
-    // console.log(event)
     const dataNumber = event.dataTransfer.getData('text/plain');
     const dragDom = document.querySelector(`div[data-number="${dataNumber}"]`);
-    const dragParentDom = dragDom.parentElement;
-    const dropParentDom = this.parentElement;
 
-    // console.log(event, this, dragDom.nextElementSibling);
-    if (dragParentDom === dropParentDom) {
-        dropParentDom.insertBefore(dragDom, this);
+    if (dragDom.parentElement !== this.parentElement) return
+
+    if (dragDom.nextElementSibling === this) {
+        this.parentElement.insertBefore(this, dragDom);
+    } else {
+        this.parentElement.insertBefore(dragDom, this);
     }
-    // if (this === dragDom.nextElementSibling) {
-    //     console.log('drop');
-    //     // dropParentDom.insertBefore(this, dragDom);
-    //     this.insertAdjacentElement('afterend', dragDom)
-    // }
-
     saveRandomTask();
 }
 
@@ -348,7 +341,7 @@ function saveRandomTask() {
             })
             allTaskData[starIndex].order = index + 1;
         })
-    taskDom.filter(notDone => !notDone.classList.contains('is-complete'))
+    taskDom.filter(done => !done.classList.contains('is-complete'))
         .map(star => star.dataset.number)
         .forEach((starNumber, index) => {
             const starIndex = allTaskData.findIndex(data => {

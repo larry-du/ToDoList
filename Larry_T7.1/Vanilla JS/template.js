@@ -1,4 +1,4 @@
-function creatList(data) {
+function createList(data) {
     return `
 <div class="task task-${data.id} container ${data.isEdit ? 'isEdit' : ''} ${data.isStar ? 'high-light' : ''} ${data.isComplete ? 'is-complete' : ''}" data-number="${data.id}" draggable="true">
     <div class="card">
@@ -29,7 +29,7 @@ function creatList(data) {
 </div>`
 }
 
-function creatEditList() {
+function createEditList() {
     return `<div class="save-info">
     <div class="save-detail">
         <div class="deadline">
@@ -82,4 +82,4 @@ function creatEditList() {
 `
 }
 
-export { creatList, creatEditList }
+export { createList, createEditList }
