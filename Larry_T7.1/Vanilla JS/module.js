@@ -3,6 +3,9 @@ import { creatList, creatEditList } from './template.js';
 const addTask = document.querySelector('.add-task');
 const nav = document.querySelector('nav');
 const listArea = document.querySelector('.to-do-list-area');
+const starArea = document.querySelector('.star-area');
+const unfinishedArea = document.querySelector('.unfinished-area');
+const completeArea = document.querySelector('.complete-area');
 const taskLeft = document.querySelector('.task-left');
 let currentTask = null;
 let state = 'all';
@@ -52,9 +55,8 @@ function sortData() {
     const middle = allTaskData.filter(data => !data.isStar && !data.isComplete);
     const bottom = allTaskData.filter(data => data.isComplete);
     const getOrder = allTaskData.map(x => x.order).some(x => x !== null)
-    // console.log(a)
+
     if (getOrder) {
-        // top.sort((a, b) => b.order - a.order)
         const starSort = top.sort((a, b) => {
             return a.order - b.order;
         })
@@ -133,7 +135,7 @@ function taskNewEventBinding(event) {
     const done = this.classList.contains('is-complete')
     // console.log(event.target.checked)
     this.classList.remove('high-light');
-    // this.classList.remove('is-complete');
+    this.classList.remove('is-complete');
 
     const taskInfo = {
         title: title.value,
@@ -143,7 +145,7 @@ function taskNewEventBinding(event) {
         isStar: false,
         isComplete: false
     }
-    // console.log(event.target === check)
+
     if (isStar) {
         this.classList.toggle('high-light');
     }
@@ -170,48 +172,50 @@ function taskNewEventBinding(event) {
         createTaskToLocalStorage(taskInfo);
         render(sortData());
 
-        title.value = '';
-        date.value = '';
-        time.value = '';
-        comment.value = '';
+        clearInputValue();
         check.checked = false;
-
+        // console.log(check.checked = false, check.checked)
         addArea.classList.remove('add-area-none');
         newTask.classList.remove('event-area-block');
     }
     if (isCancelTask) {
-        title.value = '';
-        date.value = '';
-        time.value = '';
-        comment.value = '';
+        clearInputValue();
         check.checked = false;
-
         addArea.classList.remove('add-area-none');
         newTask.classList.remove('event-area-block');
     }
 
 }
 
-// function a() {
-
-//     if (star) {
-//         return ''
-//     }
-
-// }
-// const x = a();
+function clearInputValue() {
+    const title = document.querySelector('.event .type-title');
+    const date = document.querySelector('.event input[type="date"]');
+    const time = document.querySelector('.event input[type="time"]');
+    const comment = document.querySelector('.event .comment-area');
+    title.value = '';
+    date.value = '';
+    time.value = '';
+    comment.value = '';
+}
 
 //畫面渲染
 function render(sortData) {
-    // console.log(sortData)
     // document.querySelector(selector).innerHTML = sortData.map(data => creatList(data)).join('');
-    listArea.innerHTML = sortData.map(data => creatList(data)).join('');
+    starArea.innerHTML = sortData.filter(top => top.isStar && !top.isComplete)
+        .map(data => creatList(data))
+        .join('');
+    unfinishedArea.innerHTML = sortData.filter(middle => !middle.isStar && !middle.isComplete)
+        .map(data => creatList(data))
+        .join('');
+    completeArea.innerHTML = sortData.filter(bottom => bottom.isComplete)
+        .map(data => creatList(data))
+        .join('');
+    // listArea.innerHTML = sortData.map(data => creatList(data)).join('');
     const [...tasks] = document.querySelectorAll('.task');
     taskLeft.innerText = `${[...tasks].length} tasks left`
 
     const editPage = creatEditList();
     tasks.map(task => task.insertAdjacentHTML('beforeend', editPage));
-    // taskClassification();
 
     editEventBinding(sortData);
 }
@@ -220,6 +224,7 @@ function render(sortData) {
 function editEventBinding(sortData) {
     sortData.map(data => {
         const taskElement = document.querySelector(`.task-${data.id}`);
+
         taskElement.addEventListener('click', event => {
             taskEditEventBinding.call(taskElement, event);
         })
@@ -227,7 +232,7 @@ function editEventBinding(sortData) {
             dragTask.call(taskElement, event);
         })
         taskElement.addEventListener('drop', event => {
-            putTask.call(taskElement, event);
+            dropTask.call(taskElement, event);
         });
         taskElement.addEventListener('dragenter', cancelDefault);
         taskElement.addEventListener('dragover', cancelDefault);
@@ -262,7 +267,6 @@ function taskEditEventBinding(event) {
         targetTask.isStar = !targetTask.isStar;
         localStorage.setItem('allMessage', JSON.stringify(allTaskData));
         render(sortData());
-        // this.classList.toggle('high-light');
     }
 
     if (isEdit) {
@@ -303,10 +307,7 @@ function taskEditEventBinding(event) {
     }
 
     if (isCancel) {
-        title.value = '';
-        date.value = '';
-        time.value = '';
-        comment.value = '';
+        clearInputValue();
         this.classList.remove('isEdit');
         render(sortData());
     }
@@ -315,17 +316,25 @@ function taskEditEventBinding(event) {
 //拖曳事件
 function dragTask(event) {
     event.dataTransfer.setData('text/plain', this.dataset.number);
+    // event.dataTransfer.effectAllowed
 }
-function putTask(event) {
-    let dataNumber = event.dataTransfer.getData('text/plain');
+function dropTask(event) {
+    // console.log(event)
+    const dataNumber = event.dataTransfer.getData('text/plain');
     const dragDom = document.querySelector(`div[data-number="${dataNumber}"]`);
-    // const taskNumber = this.dataset.number;
-    // const targetDataIndex = allTaskData.findIndex(data => data.id === Number(taskNumber));
-    // const targetTask = allTaskData[targetDataIndex];
-    // console.log(targetDataIndex, targetTask)
-    listArea.insertBefore(dragDom, this);
-    // localStorage.setItem('allMessage', JSON.stringify(allTaskData))
-    // render()
+    const dragParentDom = dragDom.parentElement;
+    const dropParentDom = this.parentElement;
+
+    // console.log(event, this, dragDom.nextElementSibling);
+    if (dragParentDom === dropParentDom) {
+        dropParentDom.insertBefore(dragDom, this);
+    }
+    // if (this === dragDom.nextElementSibling) {
+    //     console.log('drop');
+    //     // dropParentDom.insertBefore(this, dragDom);
+    //     this.insertAdjacentElement('afterend', dragDom)
+    // }
+
     saveRandomTask();
 }
 
@@ -348,14 +357,6 @@ function saveRandomTask() {
             allTaskData[starIndex].order = index + 1;
         })
     localStorage.setItem('allMessage', JSON.stringify(allTaskData))
-    // const [...taskDom]=document.querySelectorAll('')
-
-    // const [...]
-    // .map(x => x.dataset.number)
-    // .forEach((taskId, index) => {
-    //     const taskIndex = allTaskData.findIndex(x => x.id === taskId);
-    //     allTaskData[taskIndex].order = index + 1;
-    // });
 }
 
 function cancelDefault(e) {
@@ -364,6 +365,7 @@ function cancelDefault(e) {
     // return false
 };
 
+addTask.addEventListener('click', openNewTask);
 
 //資料
 // function sortData() {
@@ -373,5 +375,3 @@ function cancelDefault(e) {
 //         return scoreB - scoreA;
 //     })
 // }
-
-addTask.addEventListener('click', openNewTask);
