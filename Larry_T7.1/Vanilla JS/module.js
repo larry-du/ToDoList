@@ -8,18 +8,16 @@ const completeArea = document.querySelector('.complete-area');
 const taskLeft = document.querySelector('.task-left');
 let currentTask = null;
 let state = 'all';
-render(sortData());
 taskClassification();
+render(sortData());
 newEventBinding();
 
 //分類進行或已完成任務
 function taskClassification() {
     nav.addEventListener('click', (event) => {
         changeState(event);
-        // sortInProgress()
-        render(taskStateClassification())
+        render(taskStateClassification());
     });
-    // nav.addEventListener('click', event => render(sortData()));
 }
 
 function changeState(event) {
@@ -32,8 +30,6 @@ function changeState(event) {
     if (event.target.dataset.state === 'task-completed') {
         state = 'complete';
     }
-    // console.log(state);
-    // sortInProgress()
 }
 
 function taskStateClassification() {
@@ -41,10 +37,18 @@ function taskStateClassification() {
         return sortData();
     }
     if (state === 'progress') {
-        return sortData().filter(data => !data.isComplete);
+        return {
+            top: sortData().top,
+            middle: sortData().middle,
+            bottom: []
+        }
     }
     if (state === 'complete') {
-        return sortData().filter(data => data.isComplete);
+        return {
+            top: [],
+            middle: [],
+            bottom: sortData().bottom
+        }
     }
 }
 

@@ -1,3 +1,4 @@
+
 function createList(data) {
     return `
 <div class="task task-${data.id} container ${data.isEdit ? 'isEdit' : ''} ${data.isStar ? 'high-light' : ''} ${data.isComplete ? 'is-complete' : ''}" data-number="${data.id}" draggable="true">
