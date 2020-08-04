@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+    <link rel="stylesheet"
+        href="../css/index.css">
+    <title>T7</title>
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-text">
+                <a href="##"
+                    data-state="all">
+                    <span data-state="all">My Tasks</span>
+                    <i class="fas fa-tasks-alt"
+                        data-state="all"></i>
+                </a>
+                <a href="##"
+                    data-state="in-progress">
+                    <span data-state="in-progress">In Progress</span>
+                    <i class="fas fa-hourglass-half"
+                        data-state="in-progress"></i>
+                </a>
+                <a href="##"
+                    data-state="task-completed">
+                    <span data-state="task-completed">Completed</span>
+                    <i class="fas fa-check-circle"
+                        data-state="task-completed"></i>
+                </a>
+            </div>
+            <!-- <div class="nav-icon">
+                <a href="##"
+                    title="My Tasks"
+                    data-state="my-tasks">
+                    <i class="fas fa-tasks-alt"></i>
+                </a>
+                <a href="##"
+                    title="In Progress"
+                    data-state="in-progress">
+                    <i class="fas fa-hourglass-half"></i>
+                </a>
+                <a href="##"
+                    title="Completed"
+                    data-state="task-completed">
+                    <i class="fas fa-check-circle"></i>
+                </a>
+            </div> -->
+        </nav>
+    </header>
+    <main class="main">
+        <div class="add-area container">
+            <input type="text"
+                placeholder="Add Task"
+                class="add-task">
+            <i class="fal fa-plus"></i>
+        </div>
+        <div class="event event-add container">
+            <div class="edit">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <div class="check-area">
+                                <input type="checkbox"
+                                    id="event-check"
+                                    class="check">
+                                <label for="event-check"></label>
+                            </div>
+                            <!-- <span>Type Something Here...</span> -->
+                            <input type="text"
+                                placeholder="Type Something Here..."
+                                class="type-title">
+                        </div>
+                        <div class="edit-area">
+                            <i class="fas fa-star top-star"></i>
+                            <i class="fal fa-pen edit-pen"></i>
+                            <!-- <i class="fal fa-trash-alt trash"></i> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="edit-info">
+                    <div class="deadline">
+                        <div class="deadline-icon ">
+                            <i class="far fa-calendar-alt fa-fw"></i>
+                            <span>Deadline</span>
+                        </div>
+                        <div class="date-area">
+                            <input type="date"
+                                class="date">
+                            <input type="time">
+                        </div>
+                    </div>
+
+                    <div class="file">
+                        <div class="file-icon">
+                            <i class="fal fa-file fa-fw"></i>
+                            <span>file</span>
+                        </div>
+                        <div class="file-area">
+                            <!-- <button class="add-file">
+                            </button> -->
+                            <input type="file"
+                                class="add-file">
+                        </div>
+                    </div>
+
+                    <div class="comment">
+                        <div class="comment-icon">
+                            <i class="fal fa-comment-dots fa-fw"></i>
+                            <span>comment</span>
+                        </div>
+                        <textarea class="comment-area"
+                            placeholder="Type your memo here..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="check-button">
+                <button class="cancel-button">
+                    <i class="fal fa-times"></i>
+                    Cancel
+                </button>
+                <button class="add-button">
+                    <i class="fal fa-plus"></i>
+                    Add Task
+                </button>
+            </div>
+
+        </div>
+
+        </div>
+        <section class="to-do-list-area">
+            <section class="star-area"></section>
+            <section class="unfinished-area"></section>
+            <section class="complete-area"></section>
+        </section>
+        <p class="container task-left">0 tasks left</p>
+    </main>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="module"
+        src="module.js"></script>
+    <!-- <script src="Sortable.js"></script> -->
+</body>
+
+</html>
