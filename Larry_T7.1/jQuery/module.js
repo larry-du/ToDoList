@@ -132,6 +132,7 @@ function newTaskEventBinding(e) {
     const isEdit = $(e.target).hasClass('edit-pen');
     const isCancel = $(e.target).hasClass('cancel');
     const isSave = $(e.target).hasClass('save');
+    const isDelete = $(e.target).hasClass('trash');
 
     const title = $(this).find(`.list-title`);
     const date = $(this).find('input[type="date"]');
@@ -144,7 +145,7 @@ function newTaskEventBinding(e) {
         return data.id === Number(taskNumber)
     });
     const targetTask = allTaskData[targetDataIndex];
-    console.log(targetTask);
+
     if (isStar) {
         targetTask.isStar = !targetTask.isStar;
         localStorage.setItem('taskData', JSON.stringify(allTaskData));
@@ -179,6 +180,12 @@ function newTaskEventBinding(e) {
         if (preTask && preTask !== currentTask) {
             $(`[data-number="${preTask}"]`).removeClass('isEdit')
         }
+    }
+
+    if (isDelete) {
+        allTaskData.splice(targetDataIndex, 1)
+        localStorage.setItem('taskData', JSON.stringify(allTaskData));
+        render(sortData());
     }
 
     if (isCancel) {
