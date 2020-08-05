@@ -1,20 +1,20 @@
-const allTaskData = JSON.parse(localStorage.getItem('allMessage')) || [];
+const allTaskData = JSON.parse(localStorage.getItem('taskData')) || [];
 
 function createTaskToLocalStorage(taskInfo) {
-    const allMessage = {
+    const taskData = {
         title: taskInfo.title,
         date: taskInfo.date,
         time: taskInfo.time,
         comment: taskInfo.comment,
-        id: Date.now(),
+        id: $.now(),
         isEdit: false,
         isStar: false,
         isComplete: false
     }
-    
-    allTaskData.push(allMessage);
-    localStorage.setItem('allMessage', JSON.stringify(allTaskData));
-    // return allMessage
+
+    allTaskData.push(taskData);
+    localStorage.setItem('taskData', JSON.stringify(allTaskData));
+    // return taskData
 }
 
 export { createTaskToLocalStorage, allTaskData };
