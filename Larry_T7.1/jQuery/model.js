@@ -8,8 +8,8 @@ function createTaskToLocalStorage(taskInfo) {
         comment: taskInfo.comment,
         id: $.now(),
         isEdit: false,
-        isStar: false,
-        isComplete: false
+        isStar: taskInfo.isStar,
+        isComplete: taskInfo.isComplete
     }
 
     allTaskData.push(taskData);
