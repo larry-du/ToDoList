@@ -46,7 +46,7 @@ function newEventBinding(e) {
         $(this).toggleClass('is-complete');
     }
     if (isCancel) {
-        clearInputValue();
+        clearNewTaskData();
         removeEventClass();
     }
 
@@ -59,12 +59,12 @@ function newEventBinding(e) {
         }
         createTaskToLocalStorage(taskInfo);
         render(sortData());
-        clearInputValue();
+        clearNewTaskData();
         removeEventClass();
     }
 }
 
-function clearInputValue() {
+function clearNewTaskData() {
     const title = $('.event .type-title');
     const date = $('.event input[type="date"]');
     const time = $('.event input[type="time"]');
@@ -130,7 +130,7 @@ function render({ top, middle, bottom }) {
 function newTaskEventBinding(e) {
     const isStar = $(e.target).hasClass('top-star');
     const isEdit = $(e.target).hasClass('edit-pen');
-    const isCancel = $(e.target).hasClass('cancel-button');
+    const isCancel = $(e.target).hasClass('cancel');
     const isSave = $(e.target).hasClass('save');
 
     const title = $(this).find(`.list-title`);
@@ -144,18 +144,23 @@ function newTaskEventBinding(e) {
         return data.id === Number(taskNumber)
     });
     const targetTask = allTaskData[targetDataIndex];
-
-    
+    console.log(targetTask);
+    if (isStar) {
+        targetTask.isStar = !targetTask.isStar;
+        localStorage.setItem('taskData', JSON.stringify(allTaskData));
+        render(sortData());
+        console.log(targetTask.isStar);
+    }
 
     if (isSave) {
-        const isEditMessage = {
+        const taskData = {
             title: title[0].value,
             date: date[0].value,
             time: time[0].value,
             comment: comment[0].value,
             id: targetTask.id
         }
-        allTaskData[targetDataIndex] = isEditMessage;
+        allTaskData[targetDataIndex] = taskData;
         localStorage.setItem('taskData', JSON.stringify(allTaskData));
         render(sortData());
     }
@@ -174,8 +179,24 @@ function newTaskEventBinding(e) {
         if (preTask && preTask !== currentTask) {
             $(`[data-number="${preTask}"]`).removeClass('isEdit')
         }
-
     }
 
+    if (isCancel) {
+        clearEditTaskData();
+        $(this).removeClass('isEdit');
+        render(sortData());
+    }
+
+}
+
+function clearEditTaskData() {
+    const title = $(this).find(`.list-title`);
+    const date = $(this).find('input[type="date"]');
+    const time = $(this).find('input[type="time"]');
+    const comment = $(this).find('.comment-area');
+    title.val('')
+    date.val('')
+    time.val('')
+    comment.val('')
 }
 
