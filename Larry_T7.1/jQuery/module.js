@@ -25,7 +25,7 @@ function newEventBinding(e) {
     const comment = $('.event .comment-area')[0];
     const check = $('.event input[type="checkbox"]');
 
-    console.log(title)
+    // console.log(title)
     const taskInfo = {
         title: title.value,
         date: date.value,
@@ -131,7 +131,12 @@ function newTaskEventBinding(e) {
     const isStar = $(e.target).hasClass('top-star');
     const isEdit = $(e.target).hasClass('edit-pen');
     const isCancel = $(e.target).hasClass('cancel-button');
-    const isAddNewTask = $(e.target).hasClass('add-button');
+    const isSave = $(e.target).hasClass('save');
+
+    const title = $(this).find(`.list-title`);
+    const date = $(this).find('input[type="date"]');
+    const time = $(this).find('input[type="time"]');
+    const comment = $(this).find('.comment-area');
 
     const taskNumber = this.dataset.number;
 
@@ -140,12 +145,22 @@ function newTaskEventBinding(e) {
     });
     const targetTask = allTaskData[targetDataIndex];
 
-    if (isEdit) {
-        const title = $(this).find(`.list-title`);
-        const date = $(this).find('input[type="date"]');
-        const time = $(this).find('input[type="time"]');
-        const comment = $(this).find('comment-area');
+    
 
+    if (isSave) {
+        const isEditMessage = {
+            title: title[0].value,
+            date: date[0].value,
+            time: time[0].value,
+            comment: comment[0].value,
+            id: targetTask.id
+        }
+        allTaskData[targetDataIndex] = isEditMessage;
+        localStorage.setItem('taskData', JSON.stringify(allTaskData));
+        render(sortData());
+    }
+
+    if (isEdit) {
         //編輯時 tittle可修改
         title.disabled = !title.disabled
         title.val(targetTask.title)
