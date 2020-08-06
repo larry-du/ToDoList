@@ -105,6 +105,7 @@ function sortData() {
             if (!a.isStar && b.isStar) {
                 return 1;
             }
+            // a.isStar && !b.isStar ? -1 : 1
         })
         return {
             top: [...starSort],
@@ -145,8 +146,7 @@ function taskNewEventBinding(event) {
     const getStar = this.classList.contains('high-light');
     const done = this.classList.contains('is-complete')
 
-    this.classList.remove('high-light');
-    this.classList.remove('is-complete');
+
 
     const taskInfo = {
         title: title.value,
@@ -186,12 +186,16 @@ function taskNewEventBinding(event) {
         clearInputValue();
         check.checked = false;
         // console.log(check.checked = false, check.checked)
+        this.classList.remove('high-light');
+        this.classList.remove('is-complete');
         addArea.classList.remove('add-area-none');
         newTask.classList.remove('event-area-block');
     }
     if (isCancelTask) {
         clearInputValue();
         check.checked = false;
+        this.classList.remove('high-light');
+        this.classList.remove('is-complete');
         addArea.classList.remove('add-area-none');
         newTask.classList.remove('event-area-block');
     }
@@ -261,15 +265,21 @@ function taskEditEventBinding(event) {
     const targetTask = allTaskData[targetDataIndex];
 
     if (event.target === check) {
-        targetTask.isComplete = !targetTask.isComplete;
-        localStorage.setItem('allMessage', JSON.stringify(allTaskData));
-        render(sortData());
+        if (!targetTask.isEdit) {
+            targetTask.isComplete = !targetTask.isComplete;
+            localStorage.setItem('allMessage', JSON.stringify(allTaskData));
+            render(sortData());
+        }
     }
 
     if (isStar) {
-        targetTask.isStar = !targetTask.isStar;
-        localStorage.setItem('allMessage', JSON.stringify(allTaskData));
-        render(sortData());
+        if (targetTask.isEdit) {
+            this.classList.toggle('high-light');
+        } else {
+            targetTask.isStar = !targetTask.isStar;
+            localStorage.setItem('allMessage', JSON.stringify(allTaskData));
+            render(sortData());
+        }
     }
 
     if (isEdit) {
@@ -278,6 +288,7 @@ function taskEditEventBinding(event) {
         date.value = targetTask.date;
         time.value = targetTask.time;
         comment.value = targetTask.comment;
+        targetTask.isEdit = !targetTask.isEdit;
 
         let preTask = currentTask;
         currentTask = targetTask.id;
@@ -301,8 +312,19 @@ function taskEditEventBinding(event) {
             date: date.value,
             time: time.value,
             comment: comment.value,
+            isStar: targetTask.isStar,
+            isComplete: targetTask.isComplete,
             id: targetTask.id
         }
+
+        if (this.classList.contains('high-light')) {
+            allMessage.isStar = true;
+        }
+
+        if (check.checked) {
+            allMessage.isComplete = true;
+        }
+
         allTaskData[targetDataIndex] = allMessage;
         localStorage.setItem('allMessage', JSON.stringify(allTaskData));
         render(sortData());
