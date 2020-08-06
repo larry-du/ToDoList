@@ -1,6 +1,7 @@
 // const event = $('.event');
 import { createTaskToLocalStorage, allTaskData } from './model.js';
 import { createList, createEditList } from './template.js';
+let state = 'all';
 let currentTask = null;
 render(sortData());
 
@@ -9,6 +10,44 @@ $('.add-area').on('click', openNewTask);
 function openNewTask() {
     $('.add-area').addClass('add-area-none');
     $('.event-add').addClass('event-area-block');
+}
+
+$('.nav').on('click', $('.nav'), taskClassification);
+function taskClassification(e) {
+    changeState(e)
+    render(taskStateClassification())
+}
+
+function changeState(e) {
+    if (e.target.dataset.state === 'all') {
+        state = 'all';
+    }
+    if (e.target.dataset.state === 'in-progress') {
+        state = 'progress';
+    }
+    if (e.target.dataset.state === 'task-completed') {
+        state = 'complete';
+    }
+}
+
+function taskStateClassification() {
+    if (state === 'all') {
+        return sortData();
+    }
+    if (state === 'progress') {
+        return {
+            top: sortData().top,
+            middle: sortData().middle,
+            bottom: []
+        }
+    }
+    if (state === 'complete') {
+        return {
+            top: [],
+            middle: [],
+            bottom: sortData().bottom
+        }
+    }
 }
 
 //事件委派
@@ -110,6 +149,8 @@ function render({ top, middle, bottom }) {
     $('.complete-area').html($.map(bottom, data => createList(data)).join(''));
     $.map($('.task'), task => $(task).append(createEditList()));
     $('.task').on('click', $('.task'), newTaskEventBinding);
+    const numberOfTask = $(document).find('.task').length;
+    $('.task-left').text(`${numberOfTask} tasks left`);
 }
 
 function newTaskEventBinding(e) {
