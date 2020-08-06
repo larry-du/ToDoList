@@ -25,7 +25,6 @@ function newEventBinding(e) {
     const comment = $('.event .comment-area')[0];
     const check = $('.event input[type="checkbox"]');
 
-    // console.log(title)
     const taskInfo = {
         title: title.value,
         date: date.value,
@@ -65,16 +64,16 @@ function newEventBinding(e) {
 }
 
 function clearNewTaskData() {
-    const title = $('.event .type-title');
-    const date = $('.event input[type="date"]');
-    const time = $('.event input[type="time"]');
-    const comment = $('.event .comment-area');
-    const check = $('input[type="checkbox"]')
-    title[0].value = '';
-    date[0].value = '';
-    time[0].value = '';
-    comment[0].value = '';
-    check[0].checked = false;
+    const title = $('.event .type-title')[0];
+    const date = $('.event input[type="date"]')[0];
+    const time = $('.event input[type="time"]')[0];
+    const comment = $('.event .comment-area')[0];
+    const check = $('input[type="checkbox"]')[0];
+    title.value = '';
+    date.value = '';
+    time.value = '';
+    comment.value = '';
+    check.checked = false;
 
 }
 function removeEventClass() {
@@ -96,11 +95,6 @@ function sortData() {
             return b.id - a.id
         }
         a.isStar && !b.isStar ? -1 : 1;
-        // return (a.isStar === b.isStar)
-        //     ? (b.id - a.id)
-        //     : a.isStar && !b.isStar
-        //         ? -1
-        //         : 1;
     })
 
     return {
@@ -111,19 +105,10 @@ function sortData() {
 }
 
 function render({ top, middle, bottom }) {
-    $('.star-area').html(
-        $.map(top, data => createList(data)).join('')
-    );
-    $('.unfinished-area').html(
-        $.map(middle, data => createList(data)).join('')
-    );
-    $('.complete-area').html(
-        $.map(bottom, data => createList(data)).join('')
-    );
-    $.map($('.task'), task => {
-        // task.insertAdjacentHTML('beforeend', createEditList())
-        $(task).append(createEditList());
-    });
+    $('.star-area').html($.map(top, data => createList(data)).join(''));
+    $('.unfinished-area').html($.map(middle, data => createList(data)).join(''));
+    $('.complete-area').html($.map(bottom, data => createList(data)).join(''));
+    $.map($('.task'), task => $(task).append(createEditList()));
     $('.task').on('click', $('.task'), newTaskEventBinding);
 }
 
@@ -133,6 +118,7 @@ function newTaskEventBinding(e) {
     const isCancel = $(e.target).hasClass('cancel');
     const isSave = $(e.target).hasClass('save');
     const isDelete = $(e.target).hasClass('trash');
+    const isCheck = $(this).find('input[type="checkbox"]');
 
     const title = $(this).find(`.list-title`);
     const date = $(this).find('input[type="date"]');
@@ -140,7 +126,6 @@ function newTaskEventBinding(e) {
     const comment = $(this).find('.comment-area');
 
     const taskNumber = this.dataset.number;
-
     const targetDataIndex = allTaskData.findIndex(data => {
         return data.id === Number(taskNumber)
     });
@@ -150,7 +135,12 @@ function newTaskEventBinding(e) {
         targetTask.isStar = !targetTask.isStar;
         localStorage.setItem('taskData', JSON.stringify(allTaskData));
         render(sortData());
-        console.log(targetTask.isStar);
+    }
+
+    if (isCheck[0] === $(e.target)[0]) {
+        targetTask.isComplete = !targetTask.isComplete;
+        localStorage.setItem('taskData', JSON.stringify(allTaskData));
+        render(sortData());
     }
 
     if (isSave) {
@@ -168,17 +158,17 @@ function newTaskEventBinding(e) {
 
     if (isEdit) {
         //編輯時 tittle可修改
-        title.disabled = !title.disabled
-        title.val(targetTask.title)
-        date.val(targetTask.date)
-        time.val(targetTask.time)
-        comment.val(targetTask.comment)
+        title.disabled = !title.disabled;
+        title.val(targetTask.title);
+        date.val(targetTask.date);
+        time.val(targetTask.time);
+        comment.val(targetTask.comment);
         let preTask = currentTask;
         currentTask = targetTask.id;
         $(this).toggleClass('isEdit');
 
         if (preTask && preTask !== currentTask) {
-            $(`[data-number="${preTask}"]`).removeClass('isEdit')
+            $(`[data-number="${preTask}"]`).removeClass('isEdit');
         }
     }
 
