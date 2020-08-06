@@ -3,6 +3,8 @@ import { createTaskToLocalStorage, allTaskData } from './model.js';
 import { createList, createEditList } from './template.js';
 let state = 'all';
 let currentTask = null;
+$.map(allTaskData, data => data.isEdit = false)
+
 render(sortData());
 
 $('.add-area').on('click', openNewTask);
@@ -171,17 +173,22 @@ function newTaskEventBinding(e) {
         return data.id === Number(taskNumber)
     });
     const targetTask = allTaskData[targetDataIndex];
-
     if (isStar) {
-        targetTask.isStar = !targetTask.isStar;
-        localStorage.setItem('taskData', JSON.stringify(allTaskData));
-        render(sortData());
+        if (targetTask.isEdit) {
+            $(this).toggleClass('high-light');
+        } else {
+            targetTask.isStar = !targetTask.isStar;
+            localStorage.setItem('taskData', JSON.stringify(allTaskData));
+            render(sortData());
+        }
     }
 
     if (isCheck[0] === $(e.target)[0]) {
-        targetTask.isComplete = !targetTask.isComplete;
-        localStorage.setItem('taskData', JSON.stringify(allTaskData));
-        render(sortData());
+        if (!targetTask.isEdit) {
+            targetTask.isComplete = !targetTask.isComplete;
+            localStorage.setItem('taskData', JSON.stringify(allTaskData));
+            render(sortData());
+        }
     }
 
     if (isSave) {
@@ -190,7 +197,15 @@ function newTaskEventBinding(e) {
             date: date[0].value,
             time: time[0].value,
             comment: comment[0].value,
+            isStar: targetTask.isStar,
+            isComplete: targetTask.isComplete,
             id: targetTask.id
+        }
+        if ($(this).hasClass('high-light')) {
+            taskData.isStar = true;
+        }
+        if (isCheck[0].checked) {
+            taskData.isComplete = true;
         }
         allTaskData[targetDataIndex] = taskData;
         localStorage.setItem('taskData', JSON.stringify(allTaskData));
@@ -200,6 +215,7 @@ function newTaskEventBinding(e) {
     if (isEdit) {
         //編輯時 tittle可修改
         title.disabled = !title.disabled;
+        targetTask.isEdit = !targetTask.isEdit;
         title.val(targetTask.title);
         date.val(targetTask.date);
         time.val(targetTask.time);
@@ -221,10 +237,10 @@ function newTaskEventBinding(e) {
 
     if (isCancel) {
         clearEditTaskData();
+        targetTask.isEdit = false;
         $(this).removeClass('isEdit');
         render(sortData());
     }
-
 }
 
 function clearEditTaskData() {
@@ -232,6 +248,7 @@ function clearEditTaskData() {
     const date = $(this).find('input[type="date"]');
     const time = $(this).find('input[type="time"]');
     const comment = $(this).find('.comment-area');
+
     title.val('')
     date.val('')
     time.val('')
