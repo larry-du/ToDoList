@@ -1,4 +1,3 @@
-// const event = $('.event');
 import { createTaskToLocalStorage, allTaskData } from './model.js';
 import { createList, createEditList } from './template.js';
 let state = 'all';
@@ -6,8 +5,9 @@ let currentTask = null;
 $.map(allTaskData, data => data.isEdit = false)
 
 render(sortData());
-
 $('.add-area').on('click', openNewTask);
+
+
 
 function openNewTask() {
     $('.add-area').addClass('add-area-none');
@@ -54,6 +54,8 @@ function taskStateClassification() {
 
 //事件委派
 $('.event').on('click', $('.event'), newEventBinding);
+// $('.task').addEventListener('dragstart', dragEventBinding)
+
 
 function newEventBinding(e) {
     const isStar = $(e.target).hasClass('top-star');
@@ -124,38 +126,116 @@ function removeEventClass() {
     $('.event-add').removeClass('event-area-block');
 }
 
+$.map($('.task'), task => {
+    task.addEventListener('dragstart', dragTask)
+})
+
+$.map($('.task'), task => {
+    task.addEventListener('drop', dropTask)
+})
+
+$.map($('.task'), task => {
+    task.addEventListener('dragenter', cancelDefault)
+})
+$.map($('.task'), task => {
+    task.addEventListener('dragover', cancelDefault)
+})
+
+function cancelDefault(e) {
+    e.preventDefault();
+}
+
+function dragTask(e) {
+    e.dataTransfer.setData('text/plain', this.dataset.number);
+}
+
+function dropTask(e) {
+    const dataNumber = e.dataTransfer.getData('text/plain');
+    const dragItem = $(`div[data-number="${dataNumber}"]`)[0];
+
+    if (dragItem.parentElement !== this.parentElement) return
+
+    if (dragItem.nextElementSibling === this) {
+        this.parentElement.insertBefore(this, dragItem);
+    } else {
+        this.parentElement.insertBefore(dragItem, this);
+    }
+    saveRandomTask()
+}
+
+function saveRandomTask() {
+    const [...tasks] = document.querySelectorAll('.task');
+    tasks.filter(taskFinish => taskFinish.classList.contains('is-complete'))
+        .map(taskDone => taskDone.dataset.number)
+        .forEach((taskDone, index) => {
+            const taskDoneIndex = allTaskData.findIndex(data => {
+                return data.id === Number(taskDone)
+            })
+            allTaskData[taskDoneIndex].order = index + 1;
+        })
+
+    tasks.filter(taskFinish => !taskFinish.classList.contains('is-complete'))
+        .map(taskDone => taskDone.dataset.number)
+        .forEach((taskDone, index) => {
+            const taskDoneIndex = allTaskData.findIndex(data => {
+                return data.id === Number(taskDone)
+            })
+            const a = allTaskData[taskDoneIndex].order = index + 1;
+        })
+    localStorage.setItem('taskData', JSON.stringify(allTaskData));
+}
+
 function sortData() {
     const top = allTaskData.filter(data => data.isStar && !data.isComplete);
     const middle = allTaskData.filter(data => !data.isStar && !data.isComplete);
     const bottom = allTaskData.filter(data => data.isComplete);
+    const getOrder = allTaskData.map(data => data.order).some(data => data !== null)
 
-    const starSort = top.sort((a, b) => b.id - a.id);
-    const middleSort = middle.sort((a, b) => b.id - a.id)
-    const bottomSort = bottom.sort((a, b) => {
-        if (a.isStar === b.isStar) {
-            return b.id - a.id
+    if (getOrder) {
+        const starSort = top.sort((a, b) => a.order - b.order);
+        const middleSort = middle.sort((a, b) => a.order - b.order)
+        const bottomSort = bottom.sort((a, b) => {
+            if (a.isStar === b.isStar) {
+                return a.order - b.order
+            }
+            a.isStar && !b.isStar ? -1 : 1;
+        })
+
+        return {
+            top: [...starSort],
+            middle: [...middleSort],
+            bottom: [...bottomSort]
         }
-        a.isStar && !b.isStar ? -1 : 1;
-    })
+    }
+    if (!getOrder) {
+        const starSort = top.sort((a, b) => b.id - a.id);
+        const middleSort = middle.sort((a, b) => b.id - a.id)
+        const bottomSort = bottom.sort((a, b) => {
+            if (a.isStar === b.isStar) {
+                return b.id - a.id
+            }
+            a.isStar && !b.isStar ? -1 : 1;
+        })
 
-    return {
-        top: [...starSort],
-        middle: [...middleSort],
-        bottom: [...bottomSort]
+        return {
+            top: [...starSort],
+            middle: [...middleSort],
+            bottom: [...bottomSort]
+        }
     }
 }
 
 function render({ top, middle, bottom }) {
+    const numberOfTask = $(document).find('.task').length;
     $('.star-area').html($.map(top, data => createList(data)).join(''));
     $('.unfinished-area').html($.map(middle, data => createList(data)).join(''));
     $('.complete-area').html($.map(bottom, data => createList(data)).join(''));
     $.map($('.task'), task => $(task).append(createEditList()));
-    $('.task').on('click', $('.task'), newTaskEventBinding);
-    const numberOfTask = $(document).find('.task').length;
+    $('.task').on('click', $('.task'), editEventBinding);
     $('.task-left').text(`${numberOfTask} tasks left`);
 }
 
-function newTaskEventBinding(e) {
+function editEventBinding(e) {
     const isStar = $(e.target).hasClass('top-star');
     const isEdit = $(e.target).hasClass('edit-pen');
     const isCancel = $(e.target).hasClass('cancel');
@@ -169,37 +249,37 @@ function newTaskEventBinding(e) {
     const targetTask = allTaskData[targetDataIndex];
 
     if (isStar) {
-        pushStar.call(this, targetTask);
+        pushEditStar.call(this, targetTask);
     }
 
     if (isCheck[0] === $(e.target)[0]) {
-        pushCheck.call(this, targetTask);
+        pushEditCheck.call(this, targetTask);
     }
 
     if (isSave) {
-        pushSave.call(this, targetTask, targetDataIndex, isCheck);
+        pushEditSave.call(this, targetTask, targetDataIndex, isCheck);
     }
 
     if (isEdit) {
-        pushEdit.call(this, targetTask);
+        pushEditTaskButton.call(this, targetTask);
     }
 
     if (isDelete) {
-        pushDelete(targetDataIndex);
+        pushEditDelete(targetDataIndex);
     }
 
     if (isCancel) {
-        pushCancel.call(this, targetTask)
+        pushEditCancel.call(this, targetTask)
     }
 }
 
-function pushCancel(targetTask) {
+function pushEditCancel(targetTask) {
     clearEditTaskData();
     targetTask.isEdit = false;
     $(this).removeClass('isEdit');
     render(sortData());
 }
-function pushStar(targetTask) {
+function pushEditStar(targetTask) {
     if (targetTask.isEdit) {
         $(this).toggleClass('high-light');
     } else {
@@ -208,14 +288,14 @@ function pushStar(targetTask) {
         render(sortData());
     }
 }
-function pushCheck(targetTask) {
+function pushEditCheck(targetTask) {
     if (!targetTask.isEdit) {
         targetTask.isComplete = !targetTask.isComplete;
         localStorage.setItem('taskData', JSON.stringify(allTaskData));
         render(sortData());
     }
 }
-function pushSave(targetTask, targetDataIndex, isCheck) {
+function pushEditSave(targetTask, targetDataIndex, isCheck) {
     const title = $(this).find(`.list-title`);
     const date = $(this).find('input[type="date"]');
     const time = $(this).find('input[type="time"]');
@@ -239,7 +319,7 @@ function pushSave(targetTask, targetDataIndex, isCheck) {
     localStorage.setItem('taskData', JSON.stringify(allTaskData));
     render(sortData());
 }
-function pushEdit(targetTask) {
+function pushEditTaskButton(targetTask) {
     const title = $(this).find(`.list-title`);
     const date = $(this).find('input[type="date"]');
     const time = $(this).find('input[type="time"]');
@@ -259,7 +339,7 @@ function pushEdit(targetTask) {
         $(`[data-number="${preTask}"]`).removeClass('isEdit');
     }
 }
-function pushDelete(targetDataIndex) {
+function pushEditDelete(targetDataIndex) {
     allTaskData.splice(targetDataIndex, 1)
     localStorage.setItem('taskData', JSON.stringify(allTaskData));
     render(sortData());
