@@ -1,45 +1,45 @@
 @use '../theme/color';
 
 //to-do-list-complete樣式
-.complete {
-    padding: 24px 32px;
-    background-color: color.$gray-100;
-    & .card {
-        margin-bottom: 0;
-    }
+// .complete {
+//     padding: 24px 32px;
+//     background-color: color.$gray-100;
+//     & .card {
+//         margin-bottom: 0;
+//     }
 
-    & .card-title span {
-        text-decoration: line-through;
-        color: color.$gray-200;
-    }
+//     & .card-title span {
+//         text-decoration: line-through;
+//         color: color.$gray-200;
+//     }
 
-    //點擊打勾
-    & #complete:checked + label::before {
-        content: "";
-        display: inline-block;
-        width: 24px;
-        height: 24px;
-        background-color: blue;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 50;
-    }
-    & #complete:checked + label::after {
-        content: "";
-        display: inline-block;
-        width: 15px;
-        height: 6px;
-        border: 2px solid white;
-        border-top: none;
-        border-right: none;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        left: 0;
-        margin: auto;
-        transform: rotate(-45deg);
-        z-index: 51;
-    }
-}
+//     //點擊打勾
+//     & #complete:checked + label::before {
+//         content: "";
+//         display: inline-block;
+//         width: 24px;
+//         height: 24px;
+//         background-color: blue;
+//         position: absolute;
+//         top: 0;
+//         left: 0;
+//         z-index: 50;
+//     }
+//     & #complete:checked + label::after {
+//         content: "";
+//         display: inline-block;
+//         width: 15px;
+//         height: 6px;
+//         border: 2px solid white;
+//         border-top: none;
+//         border-right: none;
+//         position: absolute;
+//         top: 0;
+//         bottom: 0;
+//         right: 0;
+//         left: 0;
+//         margin: auto;
+//         transform: rotate(-45deg);
+//         z-index: 51;
+//     }
+// }

@@ -3,41 +3,46 @@
 @use '../theme/font';
 
 .event {
+    display: none;
     background-color: color.$gray-100;
     border-radius: 5px;
     box-shadow: 0 1px 1px 1px color.$gray-200;
     overflow: hidden;
     // display: flex;
     // flex-direction: column;
-    & .card {
-        border-bottom: 3px solid color.$gray-200;
-        padding: 20px 10px 20px 10px;
-        margin-bottom: 24px;
-    }
-    .edit-area {
-        display: none;
-    }
-}
-
-.event {
-    & .edit {
-        padding: 20px 10px 20px 10px;
-        @include breaking-point.breaking-point(sm) {
-            padding: 32px 32px 17px 32px;
-            .edit-area {
-                display: block;
-            }
+    .edit {
+        .card {
+            border-bottom: 3px solid color.$gray-200;
+            padding: 24px 32px 24px 72px;
+            // margin-bottom: 24px;
         }
     }
+
+    & .top-star {
+        // color: color.$light-orange;
+        font-weight: 200;
+    }
+    // .edit-area {
+    //     // display: none;
+    // }
+}
+
+.event-area-none {
+    display: none;
+}
+
+.event-area-block {
+    display: block;
 }
 
 .deadline {
-    padding: 20px 10px 20px 10px;
+    // padding: 20px 10px 20px 10px;
     font-size: 0;
-    margin-bottom: 24px;
-    @include breaking-point.breaking-point(lg) {
-        padding: 0 32px 0 47px;
-    }
+    // margin-bottom: 22px;
+    padding: 24px 32px 24px 72px;
+    // @include breaking-point.breaking-point(lg) {
+    //     // padding: 0 32px 0 47px;
+    // }
     & .deadline-icon {
         margin-bottom: 8px;
         font-size: 0;
@@ -60,12 +65,16 @@
 
     & input {
         padding: 8px 0 8px 0;
+        letter-spacing: -1px;
+        min-width: 125px;
         @include breaking-point.breaking-point(lg) {
             padding: 8px 0 8px 14px;
+            // flex: 1 1 162/620 * 100%;
+            min-width: 135px;
         }
 
-        flex: 1 1 162/620 * 100%;
         @include breaking-point.breaking-point(sm) {
+            // min-width: 132px;
             flex: 0 1 162/620 * 100%;
         }
     }
@@ -76,13 +85,14 @@
 }
 
 .file {
-    padding: 20px 10px 20px 10px;
-    @include breaking-point.breaking-point(lg) {
-        padding: 0 32px 0 47px;
-    }
+    padding: 0px 32px 24px 72px;
+    // padding: 20px 10px 20px 10px;
+    // @include breaking-point.breaking-point(lg) {
+    //     // padding: 0 32px 0 47px;
+    // }
 
     font-size: 0;
-    margin-bottom: 27px;
+    // margin-bottom: 27px;
     & .file-icon {
         margin-bottom: 8px;
         font-size: 0;
@@ -111,28 +121,31 @@
             content: "\f067";
             display: block;
             text-align: center;
-            width: 20px;
-            height: 20px;
+            width: 100%;
+            height: 100%;
             font-family: "Font Awesome 5 pro";
             font-size: 20px;
+            line-height: 32px;
             color: color.$white;
+            background-color: color.$gray-200;
             position: absolute;
-            top: 0;
-            bottom: 0;
-            right: 0;
-            left: 0;
-            margin: auto;
+            // top: 0;
+            // bottom: 0;
+            // right: 0;
+            // left: 0;
+            // margin: auto;
         }
     }
 }
 
 .comment {
-    padding: 20px 10px 20px 10px;
-    @include breaking-point.breaking-point(lg) {
-        padding: 0 78px 0 47px;
-    }
+    // padding: 20px 10px 20px 10px;
+    padding: 0px 32px 24px 72px;
+    // @include breaking-point.breaking-point(lg) {
+    //     // padding: 0 78px 0 47px;
+    // }
     font-size: 0;
-    margin-bottom: 24px;
+    // margin-bottom: 24px;
     & .comment-icon {
         margin-bottom: 8px;
         font-size: 0;
@@ -150,9 +163,9 @@
 
     & .comment-area {
         width: 445/620 * 100%;
-        @include breaking-point.breaking-point(lg) {
-            width: 100%;
-        }
+        // @include breaking-point.breaking-point(lg) {
+        //     width: 100%;
+        // }
         height: 120px;
         outline: none;
         resize: none;
@@ -160,5 +173,85 @@
         margin-left: 33px;
         border: none;
         border-radius: 2px;
+    }
+}
+
+.event {
+    margin-bottom: 24px;
+    & .edit {
+        // padding: 20px 10px 20px 10px;
+        @include breaking-point.breaking-point(sm) {
+            // padding: 32px 32px 17px 32px;
+            .edit-area {
+                display: block;
+            }
+        }
+        & .edit-info {
+            padding: 24px 32px 24px 72px;
+        }
+    }
+    & .deadline {
+        padding: 0;
+        margin-bottom: 22px;
+    }
+    & .file {
+        padding: 0;
+        margin-bottom: 27px;
+    }
+    & .comment {
+        padding: 0;
+    }
+    & .top-star {
+        &:hover {
+            color: color.$orange;
+            font-weight: 200;
+        }
+    }
+    & .edit-pen {
+        &:hover {
+            color: color.$blue;
+            font-weight: 200;
+        }
+    }
+    & input:checked + label::before {
+        content: "";
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background-color: color.$blue;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 50;
+    }
+
+    //點擊打勾
+    & input:checked + label::after {
+        content: "";
+        display: inline-block;
+        width: 15px;
+        height: 6px;
+        border: 2px solid white;
+        border-top: none;
+        border-right: none;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        margin: auto;
+        transform: rotate(-45deg);
+        z-index: 51;
+    }
+}
+
+.event.high-light {
+    background-color: color.$light-orange;
+    & .top-star {
+        font-weight: 900;
+        color: color.$orange;
+    }
+    & .type-title {
+        background-color: color.$light-orange;
     }
 }

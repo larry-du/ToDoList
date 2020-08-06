@@ -1,14 +1,47 @@
 @use '../theme/color';
 
 //to-do-list-task樣式
+// .margin-bottom-80 {
+//     margin-bottom: 80px;
+// }
 .task {
-    background-color: color.$light-orange;
-    & #task:checked + label::before {
+    margin-bottom: 8px;
+    background-color: color.$gray-100;
+    & .card-body {
+        margin-bottom: 19px;
+    }
+
+    & .top-star {
+        // color: color.$orange;
+        font-weight: 200;
+        &:hover {
+            color: color.$orange;
+        }
+    }
+
+    & .edit-pen {
+        // color: color.$orange;
+        // font-weight: 200;
+        &:hover {
+            color: color.$blue;
+        }
+    }
+
+    & .trash {
+        // color: color.$orange;
+        // font-weight: 200;
+        &:hover {
+            color: color.$red;
+        }
+    }
+
+    // background-color: color.$light-orange;
+    & input:checked + label::before {
         content: "";
         display: inline-block;
         width: 24px;
         height: 24px;
-        background-color: blue;
+        background-color: color.$blue;
         position: absolute;
         top: 0;
         left: 0;
@@ -16,7 +49,83 @@
     }
 
     //點擊打勾
-    & #task:checked + label::after {
+    & input:checked + label::after {
+        content: "";
+        display: inline-block;
+        width: 15px;
+        height: 6px;
+        border: 2px solid white;
+        border-top: none;
+        border-right: none;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        margin: auto;
+        transform: rotate(-45deg);
+        z-index: 51;
+    }
+}
+
+.isEdit {
+    & .save-info {
+        display: block;
+    }
+    & .status {
+        display: none;
+    }
+    & .edit-pen {
+        font-weight: 900;
+        color: color.$blue;
+    }
+}
+
+.get-date {
+    display: inline-block;
+}
+
+.task.high-light {
+    background-color: color.$light-orange;
+    & .top-star {
+        font-weight: 900;
+        color: color.$orange;
+    }
+    & .list-title {
+        background-color: color.$light-orange;
+    }
+}
+
+.task.is-complete {
+    background-color: color.$gray-100;
+    & .list-title {
+        text-decoration: line-through;
+        color: color.$gray-200;
+        background-color: color.$gray-100;
+    }
+
+    & .status span {
+        color: color.$gray-200;
+        background-color: color.$gray-100;
+    }
+
+    & i {
+        color: color.$gray-200;
+    }
+
+    & input:checked + label::before {
+        content: "";
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background-color: color.$blue;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 50;
+    }
+    //點擊打勾
+    & input:checked + label::after {
         content: "";
         display: inline-block;
         width: 15px;

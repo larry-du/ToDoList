@@ -5,11 +5,11 @@
 @use '../component/check-button';
 @use '../component/event-save';
 .main {
-    background-color: color.$gray-scale;
+    // background-color: color.$gray-scale;
     padding-top: 24px;
 
     & .task-left {
-        padding: 0 32px 17px 32px;
+        padding: 0 32px;
         margin-top: 8px;
         @extend %remark_regular-italic;
         color: color.$gray-200;

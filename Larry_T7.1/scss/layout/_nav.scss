@@ -47,14 +47,25 @@
 
 //nav樣式斷點
 .nav-text {
-    display: none;
-    @include breaking-point.breaking-point(md) {
-        display: flex;
-    }
-}
-.nav-icon {
     display: flex;
-    @include breaking-point.breaking-point(md) {
+    & span {
         display: none;
     }
+    & i {
+        display: inline;
+    }
+    @include breaking-point.breaking-point(md) {
+        & span {
+            display: inline;
+        }
+        & i {
+            display: none;
+        }
+    }
 }
+// .nav-icon {
+//     display: flex;
+//     @include breaking-point.breaking-point(md) {
+//         display: none;
+//     }
+// }

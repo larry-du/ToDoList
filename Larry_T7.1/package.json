@@ -11,6 +11,7 @@
   "description": "",
   "dependencies": {
     "bootstrap": "^4.4.1",
+    "jquery": "^3.5.1",
     "sass": "^1.26.3"
   }
 }

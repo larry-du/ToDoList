@@ -24,10 +24,15 @@
         @extend %placeholder_regular;
         // font-family: Roboto regular;
         padding-left: 67px;
+        padding-right: 18px;
         padding-top: 19px;
         padding-bottom: 18px;
     }
     & input::placeholder {
         color: color.$gray-200;
     }
+}
+
+.add-area-none {
+    display: none;
 }

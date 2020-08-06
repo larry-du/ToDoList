@@ -1,10 +1,34 @@
 @use '../theme/font';
 @use '../theme/color';
 
-.none {
-    display: none;
+.to-do-list-area {
+    & .card {
+        // border-bottom: 3px solid color.$gray-200;
+        padding: 24px 32px 16px 72px;
+        // margin-bottom: 24px;
+    }
+}
+
+.save-area {
+    // display: none;
+    background-color: color.$gray-100;
+    border-radius: 5px;
+    box-shadow: 0 1px 1px 1px color.$gray-200;
+    overflow: hidden;
+    // display: flex;
+    // flex-direction: column;
+
+    // .edit-area {
+    //     display: none;
+    // }
 }
 .save {
+    // padding: 32px 32px 17px 32px;
+    & .card {
+        // border-bottom: 3px solid color.$gray-200;
+        padding: 24px 32px 24px 72px;
+        margin-bottom: 24px;
+    }
     & .file-area {
         display: flex;
     }
@@ -21,4 +45,17 @@
     & .add-file {
         align-self: center;
     }
+}
+
+.save-info {
+    display: none;
+    margin-bottom: 80px;
+    .save-detail {
+        border-top: 3px solid color.$gray-200;
+        // padding: 24px 32px 24px 72px;
+    }
+}
+
+.save-area-block {
+    display: block;
 }

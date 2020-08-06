@@ -19,25 +19,58 @@
     @include breaking-point.breaking-point(sm) {
         padding: 32px 32px 17px 32px;
         .edit-area {
-            display: block;
+            // display: block;
+            display: flex;
         }
     }
 }
 
 //list內容樣式
 .card {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 19px;
+    // display: flex;
+    // justify-content: space-between;
+    // margin-bottom: 19px;
+    & .card-body {
+        display: flex;
+        justify-content: space-between;
+        // margin-bottom: 15px;
+    }
 
     & .card-title {
         display: flex;
+        flex: 0 0 60%;
+        @include breaking-point.breaking-point(sm) {
+            flex: 0 0 70%;
+        }
+    }
+    & .list-title {
+        // display: block;
+        // background-color: color.$light-orange;
+        background-color: color.$gray-100;
+        display: inline-block;
+        outline: none;
+        width: 100%;
+        @extend %subtitle;
+        // @extend %title;
+        // vertical-align: middle;
+        color: color.$black;
     }
     & .check-area {
         font-size: 0;
     }
     & input {
         display: none;
+    }
+    & input::placeholder {
+        color: color.$gray-200;
+    }
+    & .type-title {
+        display: inline-block;
+        outline: none;
+        width: 100%;
+        @extend %subtitle;
+        background-color: color.$gray-100;
+        // @extend $gray-100;
     }
     & label {
         display: inline-block;
@@ -47,6 +80,9 @@
         margin-right: 16px;
         background-color: white;
         position: relative;
+        &:hover {
+            cursor: pointer;
+        }
     }
 
     & span {
@@ -61,29 +97,45 @@
 
     & .edit-area i {
         vertical-align: middle;
-        font-size: 24px;
+        // font-size: %subtitle;
+        // @extend %subtitle;
+        font-size: 20px;
+        @include breaking-point.breaking-point(lg) {
+            font-size: 24px;
+        }
         cursor: pointer;
     }
 
     & .edit-area i + i {
-        margin-left: 32px;
+        // margin-left: 32px;
+        margin-left: 10px;
+        @include breaking-point.breaking-point(sm) {
+            margin-left: 19px;
+        }
     }
 
-    & .edit-area .important {
-        color: color.$orange;
-    }
+    // & .edit-area .top-star {
+    //     // color: color.$orange;
+    //     font-weight: 200;
+    //     &:hover {
+    //         color: color.$orange;
+    //     }
+    // }
 }
 
 .status {
     font-size: 0;
-    margin-left: 50px;
+    margin-left: 40px;
 
-    & i {
+    & i,
+    &span {
         font-size: 16px;
         margin-left: 16px;
+        vertical-align: middle;
     }
     & .date {
         display: inline-block;
+        // display: none;
         font-size: 0;
     }
 
