@@ -162,85 +162,107 @@ function newTaskEventBinding(e) {
     const isSave = $(e.target).hasClass('save');
     const isDelete = $(e.target).hasClass('trash');
     const isCheck = $(this).find('input[type="checkbox"]');
-
-    const title = $(this).find(`.list-title`);
-    const date = $(this).find('input[type="date"]');
-    const time = $(this).find('input[type="time"]');
-    const comment = $(this).find('.comment-area');
-
     const taskNumber = this.dataset.number;
     const targetDataIndex = allTaskData.findIndex(data => {
         return data.id === Number(taskNumber)
     });
     const targetTask = allTaskData[targetDataIndex];
+
     if (isStar) {
-        if (targetTask.isEdit) {
-            $(this).toggleClass('high-light');
-        } else {
-            targetTask.isStar = !targetTask.isStar;
-            localStorage.setItem('taskData', JSON.stringify(allTaskData));
-            render(sortData());
-        }
+        pushStar.call(this, targetTask);
     }
 
     if (isCheck[0] === $(e.target)[0]) {
-        if (!targetTask.isEdit) {
-            targetTask.isComplete = !targetTask.isComplete;
-            localStorage.setItem('taskData', JSON.stringify(allTaskData));
-            render(sortData());
-        }
+        pushCheck.call(this, targetTask);
     }
 
     if (isSave) {
-        const taskData = {
-            title: title[0].value,
-            date: date[0].value,
-            time: time[0].value,
-            comment: comment[0].value,
-            isStar: targetTask.isStar,
-            isComplete: targetTask.isComplete,
-            id: targetTask.id
-        }
-        if ($(this).hasClass('high-light')) {
-            taskData.isStar = true;
-        }
-        if (isCheck[0].checked) {
-            taskData.isComplete = true;
-        }
-        allTaskData[targetDataIndex] = taskData;
-        localStorage.setItem('taskData', JSON.stringify(allTaskData));
-        render(sortData());
+        pushSave.call(this, targetTask, targetDataIndex, isCheck);
     }
 
     if (isEdit) {
-        //編輯時 tittle可修改
-        title.disabled = !title.disabled;
-        targetTask.isEdit = !targetTask.isEdit;
-        title.val(targetTask.title);
-        date.val(targetTask.date);
-        time.val(targetTask.time);
-        comment.val(targetTask.comment);
-        let preTask = currentTask;
-        currentTask = targetTask.id;
-        $(this).toggleClass('isEdit');
-
-        if (preTask && preTask !== currentTask) {
-            $(`[data-number="${preTask}"]`).removeClass('isEdit');
-        }
+        pushEdit.call(this, targetTask);
     }
 
     if (isDelete) {
-        allTaskData.splice(targetDataIndex, 1)
-        localStorage.setItem('taskData', JSON.stringify(allTaskData));
-        render(sortData());
+        pushDelete(targetDataIndex);
     }
 
     if (isCancel) {
-        clearEditTaskData();
-        targetTask.isEdit = false;
-        $(this).removeClass('isEdit');
+        pushCancel.call(this, targetTask)
+    }
+}
+
+function pushCancel(targetTask) {
+    clearEditTaskData();
+    targetTask.isEdit = false;
+    $(this).removeClass('isEdit');
+    render(sortData());
+}
+function pushStar(targetTask) {
+    if (targetTask.isEdit) {
+        $(this).toggleClass('high-light');
+    } else {
+        targetTask.isStar = !targetTask.isStar;
+        localStorage.setItem('taskData', JSON.stringify(allTaskData));
         render(sortData());
     }
+}
+function pushCheck(targetTask) {
+    if (!targetTask.isEdit) {
+        targetTask.isComplete = !targetTask.isComplete;
+        localStorage.setItem('taskData', JSON.stringify(allTaskData));
+        render(sortData());
+    }
+}
+function pushSave(targetTask, targetDataIndex, isCheck) {
+    const title = $(this).find(`.list-title`);
+    const date = $(this).find('input[type="date"]');
+    const time = $(this).find('input[type="time"]');
+    const comment = $(this).find('.comment-area');
+    const taskData = {
+        title: title[0].value,
+        date: date[0].value,
+        time: time[0].value,
+        comment: comment[0].value,
+        isStar: targetTask.isStar,
+        isComplete: targetTask.isComplete,
+        id: targetTask.id
+    }
+    if ($(this).hasClass('high-light')) {
+        taskData.isStar = true;
+    }
+    if (isCheck[0].checked) {
+        taskData.isComplete = true;
+    }
+    allTaskData[targetDataIndex] = taskData;
+    localStorage.setItem('taskData', JSON.stringify(allTaskData));
+    render(sortData());
+}
+function pushEdit(targetTask) {
+    const title = $(this).find(`.list-title`);
+    const date = $(this).find('input[type="date"]');
+    const time = $(this).find('input[type="time"]');
+    const comment = $(this).find('.comment-area');
+    //編輯時 tittle可修改
+    title.disabled = !title.disabled;
+    targetTask.isEdit = !targetTask.isEdit;
+    title.val(targetTask.title);
+    date.val(targetTask.date);
+    time.val(targetTask.time);
+    comment.val(targetTask.comment);
+    let preTask = currentTask;
+    currentTask = targetTask.id;
+    $(this).toggleClass('isEdit');
+
+    if (preTask && preTask !== currentTask) {
+        $(`[data-number="${preTask}"]`).removeClass('isEdit');
+    }
+}
+function pushDelete(targetDataIndex) {
+    allTaskData.splice(targetDataIndex, 1)
+    localStorage.setItem('taskData', JSON.stringify(allTaskData));
+    render(sortData());
 }
 
 function clearEditTaskData() {
