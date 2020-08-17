@@ -43,93 +43,16 @@
         <main class="main">
             <div class="add-area container"
                 :class="{'add-area-none':addNewTask}"
-                @click="openNewTask">
+                @click="addNewTask = true">
                 <input type="text"
                     placeholder="Add Task"
                     class="add-task">
                 <i class="fal fa-plus"></i>
             </div>
-            <div class="event event-add container"
-                :class="{'event-area-block':addNewTask}">
-                <div class="edit">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-title">
-                                <div class="check-area">
-                                    <input type="checkbox"
-                                        id="event-check"
-                                        class="check">
-                                    <label for="event-check"></label>
-                                </div>
 
-                                <input type="text"
-                                    placeholder="Type Something Here..."
-                                    class="type-title"
-                                    v-bind:value="allTaskData.title"
-                                    @input="addTitle">
-
-                            </div>
-                            <div class="edit-area">
-                                <i class="fas fa-star top-star"></i>
-                                <i class="fal fa-pen edit-pen"
-                                    :class="{'add-area-none':!addNewTask ,'event-area-block':!addNewTask}"
-                                    @click="editNewTask"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="edit-info">
-                        <div class="deadline">
-                            <div class="deadline-icon ">
-                                <i class="far fa-calendar-alt fa-fw"></i>
-                                <span>Deadline</span>
-                            </div>
-                            <div class="date-area">
-                                <input type="date"
-                                    class="date"
-                                    :value="allTaskData.date"
-                                    @input="addDate">
-                                <input type="time"
-                                    :value="allTaskData.time"
-                                    @input="addTime">
-                            </div>
-                        </div>
-
-                        <div class="file">
-                            <div class="file-icon">
-                                <i class="fal fa-file fa-fw"></i>
-                                <span>file</span>
-                            </div>
-                            <div class="file-area">
-                                <input type="file"
-                                    class="add-file">
-                            </div>
-                        </div>
-
-                        <div class="comment">
-                            <div class="comment-icon">
-                                <i class="fal fa-comment-dots fa-fw"></i>
-                                <span>comment</span>
-                            </div>
-                            <textarea class="comment-area"
-                                placeholder="Type your memo here..."
-                                :value="allTaskData.comment"
-                                @input="addComment"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="check-button">
-                    <button class="cancel-button"
-                        @click="closeNewTask">
-                        <i class="fal fa-times"></i>
-                        Cancel
-                    </button>
-                    <button class="add-button">
-                        <i class="fal fa-plus"></i>
-                        Add Task
-                    </button>
-                </div>
-            </div>
-
+            <new-task
+                @change="addNewTask = false"
+                :open-task="addNewTask"></new-task>
 
             <section class="to-do-list-area">
                 <section class="star-area"></section>
@@ -142,7 +65,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script type="module"
-        src="module.js"></script>
+        src="main.js"></script>
 </body>
 
 </html>
