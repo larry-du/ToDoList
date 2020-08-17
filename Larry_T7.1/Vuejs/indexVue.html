@@ -42,7 +42,7 @@
         </header>
         <main class="main">
             <div class="add-area container"
-                v-show="!addNewTask"
+                :class="{'add-area-none':addNewTask}"
                 @click="openNewTask">
                 <input type="text"
                     placeholder="Add Task"
@@ -50,7 +50,7 @@
                 <i class="fal fa-plus"></i>
             </div>
             <div class="event event-add container"
-                v-show="addNewTask">
+                :class="{'event-area-block':addNewTask}">
                 <div class="edit">
                     <div class="card">
                         <div class="card-body">
@@ -64,11 +64,16 @@
 
                                 <input type="text"
                                     placeholder="Type Something Here..."
-                                    class="type-title">
+                                    class="type-title"
+                                    v-bind:value="allTaskData.title"
+                                    @input="addTitle">
+
                             </div>
                             <div class="edit-area">
                                 <i class="fas fa-star top-star"></i>
-                                <i class="fal fa-pen edit-pen"></i>
+                                <i class="fal fa-pen edit-pen"
+                                    :class="{'add-area-none':!addNewTask ,'event-area-block':!addNewTask}"
+                                    @click="editNewTask"></i>
                             </div>
                         </div>
                     </div>
@@ -80,8 +85,12 @@
                             </div>
                             <div class="date-area">
                                 <input type="date"
-                                    class="date">
-                                <input type="time">
+                                    class="date"
+                                    :value="allTaskData.date"
+                                    @input="addDate">
+                                <input type="time"
+                                    :value="allTaskData.time"
+                                    @input="addTime">
                             </div>
                         </div>
 
@@ -102,7 +111,9 @@
                                 <span>comment</span>
                             </div>
                             <textarea class="comment-area"
-                                placeholder="Type your memo here..."></textarea>
+                                placeholder="Type your memo here..."
+                                :value="allTaskData.comment"
+                                @input="addComment"></textarea>
                         </div>
                     </div>
                 </div>

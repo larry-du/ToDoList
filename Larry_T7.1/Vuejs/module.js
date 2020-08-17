@@ -3,15 +3,46 @@ import { createList, createEditList } from './template.js';
 
 let vm = new Vue({
     el: '#app',
-    data: {
-        allData: allTaskData,
-        addNewTask: false
+    data() {
+        return {
+            allTaskData: {
+                // value:
+                title: '',
+                date: '',
+                time: '',
+                comment: '',
+                // id: $.now(),
+                // isEdit: false,
+                // isStar: taskInfo.isStar,
+                // isComplete: taskInfo.isComplete
+            },
+            addNewTask: false
+        }
     },
     methods: {
         openNewTask() {
             this.addNewTask = true;
         },
         closeNewTask() {
+            this.addNewTask = false;
+            this.allTaskData.title = '';
+            this.allTaskData.date = '';
+            this.allTaskData.time = '';
+            this.allTaskData.comment = '';
+        },
+        addTitle(event) {
+            this.allTaskData.title = event.target.value;
+        },
+        addDate(event) {
+            this.allTaskData.date = event.target.value;
+        },
+        addTime(event) {
+            this.allTaskData.time = event.target.value;
+        },
+        addComment(event) {
+            this.allTaskData.comment = event.target.value;
+        },
+        editNewTask() {
             this.addNewTask = false;
         }
     }
