@@ -1,15 +1,31 @@
-import newTask from './taskTemplate.js'
+import newTask from './newTaskTemplate.js'
+import toDoList from './taskTemplate.js'
 let vm = new Vue({
     el: '#app',
     components: {
-        'new-task': newTask
+        'new-task': newTask,
+        'to-do-list': toDoList
     },
     data() {
         return {
+            allTaskData: [],
             addNewTask: false,
         }
     },
+    created() {
+        //創建vue實例取得資料
+        this.initTaskData();
+    },
     methods: {
+        initTaskData() {
+            this.allTaskData = JSON.parse(localStorage.getItem("toDoData")) || [];
+        },
+        createNewTask(taskData) {
+            // console.log(taskData);
+            this.allTaskData.push(taskData);
+            localStorage.setItem("toDoData", JSON.stringify(this.allTaskData));
+            this.addNewTask = false;
+        }
         // closeNewTask() {
         //     this.addNewTask = false;
         // },

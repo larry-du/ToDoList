@@ -50,12 +50,14 @@
                 <i class="fal fa-plus"></i>
             </div>
 
-            <new-task
-                @change="addNewTask = false"
+            <new-task @change-task-state="createNewTask"
                 :open-task="addNewTask"></new-task>
 
             <section class="to-do-list-area">
-                <section class="star-area"></section>
+
+                <section class="star-area">
+                    <to-do-list :to-do="allTaskData"></to-do-list>
+                </section>
                 <section class="unfinished-area"></section>
                 <section class="complete-area"></section>
             </section>
