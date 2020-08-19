@@ -100,8 +100,8 @@ export default {
                 comment: '',
                 dataId: '',
                 isStar: false,
-                isComplete: false
-                // isEdit: false,
+                isComplete: false,
+                isEdit: false
             },
 
         }
@@ -143,9 +143,15 @@ export default {
         },
         highLight() {
             this.taskData.isStar = !this.taskData.isStar;
+            if (this.taskData.isStar) {
+                this.taskData.isStar = this.taskData.isStar;
+            }
         },
         addComplete() {
-            this.taskData.isComplete = !this.taskData.isComplete
+            this.taskData.isComplete = !this.taskData.isComplete;
+            if (this.taskData.isComplete) {
+                this.taskData.isComplete = this.taskData.isComplete
+            }
         }
     }
 

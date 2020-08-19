@@ -1,5 +1,6 @@
 import newTask from './newTaskTemplate.js'
 import toDoList from './taskTemplate.js'
+
 let vm = new Vue({
     el: '#app',
     components: {
@@ -10,6 +11,7 @@ let vm = new Vue({
         return {
             allTaskData: [],
             addNewTask: false,
+            currentTask: null
         }
     },
     created() {
@@ -21,14 +23,37 @@ let vm = new Vue({
             this.allTaskData = JSON.parse(localStorage.getItem("toDoData")) || [];
         },
         createNewTask(taskData) {
-            // console.log(taskData);
             this.allTaskData.push(taskData);
             localStorage.setItem("toDoData", JSON.stringify(this.allTaskData));
             this.addNewTask = false;
+        },
+        changeCurrentTask(id) {
+            if (this.currentTask === id) {
+                this.currentTask = null;
+            } else {
+                this.currentTask = id;
+            }
         }
         // closeNewTask() {
         //     this.addNewTask = false;
         // },
+    },
+    computed: {
+        topArea() {
+            return this.allTaskData.filter(function (data) {
+                return data.isStar && !data.isComplete;
+            })
+        },
+        middleArea() {
+            return this.allTaskData.filter(function (data) {
+                return !data.isStar && !data.isComplete;
+            })
+        },
+        bottomArea() {
+            return this.allTaskData.filter(function (data) {
+                return data.isComplete;
+            })
+        }
     }
 })
 

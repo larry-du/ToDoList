@@ -56,10 +56,17 @@
             <section class="to-do-list-area">
 
                 <section class="star-area">
-                    <to-do-list :to-do="allTaskData"></to-do-list>
+                    <to-do-list v-for="data in allTaskData"
+                        :task="data" 
+                        :is-edit="currentTask === data.dataId"
+                        @toggle-edit-task="changeCurrentTask"></to-do-list>
                 </section>
-                <section class="unfinished-area"></section>
-                <section class="complete-area"></section>
+                <section class="unfinished-area">
+
+                </section>
+                <section class="complete-area">
+
+                </section>
             </section>
             <p class="container task-left">0 tasks left</p>
         </main>
