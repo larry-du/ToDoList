@@ -13,15 +13,16 @@ const template = `
                         <label :for="'task-check-'+ task.dataId"></label>
                     </div>
                     <input class="list-title"
-                        :value="task.title"
-                        disabled>
+                        v-model="currentTaskMessage.title"
+                        :disabled="!isEdit">
                 </div>
                 <div class="edit-area">
                     <i class="fas fa-star top-star"
                         @click="highLightButton($event, task)"></i>
                     <i class="fal fa-pen edit-pen"
                     @click="editTaskButton($event, task)"></i>
-                    <i class="fal fa-trash-alt trash"></i>
+                    <i class="fal fa-trash-alt trash"
+                    @click="deleteTask(task)"></i>
                 </div>
             </div>
             <div class="status">
@@ -33,7 +34,7 @@ const template = `
                 <i class="fal fa-comment-dots comment-icon"></i>
             </div>
         </div>
-        <div class="save-info" :class="{'save-area-block':task.isEdit}">
+        <div class="save-info" :class="{'save-area-block':isEdit}">
         <div class="save-detail">
             <div class="deadline">
                 <div class="deadline-icon">
@@ -41,8 +42,8 @@ const template = `
                     <span>Deadline</span>
                 </div>
                 <div class="date-area">
-                    <input type="date" :value="task.date">
-                    <input type="time" :value="task.time">
+                    <input type="date" v-model="currentTaskMessage.date">
+                    <input type="time" v-model="currentTaskMessage.time">
                 </div>
             </div>
 
@@ -70,15 +71,18 @@ const template = `
 
                 <textarea class="comment-area"
                     placeholder="Type your memo here..."
-                    :value="task.comment"></textarea>
+                    v-model="currentTaskMessage.comment"
+                    ></textarea>
             </div>
         </div>
         <div class="check-button">
-            <button class="cancel">
+            <button class="cancel"
+            @click="closeEditTask(task)">
                 <i class="fal fa-times"></i>
                 Cancel
             </button>
-            <button class="save">
+            <button class="save"
+            @click="saveEditTask(task)">
                 <i class="fal fa-plus"></i>
                 Save
             </button>
@@ -100,22 +104,49 @@ export default {
     },
     data() {
         return {
-            current: null
+            current: null,
+            currentTaskMessage: {
+                title: this.task.title,
+                date: this.task.date,
+                time: this.task.time,
+                comment: this.task.comment,
+                dataId: this.task.dataId,
+                isStar: this.task.isStar,
+                isComplete: this.task.isComplete,
+                isEdit: this.task.isEdit
+            }
         }
     },
     methods: {
         highLightButton(e, data) {
-            data.isStar = !data.isStar;
+            this.$emit('get-star', data.dataId);
         },
         editTaskButton(e, data) {
-            this.$emit('toggle-edit-task', data.dataId)
+            this.$emit('toggle-edit-task', data.dataId);
+        },
+        deleteTask(data) {
+            this.$emit('task-delete', data.dataId);
+        },
+        closeEditTask(data) {
+            this.$emit('task-close', data.dataId);
+        },
+        saveEditTask(data) {
+            this.$emit('task-edit-save', this.currentTaskMessage);
         }
 
     },
     // computed: {
     //     test() {
-    //         console.log(111)
-    //         return data.dataId === this.current
+    //         return {
+    //             title: this.task.title,
+    //             date: this.task.date,
+    //             time: this.task.time,
+    //             comment: this.task.comment,
+    //             dataId: this.task.dataId,
+    //             isStar: this.task.isStar,
+    //             isComplete: this.task.isComplete,
+    //             isEdit: this.task.isEdit
+    //         }
     //     }
     // }
 }

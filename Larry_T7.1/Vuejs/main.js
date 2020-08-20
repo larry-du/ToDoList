@@ -28,31 +28,38 @@ let vm = new Vue({
             this.addNewTask = false;
         },
         changeCurrentTask(id) {
-            if (this.currentTask === id) {
-                this.currentTask = null;
-            } else {
-                this.currentTask = id;
-            }
+            this.currentTask === id ? this.currentTask = null : this.currentTask = id;
+        },
+        deleteTask(id) {
+            const currentIndex = this.allTaskData.findIndex(data => data.dataId === id);
+            this.allTaskData.splice(currentIndex, 1);
+            localStorage.setItem("toDoData", JSON.stringify(this.allTaskData));
+        },
+        getStar(id) {
+            const currentIndex = this.allTaskData.findIndex(data => data.dataId === id);
+
+            this.allTaskData[currentIndex].isStar = !this.allTaskData[currentIndex].isStar;
+        },
+        closeTask(id) {
+            this.currentTask === id ? this.currentTask = null : this.currentTask = id;
+        },
+        saveEditTask(currentData) {
+            const currentIndex = this.allTaskData.findIndex(data => data.dataId === currentData.dataId);
+
+            this.allTaskData[currentIndex] = currentData;
+            localStorage.setItem("toDoData", JSON.stringify(this.allTaskData));
+            // console.log(currentData);
         }
-        // closeNewTask() {
-        //     this.addNewTask = false;
-        // },
     },
     computed: {
         topArea() {
-            return this.allTaskData.filter(function (data) {
-                return data.isStar && !data.isComplete;
-            })
+            return this.allTaskData.filter(data => data.isStar && !data.isComplete)
         },
         middleArea() {
-            return this.allTaskData.filter(function (data) {
-                return !data.isStar && !data.isComplete;
-            })
+            return this.allTaskData.filter(data => !data.isStar && !data.isComplete)
         },
         bottomArea() {
-            return this.allTaskData.filter(function (data) {
-                return data.isComplete;
-            })
+            return this.allTaskData.filter(data => data.isComplete)
         }
     }
 })

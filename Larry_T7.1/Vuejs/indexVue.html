@@ -57,9 +57,13 @@
 
                 <section class="star-area">
                     <to-do-list v-for="data in allTaskData"
-                        :task="data" 
+                        :task="data"
                         :is-edit="currentTask === data.dataId"
-                        @toggle-edit-task="changeCurrentTask"></to-do-list>
+                        @toggle-edit-task="changeCurrentTask"
+                        @task-delete="deleteTask"
+                        @get-star="getStar"
+                        @task-close="closeTask"
+                        @task-edit-save="saveEditTask"></to-do-list>
                 </section>
                 <section class="unfinished-area">
 
