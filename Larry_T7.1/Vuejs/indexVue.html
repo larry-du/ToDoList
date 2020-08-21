@@ -57,7 +57,7 @@
             <section class="to-do-list-area">
 
                 <section class="star-area">
-                    <to-do-list v-for="data in allTaskData"
+                    <to-do-list v-for="data in topArea"
                         :task="data"
                         :is-edit="currentTask === data.dataId"
                         :key="data.dataId"
@@ -69,10 +69,28 @@
                         @task-complete="getComplete"></to-do-list>
                 </section>
                 <section class="unfinished-area">
-
+                    <to-do-list v-for="data in middleArea"
+                        :task="data"
+                        :is-edit="currentTask === data.dataId"
+                        :key="data.dataId"
+                        @toggle-edit-task="changeCurrentTask"
+                        @task-delete="deleteTask"
+                        @get-star="getStar"
+                        @task-close="closeTask"
+                        @task-edit-save="saveEditTask"
+                        @task-complete="getComplete"></to-do-list>
                 </section>
                 <section class="complete-area">
-
+                    <to-do-list v-for="data in bottomArea"
+                        :task="data"
+                        :is-edit="currentTask === data.dataId"
+                        :key="data.dataId"
+                        @toggle-edit-task="changeCurrentTask"
+                        @task-delete="deleteTask"
+                        @get-star="getStar"
+                        @task-close="closeTask"
+                        @task-edit-save="saveEditTask"
+                        @task-complete="getComplete"></to-do-list>
                 </section>
             </section>
             <p class="container task-left">0 tasks left</p>
