@@ -9,7 +9,8 @@ const template = `
                     <div class="check-area">
                         <input type="checkbox"
                             :id="'task-check-' + task.dataId"
-                            :checked="task.isComplete">
+                            :checked="currentTaskMessage.isComplete"
+                            @change="addComplete(currentTaskMessage)">
                         <label :for="'task-check-'+ task.dataId"></label>
                     </div>
                     <input class="list-title"
@@ -18,9 +19,9 @@ const template = `
                 </div>
                 <div class="edit-area">
                     <i class="fas fa-star top-star"
-                        @click="highLightButton($event, task)"></i>
+                        @click="highLightButton(task)"></i>
                     <i class="fal fa-pen edit-pen"
-                    @click="editTaskButton($event, task)"></i>
+                    @click="editTaskButton(task)"></i>
                     <i class="fal fa-trash-alt trash"
                     @click="deleteTask(task)"></i>
                 </div>
@@ -120,41 +121,30 @@ export default {
 
     methods: {
         initPreTaskMessage() {
+            //儲存畫面一開始資料,使用JSON.parse避免 call by reference問題
             this.preTaskMessage = JSON.parse(JSON.stringify(this.currentTaskMessage))
         },
-        highLightButton(e, data) {
+        highLightButton(data) {
             this.$emit('get-star', data.dataId);
         },
-        editTaskButton(e, data) {
-            // this.initPreTaskMessage();
+        editTaskButton(data) {
             this.initPreTaskMessage();
-            // this.preTaskMessage = JSON.parse(JSON.stringify(this.currentTaskMessage))
             this.$emit('toggle-edit-task', data.dataId);
         },
         deleteTask(data) {
             this.$emit('task-delete', data.dataId);
         },
         closeEditTask(data) {
+            //如果取消 將畫面一開始資料賦值給currentTask啟動vue更新畫面
             this.currentTaskMessage = this.preTaskMessage;
             this.$emit('task-close', data);
         },
-        saveEditTask(data) {
+        saveEditTask() {
             this.$emit('task-edit-save', this.currentTaskMessage);
+        },
+        addComplete(currentTaskMessage) {
+            this.$emit('task-complete', currentTaskMessage)
         }
-
     }
-    // computed: {
-    //     preTaskMessage() {
-    //         return {
-    //             title: this.task.title,
-    //             date: this.task.date,
-    //             time: this.task.time,
-    //             comment: this.task.comment,
-    //             dataId: this.task.dataId,
-    //             isStar: this.task.isStar,
-    //             isComplete: this.task.isComplete,
-    //             isEdit: this.task.isEdit
-    //         }
-    //     }
-    // }
+
 }

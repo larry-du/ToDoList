@@ -138,7 +138,6 @@ export default {
                 time: '',
                 comment: '',
                 dataId: '',
-                // isEdit: false,
             };
         },
         highLight() {

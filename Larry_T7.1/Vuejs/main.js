@@ -31,7 +31,6 @@ let vm = new Vue({
             this.addNewTask = false;
         },
         changeCurrentTask(id) {
-            // this.initTaskData();
             this.currentTask === id ? this.currentTask = null : this.currentTask = id;
         },
         deleteTask(id) {
@@ -43,13 +42,9 @@ let vm = new Vue({
             const currentIndex = this.allTaskData.findIndex(data => data.dataId === id);
 
             this.allTaskData[currentIndex].isStar = !this.allTaskData[currentIndex].isStar;
+            localStorage.setItem("toDoData", JSON.stringify(this.allTaskData));
         },
         closeTask(oldData) {
-            // const currentIndex = this.allTaskData.findIndex(data => data.dataId === oldData.dataId);
-
-            // this.allTaskData[currentIndex] = oldData;
-            // localStorage.setItem("toDoData", JSON.stringify(this.allTaskData));
-
             this.currentTask === oldData.dataId ? this.currentTask = null : this.currentTask = oldData.dataId;
         },
         saveEditTask(currentData) {
@@ -60,6 +55,15 @@ let vm = new Vue({
             localStorage.setItem("toDoData", JSON.stringify(this.allTaskData));
 
             this.currentTask === currentData.DataId ? this.currentTask = null : this.currentTask = currentData.DataId;
+        },
+        getComplete(currentData) {
+            const currentIndex = this.allTaskData.findIndex(data => data.dataId === currentData.dataId);
+
+            currentData.isComplete = !currentData.isComplete;
+            this.allTaskData[currentIndex].isComplete = currentData.isComplete
+
+            localStorage.setItem("toDoData", JSON.stringify(this.allTaskData));
+
         }
     },
     computed: {
