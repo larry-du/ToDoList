@@ -1,7 +1,7 @@
 const template = `
     <div class="task container"
         :class="{'isEdit': isEdit , 'high-light':task.isStar ,'is-complete':task.isComplete }"
-        :key="task.dataId"
+
         draggable="true">
         <div class="card">
             <div class="card-body">
@@ -60,7 +60,6 @@ const template = `
                     <input class="add-file"
                         type="file">
                 </div>
-
             </div>
 
             <div class="comment">
@@ -114,29 +113,38 @@ export default {
                 isStar: this.task.isStar,
                 isComplete: this.task.isComplete,
                 isEdit: this.task.isEdit
-            }
+            },
+            preTaskMessage: {}
         }
     },
+
     methods: {
+        initPreTaskMessage() {
+            this.preTaskMessage = JSON.parse(JSON.stringify(this.currentTaskMessage))
+        },
         highLightButton(e, data) {
             this.$emit('get-star', data.dataId);
         },
         editTaskButton(e, data) {
+            // this.initPreTaskMessage();
+            this.initPreTaskMessage();
+            // this.preTaskMessage = JSON.parse(JSON.stringify(this.currentTaskMessage))
             this.$emit('toggle-edit-task', data.dataId);
         },
         deleteTask(data) {
             this.$emit('task-delete', data.dataId);
         },
         closeEditTask(data) {
-            this.$emit('task-close', data.dataId);
+            this.currentTaskMessage = this.preTaskMessage;
+            this.$emit('task-close', data);
         },
         saveEditTask(data) {
             this.$emit('task-edit-save', this.currentTaskMessage);
         }
 
-    },
+    }
     // computed: {
-    //     test() {
+    //     preTaskMessage() {
     //         return {
     //             title: this.task.title,
     //             date: this.task.date,

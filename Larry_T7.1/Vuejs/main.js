@@ -27,7 +27,11 @@ let vm = new Vue({
             localStorage.setItem("toDoData", JSON.stringify(this.allTaskData));
             this.addNewTask = false;
         },
+        cancelNewTask() {
+            this.addNewTask = false;
+        },
         changeCurrentTask(id) {
+            // this.initTaskData();
             this.currentTask === id ? this.currentTask = null : this.currentTask = id;
         },
         deleteTask(id) {
@@ -40,15 +44,22 @@ let vm = new Vue({
 
             this.allTaskData[currentIndex].isStar = !this.allTaskData[currentIndex].isStar;
         },
-        closeTask(id) {
-            this.currentTask === id ? this.currentTask = null : this.currentTask = id;
+        closeTask(oldData) {
+            // const currentIndex = this.allTaskData.findIndex(data => data.dataId === oldData.dataId);
+
+            // this.allTaskData[currentIndex] = oldData;
+            // localStorage.setItem("toDoData", JSON.stringify(this.allTaskData));
+
+            this.currentTask === oldData.dataId ? this.currentTask = null : this.currentTask = oldData.dataId;
         },
         saveEditTask(currentData) {
             const currentIndex = this.allTaskData.findIndex(data => data.dataId === currentData.dataId);
 
             this.allTaskData[currentIndex] = currentData;
+
             localStorage.setItem("toDoData", JSON.stringify(this.allTaskData));
-            // console.log(currentData);
+
+            this.currentTask === currentData.DataId ? this.currentTask = null : this.currentTask = currentData.DataId;
         }
     },
     computed: {

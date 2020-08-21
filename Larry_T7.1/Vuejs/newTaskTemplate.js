@@ -112,7 +112,7 @@ export default {
         },
         closeNewTask() {
             this.clearData();
-            this.$emit('change-task-state');
+            this.$emit('cancel-new-task');
         },
         addTitle(event) {
             this.taskData.title = event.target.value;

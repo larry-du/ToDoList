@@ -51,6 +51,7 @@
             </div>
 
             <new-task @change-task-state="createNewTask"
+                @cancel-new-task="cancelNewTask"
                 :open-task="addNewTask"></new-task>
 
             <section class="to-do-list-area">
@@ -59,6 +60,7 @@
                     <to-do-list v-for="data in allTaskData"
                         :task="data"
                         :is-edit="currentTask === data.dataId"
+                        :key="data.dataId"
                         @toggle-edit-task="changeCurrentTask"
                         @task-delete="deleteTask"
                         @get-star="getStar"
