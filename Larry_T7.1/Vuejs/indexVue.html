@@ -20,19 +20,22 @@
             <nav class="nav">
                 <div class="nav-text">
                     <a href="##"
-                        data-state="all">
+                        data-state="all"
+                        @click="all">
                         <span data-state="all">My Tasks</span>
                         <i class="fas fa-tasks-alt"
                             data-state="all"></i>
                     </a>
                     <a href="##"
-                        data-state="in-progress">
+                        data-state="in-progress"
+                        @click="inProgress">
                         <span data-state="in-progress">In Progress</span>
                         <i class="fas fa-hourglass-half"
                             data-state="in-progress"></i>
                     </a>
                     <a href="##"
-                        data-state="task-completed">
+                        data-state="task-completed"
+                        @click="taskCompleted">
                         <span data-state="task-completed">Completed</span>
                         <i class="fas fa-check-circle"
                             data-state="task-completed"></i>
@@ -56,7 +59,8 @@
 
             <section class="to-do-list-area">
 
-                <section class="star-area">
+                <section class="star-area"
+                    v-show="progress">
                     <to-do-list v-for="data in topArea"
                         :task="data"
                         :is-edit="currentTask === data.dataId"
@@ -68,7 +72,8 @@
                         @task-edit-save="saveEditTask"
                         @task-complete="getComplete"></to-do-list>
                 </section>
-                <section class="unfinished-area">
+                <section class="unfinished-area"
+                    v-show="progress">
                     <to-do-list v-for="data in middleArea"
                         :task="data"
                         :is-edit="currentTask === data.dataId"
@@ -80,7 +85,8 @@
                         @task-edit-save="saveEditTask"
                         @task-complete="getComplete"></to-do-list>
                 </section>
-                <section class="complete-area">
+                <section class="complete-area"
+                    v-show="completed">
                     <to-do-list v-for="data in bottomArea"
                         :task="data"
                         :is-edit="currentTask === data.dataId"

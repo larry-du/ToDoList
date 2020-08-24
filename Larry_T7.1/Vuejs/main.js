@@ -11,7 +11,9 @@ let vm = new Vue({
         return {
             allTaskData: [],
             addNewTask: false,
-            currentTask: null
+            currentTask: null,
+            progress: true,
+            completed: true
         }
     },
     created() {
@@ -63,7 +65,18 @@ let vm = new Vue({
             this.allTaskData[currentIndex].isComplete = currentData.isComplete
 
             localStorage.setItem("toDoData", JSON.stringify(this.allTaskData));
-
+        },
+        all() {
+            this.progress = true;
+            this.completed = true;
+        },
+        inProgress() {
+            this.progress = true;
+            this.completed = false
+        },
+        taskCompleted() {
+            this.completed = true;
+            this.progress = false
         }
     },
     computed: {
