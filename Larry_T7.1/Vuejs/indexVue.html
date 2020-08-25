@@ -53,53 +53,59 @@
                 <i class="fal fa-plus"></i>
             </div>
 
-            <new-task @change-task-state="createNewTask"
+            <new-task @create-new-task="createNewTask"
                 @cancel-new-task="cancelNewTask"
-                :open-task="addNewTask"></new-task>
+                :add-new-task="addNewTask"></new-task>
 
             <section class="to-do-list-area">
 
                 <section class="star-area"
-                    v-show="progress">
-                    <to-do-list v-for="data in topArea"
+                    v-show="state !== 'completed'">
+                    <to-do-list v-for="(data, i) in topArea"
                         :task="data"
+                        :task-index="i"
                         :is-edit="currentTask === data.dataId"
                         :key="data.dataId"
                         @toggle-edit-task="changeCurrentTask"
-                        @task-delete="deleteTask"
+                        @delete-edit-task="deleteEditTask"
                         @get-star="getStar"
-                        @task-close="closeTask"
-                        @task-edit-save="saveEditTask"
-                        @task-complete="getComplete"></to-do-list>
+                        @cancel-edit-task="cancelEditTask"
+                        @save-edit-task="saveEditTask"
+                        @add-complete="addComplete"
+                        @to-drop-item="toDropItem"></to-do-list>
                 </section>
                 <section class="unfinished-area"
-                    v-show="progress">
-                    <to-do-list v-for="data in middleArea"
+                    v-show="state !== 'completed'">
+                    <to-do-list v-for="(data, i) in middleArea"
                         :task="data"
+                        :task-index="i"
                         :is-edit="currentTask === data.dataId"
                         :key="data.dataId"
                         @toggle-edit-task="changeCurrentTask"
-                        @task-delete="deleteTask"
+                        @delete-edit-task="deleteEditTask"
                         @get-star="getStar"
-                        @task-close="closeTask"
-                        @task-edit-save="saveEditTask"
-                        @task-complete="getComplete"></to-do-list>
+                        @cancel-edit-task="cancelEditTask"
+                        @save-edit-task="saveEditTask"
+                        @add-complete="addComplete"
+                        @to-drop-item="toDropItem"></to-do-list>
                 </section>
                 <section class="complete-area"
-                    v-show="completed">
-                    <to-do-list v-for="data in bottomArea"
+                    v-show="state !== 'inProgress'">
+                    <to-do-list v-for="(data, i) in bottomArea"
                         :task="data"
+                        :task-index="i"
                         :is-edit="currentTask === data.dataId"
                         :key="data.dataId"
                         @toggle-edit-task="changeCurrentTask"
-                        @task-delete="deleteTask"
+                        @delete-edit-task="deleteEditTask"
                         @get-star="getStar"
-                        @task-close="closeTask"
-                        @task-edit-save="saveEditTask"
-                        @task-complete="getComplete"></to-do-list>
+                        @cancel-edit-task="cancelEditTask"
+                        @save-edit-task="saveEditTask"
+                        @add-complete="addComplete"
+                        @to-drop-item="toDropItem"></to-do-list>
                 </section>
             </section>
-            <p class="container task-left">0 tasks left</p>
+            <p class="container task-left">{{allTaskData.length}} tasks left</p>
         </main>
     </div>
     </div>

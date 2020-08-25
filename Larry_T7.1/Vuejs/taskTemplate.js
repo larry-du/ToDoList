@@ -1,8 +1,11 @@
 const template = `
     <div class="task container"
         :class="{'isEdit': isEdit , 'high-light':task.isStar ,'is-complete':task.isComplete }"
-
-        draggable="true">
+        draggable="true"
+        @dragstart="getDragItem($event)"
+        @drop="toDropItem($event)"
+        @dragenter="cancelDragDefault($event)"
+        @dragover="cancelDragDefault($event)">
         <div class="card">
             <div class="card-body">
                 <div class="card-title">
@@ -23,7 +26,7 @@ const template = `
                     <i class="fal fa-pen edit-pen"
                     @click="editTaskButton(task)"></i>
                     <i class="fal fa-trash-alt trash"
-                    @click="deleteTask(task)"></i>
+                    @click="deleteEditTask(task)"></i>
                 </div>
             </div>
             <div class="status">
@@ -97,10 +100,18 @@ export default {
             type: Object,
             required: true
         },
+        taskIndex: {
+            type: Number,
+            required: true
+        },
         isEdit: {
             type: Boolean,
             required: true
-        }
+        },
+        // topData: {
+        //     type: Array,
+        //     required: true
+        // }
     },
     data() {
         return {
@@ -113,7 +124,8 @@ export default {
                 dataId: this.task.dataId,
                 isStar: this.task.isStar,
                 isComplete: this.task.isComplete,
-                isEdit: this.task.isEdit
+                isEdit: this.task.isEdit,
+                order: this.task.order
             },
             preTaskMessage: {}
         }
@@ -131,19 +143,29 @@ export default {
             this.initPreTaskMessage();
             this.$emit('toggle-edit-task', data.dataId);
         },
-        deleteTask(data) {
-            this.$emit('task-delete', data.dataId);
+        deleteEditTask(data) {
+            this.$emit('delete-edit-task', data.dataId);
         },
-        closeEditTask(data) {
+        cancelEditTask(data) {
             //如果取消 將畫面一開始資料賦值給currentTask啟動vue更新畫面
             this.currentTaskMessage = this.preTaskMessage;
-            this.$emit('task-close', data);
+            this.$emit('cancel-edit-task', data);
         },
         saveEditTask() {
-            this.$emit('task-edit-save', this.currentTaskMessage);
+            this.$emit('save-edit-task', this.currentTaskMessage);
         },
         addComplete(currentTaskMessage) {
-            this.$emit('task-complete', currentTaskMessage)
+            this.$emit('add-complete', currentTaskMessage)
+        },
+        getDragItem(event) {
+            event.dataTransfer.setData('text', this.currentTaskMessage.dataId)
+        },
+        toDropItem(event) {
+            const dragId = event.dataTransfer.getData('text')
+            this.$emit('to-drop-item', dragId, this.taskIndex)
+        },
+        cancelDragDefault(event) {
+            event.preventDefault();
         }
     }
 

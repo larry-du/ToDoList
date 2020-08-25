@@ -1,6 +1,6 @@
 const template = `
 <div class="event event-add container"
-    :class="{'event-area-block':openTask ,'high-light':this.taskData.isStar ,'is-complete': this.taskData.isComplete}"
+    :class="{'event-area-block':addNewTask ,'high-light':this.taskData.isStar ,'is-complete': this.taskData.isComplete}"
     >
     <div class="edit">
         <div class="card">
@@ -10,6 +10,7 @@ const template = `
                         <input type="checkbox"
                             id="event-check"
                             @click="addComplete"
+                            :checked="this.taskData.isComplete"
                             class="check">
                         <label for="event-check"></label>
                     </div>
@@ -70,12 +71,12 @@ const template = `
     </div>
     <div class="check-button">
         <button class="cancel-button"
-            @click="closeNewTask">
+            @click="cancelNewTask">
             <i class="fal fa-times"></i>
             Cancel
         </button>
         <button class="add-button"
-            @click="saveNewTask">
+            @click="createNewTask">
             <i class="fal fa-plus"></i>
             Add Task
         </button>
@@ -86,7 +87,7 @@ const template = `
 export default {
     template,
     props: {
-        openTask: {
+        addNewTask: {
             type: Boolean,
             required: true
         }
@@ -101,16 +102,16 @@ export default {
                 dataId: '',
                 isStar: false,
                 isComplete: false,
-                isEdit: false
-            },
-
+                isEdit: false,
+                order: null
+            }
         }
     },
     methods: {
         editNewTask() {
-            this.$emit('change-task-state');
+            this.$emit('cancel-new-task');
         },
-        closeNewTask() {
+        cancelNewTask() {
             this.clearData();
             this.$emit('cancel-new-task');
         },
@@ -126,9 +127,9 @@ export default {
         addComment(event) {
             this.taskData.comment = event.target.value;
         },
-        saveNewTask() {
+        createNewTask() {
             this.taskData.dataId = Date.now();
-            this.$emit('change-task-state', this.taskData);
+            this.$emit('create-new-task', this.taskData);
             this.clearData();
         },
         clearData() {
@@ -138,6 +139,10 @@ export default {
                 time: '',
                 comment: '',
                 dataId: '',
+                isStar: false,
+                isComplete: false,
+                isEdit: false,
+                order: null
             };
         },
         highLight() {

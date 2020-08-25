@@ -12,13 +12,20 @@ let vm = new Vue({
             allTaskData: [],
             addNewTask: false,
             currentTask: null,
-            progress: true,
-            completed: true
+            state: 'all',
+            // order: {
+            //     star: [],
+            //     normal: [],
+            //     done: []
+            // }
+            // progress: true,
+            // completed: true
         }
     },
     created() {
         //創建vue實例取得資料
         this.initTaskData();
+        // console.log(this.allTaskData.length);
     },
     methods: {
         initTaskData() {
@@ -35,7 +42,7 @@ let vm = new Vue({
         changeCurrentTask(id) {
             this.currentTask === id ? this.currentTask = null : this.currentTask = id;
         },
-        deleteTask(id) {
+        deleteEditTask(id) {
             const currentIndex = this.allTaskData.findIndex(data => data.dataId === id);
             this.allTaskData.splice(currentIndex, 1);
             localStorage.setItem("toDoData", JSON.stringify(this.allTaskData));
@@ -46,7 +53,7 @@ let vm = new Vue({
             this.allTaskData[currentIndex].isStar = !this.allTaskData[currentIndex].isStar;
             localStorage.setItem("toDoData", JSON.stringify(this.allTaskData));
         },
-        closeTask(oldData) {
+        cancelEditTask(oldData) {
             this.currentTask === oldData.dataId ? this.currentTask = null : this.currentTask = oldData.dataId;
         },
         saveEditTask(currentData) {
@@ -58,37 +65,79 @@ let vm = new Vue({
 
             this.currentTask === currentData.DataId ? this.currentTask = null : this.currentTask = currentData.DataId;
         },
-        getComplete(currentData) {
+        addComplete(currentData) {
             const currentIndex = this.allTaskData.findIndex(data => data.dataId === currentData.dataId);
 
-            currentData.isComplete = !currentData.isComplete;
-            this.allTaskData[currentIndex].isComplete = currentData.isComplete
+            this.allTaskData[currentIndex].isComplete = !this.allTaskData[currentIndex].isComplete;
 
             localStorage.setItem("toDoData", JSON.stringify(this.allTaskData));
         },
         all() {
-            this.progress = true;
-            this.completed = true;
+            this.state = 'all';
         },
         inProgress() {
-            this.progress = true;
-            this.completed = false
+            this.state = 'inProgress'
         },
         taskCompleted() {
-            this.completed = true;
-            this.progress = false
-        }
+            this.state = 'completed'
+        },
+        toDropItem(dragId, taskIndex) {
+            const topIndex = this.topArea.findIndex(data => data.dataId === Number(dragId));
+            const middleIndex = this.middleArea.findIndex(data => data.dataId === Number(dragId));
+            const bottomIndex = this.bottomArea.findIndex(data => data.dataId === Number(dragId));
+            if (topIndex !== -1) {
+                const topArr = [...this.topArea];
+                const topDragItem = topArr.splice(topIndex, 1);
+                topArr.splice(taskIndex, 0, topDragItem[0]);
+                topArr[topIndex].order = taskIndex + 1;
+                this.allTaskData = [...topArr, ...this.middleArea, ...this.bottomArea];
+
+            }
+            if (middleIndex !== -1) {
+                const middleArr = [...this.middleArea];
+                const middleDragItem = middleArr.splice(middleIndex, 1);
+                middleArr.splice(taskIndex, 0, middleDragItem[0]);
+                middleArr[middleIndex].order = taskIndex + 1;
+                this.allTaskData = [...this.topArea, ...middleArr, ...this.bottomArea];
+            }
+            if (bottomIndex !== -1) {
+                const bottomArr = [...this.bottomArea];
+                const bottomDragItem = bottomArr.splice(bottomIndex, 1);
+                bottomArr.splice(taskIndex, 0, bottomDragItem[0]);
+                bottomArr[bottomIndex].order = taskIndex + 1;
+                this.allTaskData = [...this.topArea, ...this.middleArea, ...bottomArr];
+            }
+
+            localStorage.setItem("toDoData", JSON.stringify(this.allTaskData));
+
+        },
     },
     computed: {
         topArea() {
-            return this.allTaskData.filter(data => data.isStar && !data.isComplete)
+            return this.sortData.filter(data => data.isStar && !data.isComplete)
         },
         middleArea() {
-            return this.allTaskData.filter(data => !data.isStar && !data.isComplete)
+            return this.sortData.filter(data => !data.isStar && !data.isComplete)
         },
         bottomArea() {
-            return this.allTaskData.filter(data => data.isComplete)
+            return this.sortData.filter(data => data.isComplete)
+        },
+        sortData() {
+            const getOrder = this.allTaskData.map(data => data.order).some(data => data !== null)
+
+            if (getOrder) {
+                // console.log('a');
+                return this.allTaskData.sort((a, b) => {
+                    return a.order - b.order
+                })
+            } else {
+                // console.log('b');
+                return this.allTaskData.sort((a, b) => {
+                    return b.dataId - a.dataId
+                })
+            }
         }
+
     }
 })
 
