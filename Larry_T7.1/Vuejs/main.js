@@ -26,7 +26,6 @@ let vm = new Vue({
         createNewTask(taskData) {
             this.allTaskData.push(taskData);
             this.saveToLocalStorage();
-            // localStorage.setItem("toDoData", JSON.stringify(this.allTaskData));
             this.addNewTask = false;
         },
         cancelNewTask() {
@@ -68,31 +67,40 @@ let vm = new Vue({
             this.state = 'all';
         },
         inProgress() {
-            this.state = 'inProgress'
+            this.state = 'inProgress';
         },
         taskCompleted() {
-            this.state = 'completed'
+            this.state = 'completed';
         },
-        toDropItem(dragId, taskIndex) {
+        getDragParentElement() {
+            return event.currentTarget.parentElement
+        },
+        toDropItem(dragId, taskIndex, event) {
             const topIndex = this.topArea.findIndex(data => data.dataId === Number(dragId));
             const middleIndex = this.middleArea.findIndex(data => data.dataId === Number(dragId));
             const bottomIndex = this.bottomArea.findIndex(data => data.dataId === Number(dragId));
-            if (~topIndex) {
+            // console.log(event.currentTarget.parentElement);
+            // console.log(this.getDragItem());
+            if (event.currentTarget.parentElement !== this.getDragParentElement()) return
+            if (this.checkIndex(topIndex)) {
                 const topArr = [...this.topArea];
                 this.changeDataPosition(topArr, topIndex, taskIndex);
                 this.saveCurrentRandomData(topArr, this.middleArea, this.bottomArea);
             }
-            if (~middleIndex) {
+            if (this.checkIndex(middleIndex)) {
                 const middleArr = [...this.middleArea];
                 this.changeDataPosition(middleArr, middleIndex, taskIndex);
                 this.saveCurrentRandomData(this.topArea, middleArr, this.bottomArea);
             }
-            if (~bottomIndex) {
+            if (this.checkIndex(bottomIndex)) {
                 const bottomArr = [...this.bottomArea];
                 this.changeDataPosition(bottomArr, bottomIndex, taskIndex);
                 this.saveCurrentRandomData(this.topArea, this.middleArea, bottomArr);
             }
             this.saveToLocalStorage();
+        },
+        checkIndex(targetIndex) {
+            return ~targetIndex;
         },
         saveCurrentRandomData(topAreaArray, middleAreaArray, bottomAreaArray) {
             this.allTaskData = [...topAreaArray, ...middleAreaArray, ...bottomAreaArray];
@@ -160,6 +168,8 @@ let vm = new Vue({
 
     }
 })
+
+
 // function newFunction(topIndex) {
 //     return ~topIndex;
 // }

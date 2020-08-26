@@ -73,7 +73,8 @@
                         @save-edit-task="saveEditTask"
                         @add-complete="addComplete"
                         @to-drop-item="toDropItem"
-                        @add-edit-file="addEditFile"></to-do-list>
+                        @add-edit-file="addEditFile"
+                        @get-drag-event="getDragParentElement"></to-do-list>
                 </section>
                 <section class="unfinished-area"
                     v-show="state !== 'completed'">
@@ -88,7 +89,9 @@
                         @cancel-edit-task="cancelEditTask"
                         @save-edit-task="saveEditTask"
                         @add-complete="addComplete"
-                        @to-drop-item="toDropItem"></to-do-list>
+                        @to-drop-item="toDropItem"
+                        @add-edit-file="addEditFile"
+                        @get-drag-event="getDragParentElement"></to-do-list>
                 </section>
                 <section class="complete-area"
                     v-show="state !== 'inProgress'">
@@ -103,7 +106,9 @@
                         @cancel-edit-task="cancelEditTask"
                         @save-edit-task="saveEditTask"
                         @add-complete="addComplete"
-                        @to-drop-item="toDropItem"></to-do-list>
+                        @to-drop-item="toDropItem"
+                        @add-edit-file="addEditFile"
+                        @get-drag-event="getDragParentElement"></to-do-list>
                 </section>
             </section>
             <p class="container task-left">{{taskCountLeft}} tasks left</p>

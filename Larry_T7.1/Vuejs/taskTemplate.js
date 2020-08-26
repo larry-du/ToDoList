@@ -162,10 +162,11 @@ export default {
         },
         getDragItem(event) {
             event.dataTransfer.setData('text', this.currentTaskMessage.dataId);
+            this.$emit('get-drag-event', event)
         },
         toDropItem(event) {
-            const dragId = event.dataTransfer.getData('text')
-            this.$emit('to-drop-item', dragId, this.taskIndex)
+            const dragId = event.dataTransfer.getData('text');
+            this.$emit('to-drop-item', dragId, this.taskIndex, event)
         }
     }
 
