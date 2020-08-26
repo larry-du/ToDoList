@@ -66,13 +66,14 @@
                         :task-index="i"
                         :is-edit="currentTask === data.dataId"
                         :key="data.dataId"
-                        @toggle-edit-task="changeCurrentTask"
+                        @toggle-edit-task="toggleEditTask"
                         @delete-edit-task="deleteEditTask"
                         @get-star="getStar"
                         @cancel-edit-task="cancelEditTask"
                         @save-edit-task="saveEditTask"
                         @add-complete="addComplete"
-                        @to-drop-item="toDropItem"></to-do-list>
+                        @to-drop-item="toDropItem"
+                        @add-edit-file="addEditFile"></to-do-list>
                 </section>
                 <section class="unfinished-area"
                     v-show="state !== 'completed'">
@@ -81,7 +82,7 @@
                         :task-index="i"
                         :is-edit="currentTask === data.dataId"
                         :key="data.dataId"
-                        @toggle-edit-task="changeCurrentTask"
+                        @toggle-edit-task="toggleEditTask"
                         @delete-edit-task="deleteEditTask"
                         @get-star="getStar"
                         @cancel-edit-task="cancelEditTask"
@@ -96,7 +97,7 @@
                         :task-index="i"
                         :is-edit="currentTask === data.dataId"
                         :key="data.dataId"
-                        @toggle-edit-task="changeCurrentTask"
+                        @toggle-edit-task="toggleEditTask"
                         @delete-edit-task="deleteEditTask"
                         @get-star="getStar"
                         @cancel-edit-task="cancelEditTask"
@@ -105,7 +106,7 @@
                         @to-drop-item="toDropItem"></to-do-list>
                 </section>
             </section>
-            <p class="container task-left">{{allTaskData.length}} tasks left</p>
+            <p class="container task-left">{{taskCountLeft}} tasks left</p>
         </main>
     </div>
     </div>

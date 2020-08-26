@@ -25,13 +25,14 @@ let vm = new Vue({
         },
         createNewTask(taskData) {
             this.allTaskData.push(taskData);
-            localStorage.setItem("toDoData", JSON.stringify(this.allTaskData));
+            this.saveToLocalStorage();
+            // localStorage.setItem("toDoData", JSON.stringify(this.allTaskData));
             this.addNewTask = false;
         },
         cancelNewTask() {
             this.addNewTask = false;
         },
-        changeCurrentTask(id) {
+        toggleEditTask(id) {
             this.currentTask === id ? this.currentTask = null : this.currentTask = id;
         },
         deleteEditTask(id) {
@@ -58,6 +59,10 @@ let vm = new Vue({
             const currentIndex = this.allTaskData.findIndex(data => data.dataId === currentData.dataId);
             this.allTaskData[currentIndex].isComplete = !this.allTaskData[currentIndex].isComplete;
             this.saveToLocalStorage();
+        },
+        addEditFile(event, id) {
+            const currentIndex = this.allTaskData.findIndex(data => data.dataId === id);
+            this.allTaskData[currentIndex].isFileName = event.target.files[0].name
         },
         all() {
             this.state = 'all';
@@ -112,19 +117,50 @@ let vm = new Vue({
         bottomArea() {
             return this.sortData.filter(data => data.isComplete)
         },
+        taskCountLeft() {
+            if (this.state === 'all') return this.allTaskData.length;
+            if (this.state === 'inProgress') return this.topArea.length + this.middleArea.length;
+            if (this.state === 'completed') return this.bottomArea.length;
+        },
         sortData() {
             const getOrder = this.allTaskData.map(data => data.order).some(data => data !== null)
-
+            const topArr = this.allTaskData.filter(data => data.isStar && !data.isComplete);
+            const middleArr = this.allTaskData.filter(data => !data.isStar && !data.isComplete)
+            const bottomArr = this.allTaskData.filter(data => data.isComplete)
             if (getOrder) {
-                return this.allTaskData.sort((a, b) => {
+                const topAreaSort = topArr.sort((a, b) => {
                     return a.order - b.order
                 })
+                const middleAreaSort = middleArr.sort((a, b) => {
+                    return a.order - b.order
+                })
+                const bottomAreaSort = bottomArr.sort((a, b) => {
+                    if (a.isStar === b.isStar) {
+                        return a.order - b.order
+                    }
+                    a.isStar && !b.isStar ? -1 : 1;
+                })
+                return [...topAreaSort, ...middleAreaSort, ...bottomAreaSort]
             } else {
-                return this.allTaskData.sort((a, b) => {
+                const topAreaSort = topArr.sort((a, b) => {
                     return b.dataId - a.dataId
                 })
+                const middleAreaSort = middleArr.sort((a, b) => {
+                    return b.dataId - a.dataId
+                })
+                const bottomAreaSort = bottomArr.sort((a, b) => {
+                    if (a.isStar === b.isStar) {
+                        return b.dataId - a.dataId
+                    }
+                    a.isStar && !b.isStar ? -1 : 1;
+                })
+                return [...topAreaSort, ...middleAreaSort, ...bottomAreaSort]
             }
         }
 
     }
 })
+// function newFunction(topIndex) {
+//     return ~topIndex;
+// }
+

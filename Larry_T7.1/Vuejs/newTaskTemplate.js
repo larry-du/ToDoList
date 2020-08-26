@@ -53,7 +53,9 @@ const template = `
                 </div>
                 <div class="file-area">
                     <input type="file"
-                        class="add-file">
+                        class="add-file"
+                        @change="addFile($event)">
+                        <span>{{taskData.isFileName}}</span>
                 </div>
             </div>
 
@@ -103,6 +105,7 @@ export default {
                 isStar: false,
                 isComplete: false,
                 isEdit: false,
+                isFileName: '',
                 order: null
             }
         }
@@ -127,6 +130,9 @@ export default {
         addComment(event) {
             this.taskData.comment = event.target.value;
         },
+        addFile(event) {
+            this.taskData.isFileName = event.target.files[0].name;
+        },
         createNewTask() {
             this.taskData.dataId = Date.now();
             this.$emit('create-new-task', this.taskData);
@@ -142,6 +148,7 @@ export default {
                 isStar: false,
                 isComplete: false,
                 isEdit: false,
+                isFileName: '',
                 order: null
             };
         },

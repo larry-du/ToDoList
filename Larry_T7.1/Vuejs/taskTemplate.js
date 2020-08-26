@@ -4,8 +4,8 @@ const template = `
         draggable="true"
         @dragstart="getDragItem($event)"
         @drop="toDropItem($event)"
-        @dragenter="cancelDragDefault($event)"
-        @dragover="cancelDragDefault($event)">
+        @dragenter.prevent
+        @dragover.prevent>
         <div class="card">
             <div class="card-body">
                 <div class="card-title">
@@ -30,12 +30,12 @@ const template = `
                 </div>
             </div>
             <div class="status">
-                <div class="date">
+                <div class="date" v-show="currentTaskMessage.date">
                     <i class="far fa-calendar-alt"></i>
-                    <span>{{task.date}}</span>
+                    <span>{{currentTaskMessage.date}}</span>
                 </div>
-                <i class="fal fa-file file-icon"></i>
-                <i class="fal fa-comment-dots comment-icon"></i>
+                <i class="fal fa-file file-icon" v-show="currentTaskMessage.isFileName"></i>
+                <i class="fal fa-comment-dots comment-icon" v-show="currentTaskMessage.comment"></i>
             </div>
         </div>
         <div class="save-info" :class="{'save-area-block':isEdit}">
@@ -62,7 +62,9 @@ const template = `
                         <p>uploaded yesterday</p>
                     </div>
                     <input class="add-file"
-                        type="file">
+                        type="file"
+                        @change="addEditFile(currentTaskMessage,$event)">
+                        <span>{{currentTaskMessage.isFileName}}</span>
                 </div>
             </div>
 
@@ -80,7 +82,7 @@ const template = `
         </div>
         <div class="check-button">
             <button class="cancel"
-            @click="closeEditTask(task)">
+            @click="cancelEditTask(task)">
                 <i class="fal fa-times"></i>
                 Cancel
             </button>
@@ -107,11 +109,7 @@ export default {
         isEdit: {
             type: Boolean,
             required: true
-        },
-        // topData: {
-        //     type: Array,
-        //     required: true
-        // }
+        }
     },
     data() {
         return {
@@ -125,6 +123,7 @@ export default {
                 isStar: this.task.isStar,
                 isComplete: this.task.isComplete,
                 isEdit: this.task.isEdit,
+                isFileName: this.task.isFileName,
                 order: this.task.order
             },
             preTaskMessage: {}
@@ -134,7 +133,7 @@ export default {
     methods: {
         initPreTaskMessage() {
             //儲存畫面一開始資料,使用JSON.parse避免 call by reference問題
-            this.preTaskMessage = JSON.parse(JSON.stringify(this.currentTaskMessage))
+            this.preTaskMessage = JSON.parse(JSON.stringify(this.currentTaskMessage));
         },
         highLightButton(data) {
             this.$emit('get-star', data.dataId);
@@ -154,18 +153,19 @@ export default {
         saveEditTask() {
             this.$emit('save-edit-task', this.currentTaskMessage);
         },
+        addEditFile(data, event) {
+            // this.$emit('add-edit-file', event, data.dataId)
+            data.isFileName = event.target.files[0].name
+        },
         addComplete(currentTaskMessage) {
-            this.$emit('add-complete', currentTaskMessage)
+            this.$emit('add-complete', currentTaskMessage);
         },
         getDragItem(event) {
-            event.dataTransfer.setData('text', this.currentTaskMessage.dataId)
+            event.dataTransfer.setData('text', this.currentTaskMessage.dataId);
         },
         toDropItem(event) {
             const dragId = event.dataTransfer.getData('text')
             this.$emit('to-drop-item', dragId, this.taskIndex)
-        },
-        cancelDragDefault(event) {
-            event.preventDefault();
         }
     }
 
