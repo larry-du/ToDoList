@@ -1,7 +1,6 @@
 const template = `
 <div class="event event-add container"
-    :class="{'event-area-block':addNewTask ,'high-light':this.taskData.isStar ,'is-complete': this.taskData.isComplete}"
-    >
+    :class="{'event-area-block':data.isEdit,'high-light':data.isStar ,'is-complete': data.isComplete}">
     <div class="edit">
         <div class="card">
             <div class="card-body">
@@ -9,8 +8,8 @@ const template = `
                     <div class="check-area">
                         <input type="checkbox"
                             id="event-check"
-                            @click="addComplete"
-                            :checked="this.taskData.isComplete"
+                            :checked="data.isComplete"
+                            @input="$emit('update:task', Object.assign({}, data, { isComplete: !data.isComplete}))"
                             class="check">
                         <label for="event-check"></label>
                     </div>
@@ -18,14 +17,15 @@ const template = `
                     <input type="text"
                         placeholder="Type Something Here..."
                         class="type-title"
-                        v-bind:value="taskData.title"
-                        @input="addTitle">
+                        v-bind:value="data.title"
+                        @input="$emit('update:task',Object.assign({},data ,{title:$event.target.value}))">
 
                 </div>
                 <div class="edit-area">
                     <i class="fas fa-star top-star"
-                    @click="highLight"></i>
-                    <i class="fal fa-pen edit-pen" @click="editNewTask"></i>
+                        @click="$emit('update:task',Object.assign({},data,{isStar:!data.isStar}))"></i>
+                    <i class="fal fa-pen edit-pen"
+                        @click="$emit('update:task',Object.assign({},data,{isEdit:!data.isEdit}))"></i>
                 </div>
             </div>
         </div>
@@ -38,11 +38,11 @@ const template = `
                 <div class="date-area">
                     <input type="date"
                         class="date"
-                        :value="taskData.date"
-                        @input="addDate">
+                        :value="data.date"
+                        @input="$emit('update:task',Object.assign({},data,{date:$event.target.value}))">
                     <input type="time"
-                        :value="taskData.time"
-                        @input="addTime">
+                        :value="data.time"
+                        @input="$emit('update:task',Object.assign({},data,{time:$event.target.value}))">
                 </div>
             </div>
 
@@ -54,8 +54,8 @@ const template = `
                 <div class="file-area">
                     <input type="file"
                         class="add-file"
-                        @change="addFile($event)">
-                        <span>{{taskData.isFileName}}</span>
+                        @change="$emit('update:task',Object.assign({},data,{isFileName:$event.target.files[0].name}))">
+                    <span>{{data.isFileName}}</span>
                 </div>
             </div>
 
@@ -66,19 +66,19 @@ const template = `
                 </div>
                 <textarea class="comment-area"
                     placeholder="Type your memo here..."
-                    :value="taskData.comment"
-                    @input="addComment"></textarea>
+                    :value="data.comment"
+                    @input="$emit('update:task',Object.assign({},data,{comment:$event.target.value}))"></textarea>
             </div>
         </div>
     </div>
     <div class="check-button">
         <button class="cancel-button"
-            @click="cancelNewTask">
+            @click="$emit('cancel')">
             <i class="fal fa-times"></i>
             Cancel
         </button>
         <button class="add-button"
-            @click="createNewTask">
+            @click="$emit('submit', Object.assign({}, data, { dataId: Date.now() }))">
             <i class="fal fa-plus"></i>
             Add Task
         </button>
@@ -89,81 +89,9 @@ const template = `
 export default {
     template,
     props: {
-        addNewTask: {
-            type: Boolean,
+        data: {
+            type: Object,
             required: true
         }
-    },
-    data() {
-        return {
-            taskData: {
-                title: '',
-                date: '',
-                time: '',
-                comment: '',
-                dataId: '',
-                isStar: false,
-                isComplete: false,
-                isEdit: false,
-                isFileName: '',
-                order: null
-            }
-        }
-    },
-    methods: {
-        editNewTask() {
-            this.$emit('cancel-new-task');
-        },
-        cancelNewTask() {
-            this.clearData();
-            this.$emit('cancel-new-task');
-        },
-        addTitle(event) {
-            this.taskData.title = event.target.value;
-        },
-        addDate(event) {
-            this.taskData.date = event.target.value;
-        },
-        addTime(event) {
-            this.taskData.time = event.target.value;
-        },
-        addComment(event) {
-            this.taskData.comment = event.target.value;
-        },
-        addFile(event) {
-            this.taskData.isFileName = event.target.files[0].name;
-        },
-        createNewTask() {
-            this.taskData.dataId = Date.now();
-            this.$emit('create-new-task', this.taskData);
-            this.clearData();
-        },
-        clearData() {
-            this.taskData = {
-                title: '',
-                date: '',
-                time: '',
-                comment: '',
-                dataId: '',
-                isStar: false,
-                isComplete: false,
-                isEdit: false,
-                isFileName: '',
-                order: null
-            };
-        },
-        highLight() {
-            this.taskData.isStar = !this.taskData.isStar;
-            if (this.taskData.isStar) {
-                this.taskData.isStar = this.taskData.isStar;
-            }
-        },
-        addComplete() {
-            this.taskData.isComplete = !this.taskData.isComplete;
-            if (this.taskData.isComplete) {
-                this.taskData.isComplete = this.taskData.isComplete
-            }
-        }
     }
-
 }

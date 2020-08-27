@@ -13,24 +13,31 @@ let vm = new Vue({
             addNewTask: false,
             currentTask: null,
             state: 'all',
+            taskData: {}
+
         }
     },
     created() {
         //創建vue實例取得資料
-        this.initTaskData();
+        this.initTaskDataList();
+        this.taskData = this.initTaskData;
     },
     methods: {
-        initTaskData() {
+        initTaskDataList() {
             this.allTaskData = JSON.parse(localStorage.getItem("toDoData")) || [];
         },
-        createNewTask(taskData) {
-            this.allTaskData.push(taskData);
+        createNewTask(newTaskData) {
+            this.allTaskData = [
+                ...this.allTaskData,
+                newTaskData
+            ];
             this.saveToLocalStorage();
-            this.addNewTask = false;
+            this.taskData = this.initTaskData;
+            // this.addNewTask = false;
         },
-        cancelNewTask() {
-            this.addNewTask = false;
-        },
+        // cancelNewTask() {
+        //     this.addNewTask = false;
+        // },
         toggleEditTask(id) {
             this.currentTask === id ? this.currentTask = null : this.currentTask = id;
         },
@@ -107,13 +114,26 @@ let vm = new Vue({
             const dragItem = toDoAreaArray.splice(toDoAreaIndex, 1);
             toDoAreaArray.splice(taskIndex, 0, dragItem[0]);
             toDoAreaArray[toDoAreaIndex].order = taskIndex + 1;
-        }
-        ,
+        },
         saveToLocalStorage() {
             localStorage.setItem("toDoData", JSON.stringify(this.allTaskData));
         }
     },
     computed: {
+        initTaskData() {
+            return {
+                title: '',
+                date: '',
+                time: '',
+                comment: '',
+                dataId: '',
+                isStar: false,
+                isComplete: false,
+                isEdit: false,
+                isFileName: '',
+                order: null
+            }
+        },
         topArea() {
             return this.sortData.filter(data => data.isStar && !data.isComplete)
         },

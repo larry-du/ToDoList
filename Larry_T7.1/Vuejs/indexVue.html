@@ -43,19 +43,24 @@
                 </div>
             </nav>
         </header>
+        <!-- <pre>{{ taskData }}</pre>
+        <pre>{{ allTaskData }}</pre> -->
         <main class="main">
             <div class="add-area container"
-                :class="{'add-area-none':addNewTask}"
-                @click="addNewTask = true">
+                :class="{'add-area-none':taskData.isEdit}"
+                @click="taskData = Object.assign({}, taskData, {isEdit:true})">
                 <input type="text"
                     placeholder="Add Task"
                     class="add-task">
                 <i class="fal fa-plus"></i>
             </div>
-
-            <new-task @create-new-task="createNewTask"
-                @cancel-new-task="cancelNewTask"
-                :add-new-task="addNewTask"></new-task>
+            <!-- @create-new-task="createNewTask" -->
+            <!-- @cancel-new-task="cancelNewTask" -->
+            <new-task :add-new-task="taskData.isEdit"
+                :data="taskData"
+                @update:task="taskData = $event"
+                @cancel="taskData = initTaskData;"
+                @submit="createNewTask"></new-task>
 
             <section class="to-do-list-area">
 
