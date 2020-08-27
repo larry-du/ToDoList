@@ -154,7 +154,6 @@ export default {
             this.$emit('save-edit-task', this.currentTaskMessage);
         },
         addEditFile(data, event) {
-            // this.$emit('add-edit-file', event, data.dataId)
             data.isFileName = event.target.files[0].name
         },
         addComplete(currentTaskMessage) {

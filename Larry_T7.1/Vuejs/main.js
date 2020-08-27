@@ -79,8 +79,6 @@ let vm = new Vue({
             const topIndex = this.topArea.findIndex(data => data.dataId === Number(dragId));
             const middleIndex = this.middleArea.findIndex(data => data.dataId === Number(dragId));
             const bottomIndex = this.bottomArea.findIndex(data => data.dataId === Number(dragId));
-            // console.log(event.currentTarget.parentElement);
-            // console.log(this.getDragItem());
             if (event.currentTarget.parentElement !== this.getDragParentElement()) return
             if (this.checkIndex(topIndex)) {
                 const topArr = [...this.topArea];
@@ -146,7 +144,7 @@ let vm = new Vue({
                     if (a.isStar === b.isStar) {
                         return a.order - b.order
                     }
-                    a.isStar && !b.isStar ? -1 : 1;
+                    return a.isStar && !b.isStar ? -1 : 1;
                 })
                 return [...topAreaSort, ...middleAreaSort, ...bottomAreaSort]
             } else {
@@ -160,7 +158,7 @@ let vm = new Vue({
                     if (a.isStar === b.isStar) {
                         return b.dataId - a.dataId
                     }
-                    a.isStar && !b.isStar ? -1 : 1;
+                    return a.isStar && !b.isStar ? -1 : 1;
                 })
                 return [...topAreaSort, ...middleAreaSort, ...bottomAreaSort]
             }
@@ -169,8 +167,4 @@ let vm = new Vue({
     }
 })
 
-
-// function newFunction(topIndex) {
-//     return ~topIndex;
-// }
 
