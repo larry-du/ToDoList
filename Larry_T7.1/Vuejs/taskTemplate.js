@@ -7,35 +7,39 @@ const template = `
         @dragenter.prevent
         @dragover.prevent>
         <div class="card">
+
+        <pre>{{task.isComplete}}</pre>
+        
             <div class="card-body">
                 <div class="card-title">
                     <div class="check-area">
                         <input type="checkbox"
                             :id="'task-check-' + task.dataId"
-                            :checked="currentTaskMessage.isComplete"
-                            @change="addComplete(currentTaskMessage)">
+                            :checked="task.isComplete"
+                            @change="$emit('update-edit:task',{...task, isComplete:!task.isComplete})">
                         <label :for="'task-check-'+ task.dataId"></label>
                     </div>
                     <input class="list-title"
-                        v-model="currentTaskMessage.title"
+                        :value="task.title"
+                        @input="$emit('update-edit:task',{...task, title:$event.target.value})"
                         :disabled="!isEdit">
                 </div>
                 <div class="edit-area">
                     <i class="fas fa-star top-star"
-                        @click="highLightButton(task)"></i>
+                        @click="$emit('get-star', task.dataId)"></i>
                     <i class="fal fa-pen edit-pen"
                     @click="editTaskButton(task)"></i>
                     <i class="fal fa-trash-alt trash"
-                    @click="deleteEditTask(task)"></i>
+                    @click="$emit('delete-edit-task', task.dataId);"></i>
                 </div>
             </div>
             <div class="status">
-                <div class="date" v-show="currentTaskMessage.date">
+                <div class="date" v-if="task.date">
                     <i class="far fa-calendar-alt"></i>
-                    <span>{{currentTaskMessage.date}}</span>
+                    <span>{{task.date}}</span>
                 </div>
-                <i class="fal fa-file file-icon" v-show="currentTaskMessage.isFileName"></i>
-                <i class="fal fa-comment-dots comment-icon" v-show="currentTaskMessage.comment"></i>
+                <i class="fal fa-file file-icon" v-if="task.isFileName"></i>
+                <i class="fal fa-comment-dots comment-icon" v-if="task.comment"></i>
             </div>
         </div>
         <div class="save-info" :class="{'save-area-block':isEdit}">
@@ -87,7 +91,7 @@ const template = `
                 Cancel
             </button>
             <button class="save"
-            @click="saveEditTask(task)">
+            @click="$emit('save-edit-task', currentTaskMessage)">
                 <i class="fal fa-plus"></i>
                 Save
             </button>
@@ -115,7 +119,7 @@ export default {
         return {
             current: null,
             currentTaskMessage: {
-                title: this.task.title,
+                // title: this.task.title,
                 date: this.task.date,
                 time: this.task.time,
                 comment: this.task.comment,
@@ -131,34 +135,26 @@ export default {
     },
 
     methods: {
+        // test() {
+        //     const data = { ...this.task, isComplete: !this.task.isComplete }
+        //     this.$emit('update:edit-task',data )
+        //     // console.log(">>>>>>>",data);
+        // },
         initPreTaskMessage() {
             //儲存畫面一開始資料,使用JSON.parse避免 call by reference問題
             this.preTaskMessage = JSON.parse(JSON.stringify(this.currentTaskMessage));
         },
-        highLightButton(data) {
-            this.$emit('get-star', data.dataId);
-        },
         editTaskButton(data) {
             this.initPreTaskMessage();
             this.$emit('toggle-edit-task', data.dataId);
-        },
-        deleteEditTask(data) {
-            this.$emit('delete-edit-task', data.dataId);
         },
         cancelEditTask(data) {
             //如果取消 將畫面一開始資料賦值給currentTask啟動vue更新畫面
             this.currentTaskMessage = this.preTaskMessage;
             this.$emit('cancel-edit-task', data);
         },
-        saveEditTask() {
-            this.$emit('save-edit-task', this.currentTaskMessage);
-        },
         addEditFile(data, event) {
-
             data.isFileName = event.target.files[0].name
-        },
-        addComplete(currentTaskMessage) {
-            this.$emit('add-complete', currentTaskMessage);
         },
         getDragItem(event) {
             event.dataTransfer.setData('text', this.currentTaskMessage.dataId);
@@ -168,6 +164,21 @@ export default {
             const dragId = event.dataTransfer.getData('text');
             this.$emit('to-drop-item', dragId, this.taskIndex, event)
         }
+    },
+    computed: {
+        pre() {
+            return {
+                title: task.title,
+                date: task.date,
+                time: task.time,
+                comment: task.comment,
+                dataId: task.dataId,
+                isStar: task.isStar,
+                isComplete: task.isComplete,
+                isEdit: task.isEdit,
+                isFileName: task.isFileName,
+                order: task.order
+            }
+        }
     }
-
 }

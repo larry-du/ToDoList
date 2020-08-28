@@ -13,16 +13,20 @@ let vm = new Vue({
             addNewTask: false,
             currentTask: null,
             state: 'all',
-            taskData: {}
-
+            taskData: {},
+            topArea: [],
         }
     },
     created() {
         //創建vue實例取得資料
         this.initTaskDataList();
         this.taskData = this.initTaskData;
+        this.topAreaData()
     },
     methods: {
+        test1(e) {
+            this.$set(this.topArea, i, )
+        },
         initTaskDataList() {
             this.allTaskData = JSON.parse(localStorage.getItem("toDoData")) || [];
         },
@@ -33,11 +37,12 @@ let vm = new Vue({
             ];
             this.saveToLocalStorage();
             this.taskData = this.initTaskData;
+            // this.topAreaData();
             // this.addNewTask = false;
         },
-        // cancelNewTask() {
-        //     this.addNewTask = false;
-        // },
+        topAreaData() {
+            this.topArea = this.allTaskData.filter(data => data.isStar && !data.isComplete)
+        },
         toggleEditTask(id) {
             this.currentTask === id ? this.currentTask = null : this.currentTask = id;
         },
@@ -134,9 +139,9 @@ let vm = new Vue({
                 order: null
             }
         },
-        topArea() {
-            return this.sortData.filter(data => data.isStar && !data.isComplete)
-        },
+        // topArea() {
+        //     return this.sortData.filter(data => data.isStar && !data.isComplete)
+        // },
         middleArea() {
             return this.sortData.filter(data => !data.isStar && !data.isComplete)
         },
@@ -182,6 +187,9 @@ let vm = new Vue({
                 })
                 return [...topAreaSort, ...middleAreaSort, ...bottomAreaSort]
             }
+        },
+        allTask() {
+            return [...topAreaSort, ...middleAreaSort, ...bottomAreaSort]
         }
 
     }

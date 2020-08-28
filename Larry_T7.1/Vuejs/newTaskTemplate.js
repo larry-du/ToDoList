@@ -23,7 +23,8 @@ const template = `
                 </div>
                 <div class="edit-area">
                     <i class="fas fa-star top-star"
-                        @click="$emit('update:task',Object.assign({},data,{isStar:!data.isStar}))"></i>
+                        @click="$emit('update:task',Object.assign({},data,{isStar:!data.isStar}))"
+                        ></i>
                     <i class="fal fa-pen edit-pen"
                         @click="$emit('update:task',Object.assign({},data,{isEdit:!data.isEdit}))"></i>
                 </div>

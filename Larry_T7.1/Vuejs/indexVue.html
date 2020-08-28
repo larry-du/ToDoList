@@ -69,6 +69,7 @@
                     <to-do-list v-for="(data, i) in topArea"
                         :task="data"
                         :task-index="i"
+                        @update-edit:task="$set(topArea, i, $event)"
                         :is-edit="currentTask === data.dataId"
                         :key="data.dataId"
                         @toggle-edit-task="toggleEditTask"
@@ -81,7 +82,7 @@
                         @add-edit-file="addEditFile"
                         @get-drag-event="getDragParentElement"></to-do-list>
                 </section>
-                <section class="unfinished-area"
+                <!-- <section class="unfinished-area"
                     v-show="state !== 'completed'">
                     <to-do-list v-for="(data, i) in middleArea"
                         :task="data"
@@ -114,7 +115,7 @@
                         @to-drop-item="toDropItem"
                         @add-edit-file="addEditFile"
                         @get-drag-event="getDragParentElement"></to-do-list>
-                </section>
+                </section> -->
             </section>
             <p class="container task-left">{{taskCountLeft}} tasks left</p>
         </main>
