@@ -1,6 +1,6 @@
 const template = `
 <div class="event event-add container"
-    :class="{'event-area-block':data.isEdit,'high-light':data.isStar ,'is-complete': data.isComplete}">
+    :class="{'event-area-block':data.isCreateTask,'high-light':data.isStar ,'is-complete': data.isComplete}">
     <div class="edit">
         <div class="card">
             <div class="card-body">
@@ -36,6 +36,7 @@ const template = `
                     <i class="far fa-calendar-alt fa-fw"></i>
                     <span>Deadline</span>
                 </div>
+            
                 <div class="date-area">
                     <input type="date"
                         class="date"

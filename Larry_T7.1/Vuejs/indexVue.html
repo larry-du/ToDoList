@@ -47,8 +47,8 @@
         <pre>{{ allTaskData }}</pre> -->
         <main class="main">
             <div class="add-area container"
-                :class="{'add-area-none':taskData.isEdit}"
-                @click="taskData = Object.assign({}, taskData, {isEdit:true})">
+                :class="{'add-area-none':taskData.isCreateTask}"
+                @click="taskData = Object.assign({}, taskData, {isCreateTask:true})">
                 <input type="text"
                     placeholder="Add Task"
                     class="add-task">
@@ -72,14 +72,10 @@
                         @update-edit:task="$set(topArea, i, $event)"
                         :is-edit="currentTask === data.dataId"
                         :key="data.dataId"
-                        @toggle-edit-task="toggleEditTask"
+                        @cancel-edit="$set(topArea, i, $event)"
+                        @save-edit="saveEdit"
                         @delete-edit-task="deleteEditTask"
-                        @get-star="getStar"
-                        @cancel-edit-task="cancelEditTask"
-                        @save-edit-task="saveEditTask"
-                        @add-complete="addComplete"
                         @to-drop-item="toDropItem"
-                        @add-edit-file="addEditFile"
                         @get-drag-event="getDragParentElement"></to-do-list>
                 </section>
                 <!-- <section class="unfinished-area"

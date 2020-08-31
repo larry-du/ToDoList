@@ -15,6 +15,7 @@ let vm = new Vue({
             state: 'all',
             taskData: {},
             topArea: [],
+            middleArea: []
         }
     },
     created() {
@@ -24,9 +25,6 @@ let vm = new Vue({
         this.topAreaData()
     },
     methods: {
-        test1(e) {
-            this.$set(this.topArea, i, )
-        },
         initTaskDataList() {
             this.allTaskData = JSON.parse(localStorage.getItem("toDoData")) || [];
         },
@@ -37,11 +35,21 @@ let vm = new Vue({
             ];
             this.saveToLocalStorage();
             this.taskData = this.initTaskData;
-            // this.topAreaData();
+            this.topAreaData();
             // this.addNewTask = false;
+        },
+        saveEdit(task) {
+            const currentIndex = this.allTaskData.findIndex(data => data.dataId === task.dataId);
+            this.allTaskData[currentIndex] = task;
+
+            this.allTaskData[currentIndex].isEdit = !this.allTaskData[currentIndex].isEdit
+            this.saveToLocalStorage();
         },
         topAreaData() {
             this.topArea = this.allTaskData.filter(data => data.isStar && !data.isComplete)
+        },
+        middleAreaData() {
+            this.middleArea = this.allTaskData.filter(data => !data.isStar && !data.isComplete)
         },
         toggleEditTask(id) {
             this.currentTask === id ? this.currentTask = null : this.currentTask = id;
@@ -50,31 +58,32 @@ let vm = new Vue({
             const currentIndex = this.allTaskData.findIndex(data => data.dataId === id);
             this.allTaskData.splice(currentIndex, 1);
             this.saveToLocalStorage();
+            this.topAreaData();
         },
-        getStar(id) {
-            const currentIndex = this.allTaskData.findIndex(data => data.dataId === id);
-            this.allTaskData[currentIndex].isStar = !this.allTaskData[currentIndex].isStar;
-            this.saveToLocalStorage();
-        },
-        cancelEditTask(oldData) {
-            this.currentTask === oldData.dataId ? this.currentTask = null : this.currentTask = oldData.dataId;
-        },
-        saveEditTask(currentData) {
-            const currentIndex = this.allTaskData.findIndex(data => data.dataId === currentData.dataId);
-            this.allTaskData[currentIndex] = currentData;
-            this.saveToLocalStorage();
+        // getStar(id) {
+        //     const currentIndex = this.allTaskData.findIndex(data => data.dataId === id);
+        //     this.allTaskData[currentIndex].isStar = !this.allTaskData[currentIndex].isStar;
+        //     this.saveToLocalStorage();
+        // },
+        // cancelEditTask(oldData) {
+        //     this.currentTask === oldData.dataId ? this.currentTask = null : this.currentTask = oldData.dataId;
+        // },
+        // saveEditTask(currentData) {
+        //     const currentIndex = this.allTaskData.findIndex(data => data.dataId === currentData.dataId);
+        //     this.allTaskData[currentIndex] = currentData;
+        //     this.saveToLocalStorage();
 
-            this.currentTask === currentData.DataId ? this.currentTask = null : this.currentTask = currentData.DataId;
-        },
-        addComplete(currentData) {
-            const currentIndex = this.allTaskData.findIndex(data => data.dataId === currentData.dataId);
-            this.allTaskData[currentIndex].isComplete = !this.allTaskData[currentIndex].isComplete;
-            this.saveToLocalStorage();
-        },
-        addEditFile(event, id) {
-            const currentIndex = this.allTaskData.findIndex(data => data.dataId === id);
-            this.allTaskData[currentIndex].isFileName = event.target.files[0].name
-        },
+        //     this.currentTask === currentData.DataId ? this.currentTask = null : this.currentTask = currentData.DataId;
+        // },
+        // addComplete(currentData) {
+        //     const currentIndex = this.allTaskData.findIndex(data => data.dataId === currentData.dataId);
+        //     this.allTaskData[currentIndex].isComplete = !this.allTaskData[currentIndex].isComplete;
+        //     this.saveToLocalStorage();
+        // },
+        // addEditFile(event, id) {
+        //     const currentIndex = this.allTaskData.findIndex(data => data.dataId === id);
+        //     this.allTaskData[currentIndex].isFileName = event.target.files[0].name
+        // },
         all() {
             this.state = 'all';
         },
@@ -135,6 +144,7 @@ let vm = new Vue({
                 isStar: false,
                 isComplete: false,
                 isEdit: false,
+                isCreateTask: false,
                 isFileName: '',
                 order: null
             }
@@ -142,9 +152,9 @@ let vm = new Vue({
         // topArea() {
         //     return this.sortData.filter(data => data.isStar && !data.isComplete)
         // },
-        middleArea() {
-            return this.sortData.filter(data => !data.isStar && !data.isComplete)
-        },
+        // middleArea() {
+        //     return this.sortData.filter(data => !data.isStar && !data.isComplete)
+        // },
         bottomArea() {
             return this.sortData.filter(data => data.isComplete)
         },
