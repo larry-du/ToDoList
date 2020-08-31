@@ -72,27 +72,28 @@
                         @update-edit:task="$set(topArea, i, $event)"
                         :is-edit="currentTask === data.dataId"
                         :key="data.dataId"
+                        @add-star="addStar"
+                        @add-complete="addComplete"
                         @cancel-edit="$set(topArea, i, $event)"
                         @save-edit="saveEdit"
                         @delete-edit-task="deleteEditTask"
                         @to-drop-item="toDropItem"
                         @get-drag-event="getDragParentElement"></to-do-list>
                 </section>
-                <!-- <section class="unfinished-area"
+                <section class="unfinished-area"
                     v-show="state !== 'completed'">
                     <to-do-list v-for="(data, i) in middleArea"
                         :task="data"
                         :task-index="i"
+                        @update-edit:task="$set(middleArea, i, $event)"
                         :is-edit="currentTask === data.dataId"
                         :key="data.dataId"
-                        @toggle-edit-task="toggleEditTask"
-                        @delete-edit-task="deleteEditTask"
-                        @get-star="getStar"
-                        @cancel-edit-task="cancelEditTask"
-                        @save-edit-task="saveEditTask"
+                        @add-star="addStar"
                         @add-complete="addComplete"
+                        @cancel-edit="$set(middleArea, i, $event)"
+                        @save-edit="saveEdit"
+                        @delete-edit-task="deleteEditTask"
                         @to-drop-item="toDropItem"
-                        @add-edit-file="addEditFile"
                         @get-drag-event="getDragParentElement"></to-do-list>
                 </section>
                 <section class="complete-area"
@@ -100,18 +101,17 @@
                     <to-do-list v-for="(data, i) in bottomArea"
                         :task="data"
                         :task-index="i"
+                        @update-edit:task="$set(bottomArea, i, $event)"
                         :is-edit="currentTask === data.dataId"
                         :key="data.dataId"
-                        @toggle-edit-task="toggleEditTask"
-                        @delete-edit-task="deleteEditTask"
-                        @get-star="getStar"
-                        @cancel-edit-task="cancelEditTask"
-                        @save-edit-task="saveEditTask"
+                        @add-star="addStar"
                         @add-complete="addComplete"
+                        @cancel-edit="$set(bottomArea, i, $event)"
+                        @save-edit="saveEdit"
+                        @delete-edit-task="deleteEditTask"
                         @to-drop-item="toDropItem"
-                        @add-edit-file="addEditFile"
                         @get-drag-event="getDragParentElement"></to-do-list>
-                </section> -->
+                </section>
             </section>
             <p class="container task-left">{{taskCountLeft}} tasks left</p>
         </main>

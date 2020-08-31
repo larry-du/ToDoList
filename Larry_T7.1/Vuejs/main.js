@@ -15,14 +15,17 @@ let vm = new Vue({
             state: 'all',
             taskData: {},
             topArea: [],
-            middleArea: []
+            middleArea: [],
+            bottomArea: []
         }
     },
     created() {
         //創建vue實例取得資料
         this.initTaskDataList();
         this.taskData = this.initTaskData;
-        this.topAreaData()
+        this.topAreaData();
+        this.middleAreaData()
+        this.bottomAreaData();
     },
     methods: {
         initTaskDataList() {
@@ -36,7 +39,8 @@ let vm = new Vue({
             this.saveToLocalStorage();
             this.taskData = this.initTaskData;
             this.topAreaData();
-            // this.addNewTask = false;
+            this.middleAreaData()
+            this.bottomAreaData();
         },
         saveEdit(task) {
             const currentIndex = this.allTaskData.findIndex(data => data.dataId === task.dataId);
@@ -51,35 +55,36 @@ let vm = new Vue({
         middleAreaData() {
             this.middleArea = this.allTaskData.filter(data => !data.isStar && !data.isComplete)
         },
-        toggleEditTask(id) {
-            this.currentTask === id ? this.currentTask = null : this.currentTask = id;
+        bottomAreaData() {
+            this.bottomArea = this.allTaskData.filter(data => data.isComplete)
         },
+        // toggleEditTask(id) {
+        //     this.currentTask === id ? this.currentTask = null : this.currentTask = id;
+        // },
         deleteEditTask(id) {
             const currentIndex = this.allTaskData.findIndex(data => data.dataId === id);
             this.allTaskData.splice(currentIndex, 1);
             this.saveToLocalStorage();
             this.topAreaData();
+            this.middleAreaData();
+            this.bottomAreaData();
         },
-        // getStar(id) {
-        //     const currentIndex = this.allTaskData.findIndex(data => data.dataId === id);
-        //     this.allTaskData[currentIndex].isStar = !this.allTaskData[currentIndex].isStar;
-        //     this.saveToLocalStorage();
-        // },
-        // cancelEditTask(oldData) {
-        //     this.currentTask === oldData.dataId ? this.currentTask = null : this.currentTask = oldData.dataId;
-        // },
-        // saveEditTask(currentData) {
-        //     const currentIndex = this.allTaskData.findIndex(data => data.dataId === currentData.dataId);
-        //     this.allTaskData[currentIndex] = currentData;
-        //     this.saveToLocalStorage();
-
-        //     this.currentTask === currentData.DataId ? this.currentTask = null : this.currentTask = currentData.DataId;
-        // },
-        // addComplete(currentData) {
-        //     const currentIndex = this.allTaskData.findIndex(data => data.dataId === currentData.dataId);
-        //     this.allTaskData[currentIndex].isComplete = !this.allTaskData[currentIndex].isComplete;
-        //     this.saveToLocalStorage();
-        // },
+        addStar(event) {
+            const currentIndex = this.allTaskData.findIndex(data => data.dataId === event.dataId);
+            this.allTaskData[currentIndex].isStar = !this.allTaskData[currentIndex].isStar;
+            this.saveToLocalStorage();
+            this.topAreaData();
+            this.middleAreaData();
+            this.bottomAreaData();
+        },
+        addComplete(event) {
+            const currentIndex = this.allTaskData.findIndex(data => data.dataId === event.dataId);
+            this.allTaskData[currentIndex].isComplete = !this.allTaskData[currentIndex].isComplete;
+            this.saveToLocalStorage();
+            this.topAreaData();
+            this.middleAreaData();
+            this.bottomAreaData();
+        },
         // addEditFile(event, id) {
         //     const currentIndex = this.allTaskData.findIndex(data => data.dataId === id);
         //     this.allTaskData[currentIndex].isFileName = event.target.files[0].name
@@ -108,6 +113,7 @@ let vm = new Vue({
             }
             if (this.checkIndex(middleIndex)) {
                 const middleArr = [...this.middleArea];
+                console.log(middleArr);
                 this.changeDataPosition(middleArr, middleIndex, taskIndex);
                 this.saveCurrentRandomData(this.topArea, middleArr, this.bottomArea);
             }
@@ -117,6 +123,9 @@ let vm = new Vue({
                 this.saveCurrentRandomData(this.topArea, this.middleArea, bottomArr);
             }
             this.saveToLocalStorage();
+            this.topAreaData();
+            this.middleAreaData();
+            this.bottomAreaData();
         },
         checkIndex(targetIndex) {
             return ~targetIndex;
@@ -149,59 +158,29 @@ let vm = new Vue({
                 order: null
             }
         },
-        // topArea() {
-        //     return this.sortData.filter(data => data.isStar && !data.isComplete)
-        // },
-        // middleArea() {
-        //     return this.sortData.filter(data => !data.isStar && !data.isComplete)
-        // },
-        bottomArea() {
-            return this.sortData.filter(data => data.isComplete)
-        },
         taskCountLeft() {
             if (this.state === 'all') return this.allTaskData.length;
             if (this.state === 'inProgress') return this.topArea.length + this.middleArea.length;
             if (this.state === 'completed') return this.bottomArea.length;
         },
         sortData() {
-            const getOrder = this.allTaskData.map(data => data.order).some(data => data !== null)
             const topArr = this.allTaskData.filter(data => data.isStar && !data.isComplete);
             const middleArr = this.allTaskData.filter(data => !data.isStar && !data.isComplete)
             const bottomArr = this.allTaskData.filter(data => data.isComplete)
-            if (getOrder) {
-                const topAreaSort = topArr.sort((a, b) => {
-                    return a.order - b.order
-                })
-                const middleAreaSort = middleArr.sort((a, b) => {
-                    return a.order - b.order
-                })
-                const bottomAreaSort = bottomArr.sort((a, b) => {
-                    if (a.isStar === b.isStar) {
-                        return a.order - b.order
-                    }
-                    return a.isStar && !b.isStar ? -1 : 1;
-                })
-                return [...topAreaSort, ...middleAreaSort, ...bottomAreaSort]
-            } else {
-                const topAreaSort = topArr.sort((a, b) => {
+            const topAreaSort = topArr.sort((a, b) => {
+                return b.dataId - a.dataId
+            })
+            const middleAreaSort = middleArr.sort((a, b) => {
+                return b.dataId - a.dataId
+            })
+            const bottomAreaSort = bottomArr.sort((a, b) => {
+                if (a.isStar === b.isStar) {
                     return b.dataId - a.dataId
-                })
-                const middleAreaSort = middleArr.sort((a, b) => {
-                    return b.dataId - a.dataId
-                })
-                const bottomAreaSort = bottomArr.sort((a, b) => {
-                    if (a.isStar === b.isStar) {
-                        return b.dataId - a.dataId
-                    }
-                    return a.isStar && !b.isStar ? -1 : 1;
-                })
-                return [...topAreaSort, ...middleAreaSort, ...bottomAreaSort]
-            }
-        },
-        allTask() {
+                }
+                return a.isStar && !b.isStar ? -1 : 1;
+            })
             return [...topAreaSort, ...middleAreaSort, ...bottomAreaSort]
         }
-
     }
 })
 

@@ -13,7 +13,7 @@ const template = `
                         <input type="checkbox"
                             :id="'task-check-' + task.dataId"
                             :checked="task.isComplete"
-                            @change="$emit('update-edit:task',{...task, isComplete:!task.isComplete})">
+                            @change="$emit('add-complete',{...task, isComplete:!task.isComplete})">
                         <label :for="'task-check-'+ task.dataId"></label>
                     </div>
                     <input class="list-title"
@@ -23,7 +23,7 @@ const template = `
                 </div>
                 <div class="edit-area">
                     <i class="fas fa-star top-star"
-                        @click="$emit('update-edit:task', {...task,isStar:!task.isStar})"></i>
+                        @click="$emit('add-star', {...task,isStar:!task.isStar})"></i>
                     <i class="fal fa-pen edit-pen"
                     @click="editTaskButton"></i>
                     <i class="fal fa-trash-alt trash"
@@ -119,46 +119,26 @@ export default {
     data() {
         return {
             current: null,
-            // currentTaskMessage: {
-            //     // title: this.task.title,
-            //     date: this.task.date,
-            //     time: this.task.time,
-            //     comment: this.task.comment,
-            //     dataId: this.task.dataId,
-            //     isStar: this.task.isStar,
-            //     isComplete: this.task.isComplete,
-            //     isEdit: this.task.isEdit,
-            //     isFileName: this.task.isFileName,
-            //     order: this.task.order
-            // },
             preTaskMessage: {}
         }
     },
-
     methods: {
         initPreTaskMessage() {
             //儲存畫面一開始資料,使用JSON.parse避免 call by reference問題
             this.preTaskMessage = JSON.parse(JSON.stringify(this.initTask));
         },
         editTaskButton() {
-            // console.log(event);
             this.initPreTaskMessage();
             this.$emit('update-edit:task', { ...this.task, isEdit: !this.task.isEdit });
         },
-        // cancelEditTask(data) {
-        //     //如果取消 將畫面一開始資料賦值給currentTask啟動vue更新畫面
-        //     this.currentTaskMessage = this.preTaskMessage;
-        //     this.$emit('cancel-edit-task', data);
-        // },
-
-        // getDragItem(event) {
-        //     event.dataTransfer.setData('text', this.currentTaskMessage.dataId);
-        //     this.$emit('get-drag-event', event)
-        // },
-        // toDropItem(event) {
-        //     const dragId = event.dataTransfer.getData('text');
-        //     this.$emit('to-drop-item', dragId, this.taskIndex, event)
-        // }
+        getDragItem(event) {
+            event.dataTransfer.setData('text', this.task.dataId);
+            this.$emit('get-drag-event', event);
+        },
+        toDropItem(event) {
+            const dragId = event.dataTransfer.getData('text');
+            this.$emit('to-drop-item', dragId, this.taskIndex, event);
+        }
     },
     computed: {
         initTask() {
