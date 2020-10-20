@@ -146,8 +146,6 @@ function taskNewEventBinding(event) {
     const getStar = this.classList.contains('high-light');
     const done = this.classList.contains('is-complete')
 
-
-
     const taskInfo = {
         title: title.value,
         date: date.value,
@@ -394,3 +392,5 @@ addTask.addEventListener('click', openNewTask);
 //         return scoreB - scoreA;
 //     })
 // }
+
+

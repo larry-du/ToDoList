@@ -98,7 +98,7 @@ let vm = new Vue({
         taskCompleted() {
             this.state = 'completed';
         },
-        getDragParentElement() {
+        getDragParentElement(event) {
             return event.currentTarget.parentElement
         },
         toDropItem(dragId, taskIndex, event) {
@@ -183,5 +183,6 @@ let vm = new Vue({
         }
     }
 })
+
 
 
