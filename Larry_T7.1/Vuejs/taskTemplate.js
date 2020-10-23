@@ -110,11 +110,7 @@ export default {
         taskIndex: {
             type: Number,
             required: true
-        },
-        // isEdit: {
-        //     type: Boolean,
-        //     required: true
-        // }
+        }
     },
     data() {
         return {

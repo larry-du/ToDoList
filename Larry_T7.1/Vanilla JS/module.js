@@ -256,8 +256,6 @@ function taskEditEventBinding(event) {
     const date = this.querySelector('input[type="date"]');
     const time = this.querySelector('input[type="time"]');
     const comment = this.querySelector('.comment-area');
-    // const taskClass = this.classList;
-    // const classNumber = taskClass[1].slice(5);
     const taskNumber = this.dataset.number;
     const targetDataIndex = allTaskData.findIndex(data => data.id === Number(taskNumber));
     const targetTask = allTaskData[targetDataIndex];
@@ -326,7 +324,6 @@ function taskEditEventBinding(event) {
         allTaskData[targetDataIndex] = allMessage;
         localStorage.setItem('allMessage', JSON.stringify(allTaskData));
         render(sortData());
-        // this?.classList.remove('isEdit');
     }
 
     if (isCancel) {
@@ -339,7 +336,6 @@ function taskEditEventBinding(event) {
 //拖曳事件
 function dragTask(event) {
     event.dataTransfer.setData('text/plain', this.dataset.number);
-    // event.dataTransfer.effectAllowed
 }
 function dropTask(event) {
     const dataNumber = event.dataTransfer.getData('text/plain');
@@ -384,13 +380,5 @@ function cancelDefault(e) {
 
 addTask.addEventListener('click', openNewTask);
 
-//資料
-// function sortData() {
-//     return sortInProgress().sort((a, b) => {
-//         const scoreA = (a.isStar ? 200 : 0) + (a.isComplete ? -300 : 0)
-//         const scoreB = (b.isStar ? 200 : 0) + (b.isComplete ? -300 : 0)
-//         return scoreB - scoreA;
-//     })
-// }
 
 

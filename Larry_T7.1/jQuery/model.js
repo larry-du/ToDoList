@@ -14,7 +14,6 @@ function createTaskToLocalStorage(taskInfo) {
 
     allTaskData.push(taskData);
     localStorage.setItem('taskData', JSON.stringify(allTaskData));
-    // return taskData
 }
 
 export { createTaskToLocalStorage, allTaskData };

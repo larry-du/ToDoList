@@ -43,8 +43,6 @@
                 </div>
             </nav>
         </header>
-        <!-- <pre>{{ taskData }}</pre>
-        <pre>{{ allTaskData }}</pre> -->
         <main class="main">
             <div class="add-area container"
                 :class="{'add-area-none':taskData.isCreateTask}"
@@ -54,8 +52,6 @@
                     class="add-task">
                 <i class="fal fa-plus"></i>
             </div>
-            <!-- @create-new-task="createNewTask" -->
-            <!-- @cancel-new-task="cancelNewTask" -->
             <new-task :add-new-task="taskData.isEdit"
                 :data="taskData"
                 @update:task="taskData = $event"
