@@ -21,6 +21,7 @@
 10. props、$emit - Vue (cdn)
 11. methods、computed - Vue (cdn)
 12. 生命週期 - Vue (cdn)
+13. 事件驅動與資料驅動
 
 ## 解決方式:
 1. 手作實驗測試與練習
